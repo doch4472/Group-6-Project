@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Recommendations</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Recipe Recommendations</h1>
+        <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search recipes...">
+            <button type="submit">Search</button>
+        </form>
+    </header>
+
+    <main>
+        <section id="recommendations">
+            {{#each recipes}}
+            {{> recipeCard}}
+            {{/each}}
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
