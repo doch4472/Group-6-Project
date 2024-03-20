@@ -1,95 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Review Rating Page</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f8f9fa;
-    }
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 20px;
-      border-radius: 10px;
-      background-color: #fff;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-    .rating-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .rating-container label {
-      font-size: 36px;
-      margin-right: 10px;
-      transition: color 0.3s ease-in-out;
-      cursor: pointer;
-    }
-    .rating-container input[type="radio"] {
-      display: none;
-    }
-    .rating-container input[type="radio"] + label:hover,
-    .rating-container input[type="radio"]:checked + label {
-      color: gold;
-    }
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      resize: none;
-      transition: border-color 0.3s ease-in-out;
-    }
-    textarea:focus {
-      border-color: #007bff;
-    }
-    button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review & Rating Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>Leave a Review</h2>
-  <form id="review-form">
-    <div class="rating-container">
-      <input type="radio" id="star5" name="rating" value="5">
-      <label for="star5">&#9733;</label>
-      <input type="radio" id="star4" name="rating" value="4">
-      <label for="star4">&#9733;</label>
-      <input type="radio" id="star3" name="rating" value="3">
-      <label for="star3">&#9733;</label>
-      <input type="radio" id="star2" name="rating" value="2">
-      <label for="star2">&#9733;</label>
-      <input type="radio" id="star1" name="rating" value="1">
-      <label for="star1">&#9733;</label>
-    </div>
-    <textarea id="review-text" name="review" placeholder="Write your review here..."></textarea>
-    <button type="submit">Submit Review</button>
-  </form>
+    <h1>Leave a Review & Rating</h1>
+    <form id="reviewForm">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <select id="rating" name="rating" required>
+                <option value="">Select Rating</option>
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="review">Review:</label>
+            <textarea id="review" name="review" rows="4" required></textarea>
+        </div>
+        <button type="submit">Submit Review</button>
+    </form>
 </div>
+
+<script>
+    document.getElementById("reviewForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        var reviewData = {};
+        formData.forEach(function(value, key) {
+            reviewData[key] = value;
+        });
+        var json = JSON.stringify(reviewData);
+        console.log(json); // Here you can do whatever you want with the review data, like sending it to a server
+        alert("Review submitted successfully!"); // This is just a placeholder for demonstration
+        this.reset(); // Clear the form after submission
+    });
+</script>
 
 </body>
 </html>
