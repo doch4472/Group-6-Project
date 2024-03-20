@@ -21,7 +21,7 @@ services:
       - '3000:3000'
     volumes:
       - ./src:/home/node/app
-    command: 'npm start'
+    command: 'node index.js'
 volumes:
   group-project:
 
