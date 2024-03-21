@@ -1,0 +1,19 @@
+html, body {
+    margin: 20px;
+    padding: 0;
+}
+
+html {
+    font-size: 12px;
+}
+
+body {
+    width: 70%;
+    min-width: 800px;
+    margin: 0 auto;
+}
+
+.register h2 {
+    padding-top: 50%;
+    color: blue;
+}
