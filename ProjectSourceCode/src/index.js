@@ -70,13 +70,21 @@ app.use(
   })
 );
 
-app.get('/', (req, res) => {
-  console.log("hello"); 
-});
+// app.get('/', (req, res) => {
+//   console.log("hello"); 
+// }); was testing to see if docker compose up was working
 
 // *****************************************************
 // <!-- Section 4 : API Routes -->
 // *****************************************************
+
+app.get('/', (req, res) => {
+  res.redirect('/register'); 
+});
+
+app.get('/register', (req, res) => {
+  res.render('pages/register')
+});
 
 // TODO - Include your API routes here
 
