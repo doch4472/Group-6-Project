@@ -86,6 +86,11 @@ app.get('/register', (req, res) => {
   res.render('pages/register')
 });
 
+app.get('/search', (req, res) => {
+  res.render('pages/search', { query: req.query.q });
+});
+
+
 // TODO - Include your API routes here
 
 // *****************************************************
