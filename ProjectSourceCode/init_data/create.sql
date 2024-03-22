@@ -21,7 +21,7 @@ CREATE TABLE author(
     id INT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     ---- Not done yet, will finish when I figure out API ---
-)
+);
 
 CREATE TABLE recipe_to_ingredient(
     recipe_id INT NOT NULL,
