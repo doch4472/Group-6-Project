@@ -70,27 +70,13 @@ app.use(
   })
 );
 
-app.use(express.static("img"));
+// Serve static files from the "src" directory
+app.use(express.static(path.join(__dirname, 'resources')));
 
-// Route to display static src images 
-app.get("/static", (req, res) => { 
-  res.render("static"); 
-}); 
-
-// Route to display dynamic src images 
-app.get("/dynamic", (req, res) => { 
-  imageList = []; 
-  imageList.push({ src: "icons/flask.png", name: "flask" }); 
-  imageList.push({ src: "icons/javascript.png", name: "javascript" }); 
-  imageList.push({ src: "icons/react.png", name: "react" }); 
-  res.render("dynamic", { imageList: imageList }); 
-}) 
+// Serve images from the "images" directory inside the "src" folder
+app.use("/images", express.static(path.join(__dirname, "resources", "images")));
 
 
-
-// app.get('/', (req, res) => {
-//   console.log("hello"); 
-// }); was testing to see if docker compose up was working
 
 // *****************************************************
 // <!-- Section 4 : API Routes -->
