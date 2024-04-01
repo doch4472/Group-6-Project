@@ -42,6 +42,17 @@
       background-color: #F5F3E9;
     }
 
+    /* Custom CSS for Login and Profile buttons */
+    .btn-login {
+      border-radius: 20px; /* Round border */
+      color: #4CAF50; /* Text color */
+    }
+
+    .btn-login:hover {
+      background-color: #4CAF50; /* Green background on hover */
+      color: #ffffff; /* White text color on hover */
+    }
+
   </style>
 </head>
 <body>
@@ -65,9 +76,12 @@
             <a class="nav-link" href="/search">Search</a>
           </li>
           <li class="nav-item">
-            <form action="/logout" method="post" class="form-inline my-2 my-lg-0">
-              <button type="submit" class="btn btn-link nav-link">Logout</button>
+            <form action="/login" method="post" class="form-inline my-2 my-lg-0">
+              <button type="submit" class="btn btn-link nav-link btn-login">Login</button>
             </form>
+          </li>
+          <li class="nav-item">
+            <a href="/profile" class="nav-link btn-profile">Profile</a>
           </li>
         </ul>
       </div>
