@@ -106,7 +106,7 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('pages/login')
+  res.render('pages/login', {query: req.query.q});
 });
 
 app.get('/recipe/:id', (req, res) => {
