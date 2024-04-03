@@ -13,6 +13,7 @@ CREATE TABLE recipe(
     image VARCHAR(100) NOT NULL,
     image_title VARCHAR(100) NOT NULL
  ---- Not done yet, will finish when I figure out API ---
+ ---- Just adding stuff so I can fix an issue on my end ---
 );
 
 
