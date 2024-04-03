@@ -114,6 +114,12 @@ app.get('/recipe/:id', (req, res) => {
   res.render('pages/recipe', { recipeId: recipeId });
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
+
+
 // TODO - Include your API routes here
 
 // *****************************************************
