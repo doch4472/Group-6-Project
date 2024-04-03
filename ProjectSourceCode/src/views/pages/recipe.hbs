@@ -1,34 +1,64 @@
-<h1 id="recipeTitle"></h1>
-<img id="recipeImage" alt="">
-<h2>Ingredients</h2>
-<ul id="ingredientsList"></ul>
-<h2>Instructions</h2>
-<ol id="instructionsList"></ol>
+<!DOCTYPE html>
+<html lang="en">
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    const recipeId = '{{recipeId}}';
-    const recipeTitleElement = document.getElementById('recipeTitle');
-    const recipeImageElement = document.getElementById('recipeImage');
-    const ingredientsListElement = document.getElementById('ingredientsList');
-    const instructionsListElement = document.getElementById('instructionsList');
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Details</title>
+    <style>
+        /* CSS styles for recipe details page */
+    </style>
+</head>
 
-    // Function to fetch and display recipe details
-    async function fetchRecipeDetails() {
-        const options = {
-            method: 'GET',
-            url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
-            headers: {
-                'X-RapidAPI-Key': 'b22ea917a0mshf3490f036fe07eep1cd7d4jsne13abd00989d',
-                'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+<body>
+    <div class="container">
+        <h1 id="recipeTitle"></h1>
+        <img id="recipeImage" alt="">
+        <h2>Ingredients</h2>
+        <ul id="ingredientsList"></ul>
+        <h2>Instructions</h2>
+        <ol id="instructionsList"></ol>
+        <button id="backButton">Back to Results</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const recipeId = '{{recipeId}}';
+        const recipeTitleElement = document.getElementById('recipeTitle');
+        const recipeImageElement = document.getElementById('recipeImage');
+        const ingredientsListElement = document.getElementById('ingredientsList');
+        const instructionsListElement = document.getElementById('instructionsList');
+        const backButton = document.getElementById('backButton');
+
+        // Function to fetch and display recipe details
+        async function fetchRecipeDetails() {
+            const cachedRecipe = localStorage.getItem(`recipe-${recipeId}`);
+
+            if (cachedRecipe) {
+                displayRecipeDetails(JSON.parse(cachedRecipe));
+            } else {
+                const options = {
+                    method: 'GET',
+                    url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
+                    headers: {
+                        'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
+                        'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+                    }
+                };
+
+                try {
+                    const response = await axios.request(options);
+                    const data = response.data;
+                    localStorage.setItem(`recipe-${recipeId}`, JSON.stringify(data));
+                    displayRecipeDetails(data);
+                } catch (error) {
+                    console.error(error);
+                }
             }
-        };
+        }
 
-        try {
-            const response = await axios.request(options);
-            const data = response.data;
-
-            // Display the recipe details in the template
+        // Function to display recipe details
+        function displayRecipeDetails(data) {
             recipeTitleElement.textContent = data.title;
             recipeImageElement.src = data.image;
 
@@ -45,11 +75,16 @@
                 instructionElement.textContent = step.step;
                 instructionsListElement.appendChild(instructionElement);
             });
-        } catch (error) {
-            console.error(error);
         }
-    }
 
-    // Fetch recipe details on page load
-    fetchRecipeDetails();
-</script>
+        // Event listener for back button
+        backButton.addEventListener('click', function () {
+            window.history.back();
+        });
+
+        // Fetch recipe details on page load
+        fetchRecipeDetails();
+    </script>
+</body>
+
+</html>
