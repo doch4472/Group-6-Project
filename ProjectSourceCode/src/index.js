@@ -149,7 +149,7 @@ app.post('/login', async (req, res) => {
         // If the database request fails, send an appropriate message to the user
 
         // and render the login.hbs page
-        res.status(500).render('pages/login', { error: 'Internal Server Error' });
+        res.status(500).render('/login', { error: 'Internal Server Error' });
       }
 });
 
@@ -159,9 +159,10 @@ app.post('/register', async (req, res) => {
       const hash = await bcrypt.hash(req.body.password, 10);
       // To-DO: Insert username and hashed password into the 'users' table
       await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
-      res.redirect('pages/login'); 
+      res.redirect('/login'); 
   } catch (error) {
-      res.redirect('pages/register'); 
+      res.redirect('/register'); 
+      console.error('Error during register:', error);
   }
 });
 
