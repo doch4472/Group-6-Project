@@ -114,28 +114,40 @@
 
     // Function to fetch and display recommended recipes
     async function fetchRecommendedRecipes() {
-      const options = {
-        method: 'GET',
-        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
-        params: { number: '5' },
-        headers: {
-          'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
-          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+      const cachedRecipes = localStorage.getItem('recommendedRecipes');
+
+      if (cachedRecipes) {
+        displayRecipes(JSON.parse(cachedRecipes), recommendedResultsContainer);
+      } else {
+        const options = {
+          method: 'GET',
+          url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
+          params: { number: '5' },
+          headers: {
+            'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
+            'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+          }
+        };
+
+        try {
+          const response = await axios.request(options);
+          const recipes = response.data.recipes;
+          localStorage.setItem('recommendedRecipes', JSON.stringify(recipes));
+          displayRecipes(recipes, recommendedResultsContainer);
+        } catch (error) {
+          console.error(error);
         }
-      };
-
-      try {
-        const response = await axios.request(options);
-        const recipes = response.data.recipes;
-        recommendedResultsContainer.innerHTML = '';
-
-        recipes.forEach(recipe => {
-          const recipeElement = createRecipeElement(recipe);
-          recommendedResultsContainer.appendChild(recipeElement);
-        });
-      } catch (error) {
-        console.error(error);
       }
+    }
+
+    // Function to display recipes in a container
+    function displayRecipes(recipes, container) {
+      container.innerHTML = '';
+
+      recipes.forEach(recipe => {
+        const recipeElement = createRecipeElement(recipe);
+        container.appendChild(recipeElement);
+      });
     }
 
     // Function to create a recipe element
@@ -169,8 +181,10 @@
       return recipeElement;
     }
 
+    // Fetch recommended recipes on page load
     fetchRecommendedRecipes();
 
+    // Search functionality
     searchForm.addEventListener('submit', async function (event) {
       event.preventDefault();
 
@@ -180,40 +194,39 @@
         return;
       }
 
+      // Hide the recommended recipes section
       recommendedResultsContainer.style.display = 'none';
 
-      const options = {
-        method: 'GET',
-        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch',
-        params: {
-          query: searchTerm,
-          number: '10'
-        },
-        headers: {
-          'X-RapidAPI-Key': 'b22ea917a0mshf3490f036fe07eep1cd7d4jsne13abd00989d',
-          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+      const cachedResults = localStorage.getItem(`searchResults-${searchTerm}`);
+
+      if (cachedResults) {
+        displayRecipes(JSON.parse(cachedResults), resultsContainer);
+      } else {
+        const options = {
+          method: 'GET',
+          url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch',
+          params: {
+            query: searchTerm,
+            number: '10'
+          },
+          headers: {
+            'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
+            'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+          }
+        };
+
+        try {
+          const response = await axios.request(options);
+          const recipes = response.data.results;
+          localStorage.setItem(`searchResults-${searchTerm}`, JSON.stringify(recipes));
+          displayRecipes(recipes, resultsContainer);
+        } catch (error) {
+          console.error(error);
+          resultsContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
         }
-      };
-
-      try {
-        const response = await axios.request(options);
-        const recipes = response.data.results;
-        resultsContainer.innerHTML = '';
-
-        if (recipes.length === 0) {
-          resultsContainer.innerHTML = '<p>No recipes found.</p>';
-        } else {
-          recipes.forEach(recipe => {
-            const recipeElement = createRecipeElement(recipe);
-            resultsContainer.appendChild(recipeElement);
-          });
-        }
-
-        searchInput.value = '';
-      } catch (error) {
-        console.error(error);
-        resultsContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
       }
+
+      searchInput.value = '';
     });
   </script>
 </body>
