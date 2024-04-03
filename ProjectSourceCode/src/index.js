@@ -109,6 +109,10 @@ app.get('/login', (req, res) => {
   res.render('pages/login', {query: req.query.q});
 });
 
+app.get('/profile', (req, res) => {
+  res.render('pages/login', {query: req.query.q});
+});
+
 app.get('/recipe/:id', (req, res) => {
   const recipeId = req.params.id;
   res.render('pages/recipe', { recipeId: recipeId });
@@ -119,7 +123,7 @@ app.get('/logout', (req, res) => {
   res.render('pages/logout');
 });
 
-app.post('pages/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
         const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [req.body.username]);
     
@@ -137,7 +141,7 @@ app.post('pages/login', async (req, res) => {
         // Save the user in the session
         req.session.user = user;
         req.session.save(() => {
-        res.redirect('/discover');
+        res.redirect('/home');
 
       });
       } catch (error) {
@@ -149,7 +153,7 @@ app.post('pages/login', async (req, res) => {
       }
 });
 
-app.post('pages/register', async (req, res) => {
+app.post('/register', async (req, res) => {
   //hash the password using bcrypt 
   try{
       const hash = await bcrypt.hash(req.body.password, 10);
