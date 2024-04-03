@@ -1,0 +1,50 @@
+<h1 id="recipeTitle"></h1>
+<img id="recipeImage" alt="">
+
+<h2>Ingredients</h2>
+<ul id="ingredientsList"></ul>
+
+<h2>Instructions</h2>
+<ol id="instructionsList"></ol>
+
+<script>
+    const apiKey = '6ca5bc8018f84f2c83a8089a81b96af2';
+    const recipeId = '{{recipeId}}';
+    const recipeTitleElement = document.getElementById('recipeTitle');
+    const recipeImageElement = document.getElementById('recipeImage');
+    const ingredientsListElement = document.getElementById('ingredientsList');
+    const instructionsListElement = document.getElementById('instructionsList');
+
+    // Function to fetch and display recipe details
+    function fetchRecipeDetails() {
+        const apiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKey}`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Display the recipe details in the template
+                recipeTitleElement.textContent = data.title;
+                recipeImageElement.src = data.image;
+
+                // Display the ingredients
+                data.extendedIngredients.forEach(ingredient => {
+                    const ingredientElement = document.createElement('li');
+                    ingredientElement.textContent = `${ingredient.amount} ${ingredient.unit} ${ingredient.name}`;
+                    ingredientsListElement.appendChild(ingredientElement);
+                });
+
+                // Display the instructions
+                data.analyzedInstructions[0].steps.forEach(step => {
+                    const instructionElement = document.createElement('li');
+                    instructionElement.textContent = step.step;
+                    instructionsListElement.appendChild(instructionElement);
+                });
+            })
+            .catch(error => {
+                console.log('Error:', error);
+            });
+    }
+
+    // Fetch recipe details on page load
+    fetchRecipeDetails();
+</script>

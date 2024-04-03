@@ -94,6 +94,10 @@ app.get('/search', (req, res) => {
   res.render('pages/search', { query: req.query.q });
 });
 
+app.get('/recipe/:id', (req, res) => {
+  const recipeId = req.params.id;
+  res.render('pages/recipe', { recipeId: recipeId });
+});
 
 // TODO - Include your API routes here
 
