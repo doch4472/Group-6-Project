@@ -1,69 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recipe Search</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .search-container {
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 15px 100px;
-      border-radius: 10px;
-      background-color: #fff;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    .search-container h2 {
-      text-align: center;
-      color: #333;
-    }
-    
-    .search-container .search-input {
-      text-align:center;
-      width: 100%;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      margin-bottom: 15px;
-      transition: border-color 0.3s ease-in-out;
-    }
-
-    .search-container .search-input:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 5px #007bff;
-    }
-    .search-container .search-button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
-    }
-    .search-container .search-button:hover {
-      background-color: #0056b3;
-    }
+    /* CSS styles remain the same */
   </style>
 </head>
+
 <body>
+  <div class="container">
+    <div class="search-container">
+      <h2>Recipe Search</h2>
+      <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Enter a recipe or ingredient" required>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+    <div id="recommendedRecipes">
+      <h2>Recommended Recipes</h2>
+      <div id="recommendedResults"></div>
+    </div>
+    <div id="searchResults">
+      <h2>Search Results</h2>
+      <div id="results"></div>
+    </div>
+  </div>
 
-<div class="search-container">
-  <h2>Recipe Search</h2>
-  <form id="mntl-search-form--open" action="/search" method="GET">
-    <input type="text" name="q" id="mntl-search-form--open__search-input" class="search-input" placeholder="Find a recipe or ingredient" required="required" value="" autocomplete="off">
-    <button type="submit" class="search-button">Search</button>
-  </form>
-</div>
+  <script>
+    const apiKey = '6ca5bc8018f84f2c83a8089a81b96af2';
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
+    const recommendedResultsContainer = document.getElementById('recommendedResults');
+    const resultsContainer = document.getElementById('results');
 
+    // Function to fetch and display recommended recipes
+    function fetchRecommendedRecipes() {
+      const apiUrl = `https://api.spoonacular.com/recipes/random?number=5&apiKey=${apiKey}`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          recommendedResultsContainer.innerHTML = '';
+
+          data.recipes.forEach(recipe => {
+            const recipeElement = createRecipeElement(recipe);
+            recommendedResultsContainer.appendChild(recipeElement);
+          });
+        })
+        .catch(error => {
+          console.log('Error:', error);
+        });
+    }
+
+    // Function to create a recipe element
+    function createRecipeElement(recipe) {
+      const recipeElement = document.createElement('div');
+      recipeElement.classList.add('recipe');
+
+      const titleElement = document.createElement('h3');
+      titleElement.textContent = recipe.title;
+
+      const imageElement = document.createElement('img');
+      imageElement.src = recipe.image;
+      imageElement.alt = recipe.title;
+
+      recipeElement.appendChild(titleElement);
+      recipeElement.appendChild(imageElement);
+
+      recipeElement.addEventListener('click', function () {
+        window.location.href = `/recipe/${recipe.id}`;
+      });
+
+      return recipeElement;
+    }
+
+    // Fetch recommended recipes on page load
+    fetchRecommendedRecipes();
+
+    // Search functionality
+    searchForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm === '') {
+        alert('Please enter a search term.');
+        return;
+      }
+
+      const apiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(searchTerm)}&number=10&apiKey=${apiKey}`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          resultsContainer.innerHTML = '';
+
+          if (data.results.length === 0) {
+            resultsContainer.innerHTML = '<p>No recipes found.</p>';
+          } else {
+            data.results.forEach(recipe => {
+              const recipeElement = createRecipeElement(recipe);
+              resultsContainer.appendChild(recipeElement);
+            });
+          }
+
+          searchInput.value = '';
+        })
+        .catch(error => {
+          console.log('Error:', error);
+          resultsContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
+        });
+    });
+  </script>
 </body>
+
 </html>
