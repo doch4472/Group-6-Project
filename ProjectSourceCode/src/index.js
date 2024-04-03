@@ -77,6 +77,13 @@ app.use(express.static(path.join(__dirname, 'resources')));
 app.use("/images", express.static(path.join(__dirname, "resources", "images")));
 
 
+// *****************************************************
+// <!-- Section : API HANDLING SEARCH-->
+// *****************************************************
+// starting the server and keeping the connection open to listen for more requests
+
+
+
 
 // *****************************************************
 // <!-- Section 4 : API Routes -->
@@ -92,6 +99,14 @@ app.get('/register', (req, res) => {
 
 app.get('/search', (req, res) => {
   res.render('pages/search', { query: req.query.q });
+});
+
+app.get('/home', (req, res) => {
+  res.render('pages/search', { query: req.query.q });
+});
+
+app.get('/login', (req, res) => {
+  res.render('pages/login')
 });
 
 app.get('/recipe/:id', (req, res) => {

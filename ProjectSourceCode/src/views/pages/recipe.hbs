@@ -1,14 +1,12 @@
 <h1 id="recipeTitle"></h1>
 <img id="recipeImage" alt="">
-
 <h2>Ingredients</h2>
 <ul id="ingredientsList"></ul>
-
 <h2>Instructions</h2>
 <ol id="instructionsList"></ol>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    const apiKey = '6ca5bc8018f84f2c83a8089a81b96af2';
     const recipeId = '{{recipeId}}';
     const recipeTitleElement = document.getElementById('recipeTitle');
     const recipeImageElement = document.getElementById('recipeImage');
@@ -16,33 +14,40 @@
     const instructionsListElement = document.getElementById('instructionsList');
 
     // Function to fetch and display recipe details
-    function fetchRecipeDetails() {
-        const apiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKey}`;
+    async function fetchRecipeDetails() {
+        const options = {
+            method: 'GET',
+            url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
+            headers: {
+                'X-RapidAPI-Key': 'b22ea917a0mshf3490f036fe07eep1cd7d4jsne13abd00989d',
+                'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+            }
+        };
 
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                // Display the recipe details in the template
-                recipeTitleElement.textContent = data.title;
-                recipeImageElement.src = data.image;
+        try {
+            const response = await axios.request(options);
+            const data = response.data;
 
-                // Display the ingredients
-                data.extendedIngredients.forEach(ingredient => {
-                    const ingredientElement = document.createElement('li');
-                    ingredientElement.textContent = `${ingredient.amount} ${ingredient.unit} ${ingredient.name}`;
-                    ingredientsListElement.appendChild(ingredientElement);
-                });
+            // Display the recipe details in the template
+            recipeTitleElement.textContent = data.title;
+            recipeImageElement.src = data.image;
 
-                // Display the instructions
-                data.analyzedInstructions[0].steps.forEach(step => {
-                    const instructionElement = document.createElement('li');
-                    instructionElement.textContent = step.step;
-                    instructionsListElement.appendChild(instructionElement);
-                });
-            })
-            .catch(error => {
-                console.log('Error:', error);
+            // Display the ingredients
+            data.extendedIngredients.forEach(ingredient => {
+                const ingredientElement = document.createElement('li');
+                ingredientElement.textContent = `${ingredient.amount} ${ingredient.unit} ${ingredient.name}`;
+                ingredientsListElement.appendChild(ingredientElement);
             });
+
+            // Display the instructions
+            data.analyzedInstructions[0].steps.forEach(step => {
+                const instructionElement = document.createElement('li');
+                instructionElement.textContent = step.step;
+                instructionsListElement.appendChild(instructionElement);
+            });
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     // Fetch recipe details on page load

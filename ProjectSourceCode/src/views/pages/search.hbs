@@ -6,7 +6,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recipe Search</title>
   <style>
-    /* CSS styles remain the same */
+    /* CSS styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .search-container {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .search-container h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .search-container form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .search-container input[type="text"] {
+      width: 400px;
+      padding: 12px;
+      font-size: 18px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+
+    .search-container button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .recipe {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+
+    .recipe img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      margin-right: 20px;
+      border-radius: 4px;
+    }
+
+    .recipe-details {
+      flex: 1;
+    }
+
+    .recipe h3 {
+      margin-top: 0;
+    }
+
+    .recipe p {
+      margin-top: 5px;
+    }
   </style>
 </head>
 
@@ -29,30 +105,37 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    const apiKey = '6ca5bc8018f84f2c83a8089a81b96af2';
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
     const recommendedResultsContainer = document.getElementById('recommendedResults');
     const resultsContainer = document.getElementById('results');
 
     // Function to fetch and display recommended recipes
-    function fetchRecommendedRecipes() {
-      const apiUrl = `https://api.spoonacular.com/recipes/random?number=5&apiKey=${apiKey}`;
+    async function fetchRecommendedRecipes() {
+      const options = {
+        method: 'GET',
+        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
+        params: { number: '5' },
+        headers: {
+          'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
+          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+        }
+      };
 
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          recommendedResultsContainer.innerHTML = '';
+      try {
+        const response = await axios.request(options);
+        const recipes = response.data.recipes;
+        recommendedResultsContainer.innerHTML = '';
 
-          data.recipes.forEach(recipe => {
-            const recipeElement = createRecipeElement(recipe);
-            recommendedResultsContainer.appendChild(recipeElement);
-          });
-        })
-        .catch(error => {
-          console.log('Error:', error);
+        recipes.forEach(recipe => {
+          const recipeElement = createRecipeElement(recipe);
+          recommendedResultsContainer.appendChild(recipeElement);
         });
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     // Function to create a recipe element
@@ -60,15 +143,24 @@
       const recipeElement = document.createElement('div');
       recipeElement.classList.add('recipe');
 
-      const titleElement = document.createElement('h3');
-      titleElement.textContent = recipe.title;
-
       const imageElement = document.createElement('img');
       imageElement.src = recipe.image;
       imageElement.alt = recipe.title;
 
-      recipeElement.appendChild(titleElement);
+      const detailsElement = document.createElement('div');
+      detailsElement.classList.add('recipe-details');
+
+      const titleElement = document.createElement('h3');
+      titleElement.textContent = recipe.title;
+
+      const summaryElement = document.createElement('p');
+      summaryElement.innerHTML = recipe.summary;
+
+      detailsElement.appendChild(titleElement);
+      detailsElement.appendChild(summaryElement);
+
       recipeElement.appendChild(imageElement);
+      recipeElement.appendChild(detailsElement);
 
       recipeElement.addEventListener('click', function () {
         window.location.href = `/recipe/${recipe.id}`;
@@ -77,11 +169,9 @@
       return recipeElement;
     }
 
-    // Fetch recommended recipes on page load
     fetchRecommendedRecipes();
 
-    // Search functionality
-    searchForm.addEventListener('submit', function (event) {
+    searchForm.addEventListener('submit', async function (event) {
       event.preventDefault();
 
       const searchTerm = searchInput.value.trim();
@@ -90,28 +180,40 @@
         return;
       }
 
-      const apiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(searchTerm)}&number=10&apiKey=${apiKey}`;
+      recommendedResultsContainer.style.display = 'none';
 
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          resultsContainer.innerHTML = '';
+      const options = {
+        method: 'GET',
+        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch',
+        params: {
+          query: searchTerm,
+          number: '10'
+        },
+        headers: {
+          'X-RapidAPI-Key': 'b22ea917a0mshf3490f036fe07eep1cd7d4jsne13abd00989d',
+          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+        }
+      };
 
-          if (data.results.length === 0) {
-            resultsContainer.innerHTML = '<p>No recipes found.</p>';
-          } else {
-            data.results.forEach(recipe => {
-              const recipeElement = createRecipeElement(recipe);
-              resultsContainer.appendChild(recipeElement);
-            });
-          }
+      try {
+        const response = await axios.request(options);
+        const recipes = response.data.results;
+        resultsContainer.innerHTML = '';
 
-          searchInput.value = '';
-        })
-        .catch(error => {
-          console.log('Error:', error);
-          resultsContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
-        });
+        if (recipes.length === 0) {
+          resultsContainer.innerHTML = '<p>No recipes found.</p>';
+        } else {
+          recipes.forEach(recipe => {
+            const recipeElement = createRecipeElement(recipe);
+            resultsContainer.appendChild(recipeElement);
+          });
+        }
+
+        searchInput.value = '';
+      } catch (error) {
+        console.error(error);
+        resultsContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
+      }
     });
   </script>
 </body>
