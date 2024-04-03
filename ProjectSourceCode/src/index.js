@@ -114,11 +114,16 @@ app.get('/recipe/:id', (req, res) => {
   res.render('pages/recipe', { recipeId: recipeId });
 });
 
+app.get('/welcome', (req, res) => {
+  res.json({status: 'success', message: 'Welcome!'});
+});
+
 // TODO - Include your API routes here
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
 // starting the server and keeping the connection open to listen for more requests
-app.listen(3000);
+//app.listen(3000);
+module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
