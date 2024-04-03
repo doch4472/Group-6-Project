@@ -41,12 +41,6 @@ describe('Testing Add User API', () => {
         done();
       });
   });
-});
-
-describe('Testing Add User API', () => {
-  it('positive : /add_user', done => {
-    // Refer above for the positive testcase implementation
-  });
 
   // Example Negative Testcase :
   // API: /add_user
