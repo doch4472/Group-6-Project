@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+    </header>
+    <main>
+        <div class="profile">
+            <img src="{{user.avatar}}" alt="User Avatar">
+            <h2>{{user.name}}</h2>
+            <p>Email: {{user.email}}</p>
+            <p>Location: {{user.location}}</p>
+            <p>Bio: {{user.bio}}</p>
+            <p>Joined: {{user.joined}}</p>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Budget Bites</p>
+    </footer>
+</body>
+</html>
