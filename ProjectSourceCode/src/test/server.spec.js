@@ -41,23 +41,99 @@ describe('Testing register API', () => {
       });
   });
 
-  // Example Negative Testcase :
-  // API: /add_user
-  // Input: {id: 5, name: 10, dob: '2020-02-20'}
-  // Expect: res.status == 400 and res.body.message == 'Invalid input'
-  // Result: This test case should pass and return a status 400 along with a "Invalid input" message.
-  // Explanation: The testcase will call the /add_user API with the following invalid inputs
-  // and expects the API to return a status of 400 along with the "Invalid input" message.
-  // it('Negative : /register. Checking no password response', done => {
-  //   chai
-  //     .request(server)
-  //     .post('/register')
-  //     .send({username: "good_username", password: ""})
-  //     .end((err, res) => {
-  //       expect(res).to.have.status(400);
-  //       done();
-  //     });
-  // });
+  it('Negative : /register. Checking no password response', done => {
+    chai
+      .request(server)
+      .post('/register')
+      .send({username: "good_username"})
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
 });
 
 // ********************************************************************************
+
+describe('Testing login API', () => {
+  
+  it('Negative : /login. Checking wrong username. We expect error status 500', done => {
+    chai
+      .request(server)
+      .post('/login')
+      .send({username: "bad_username", password: "some"})
+      .end((err, res) => {
+        expect(res).to.have.status(500);
+        done();
+      });
+  });
+});
+
+
+describe('Testing base configuration redirect', () => {
+  it('test route should redirect to /login with a 200 "good" status code', done => {
+    chai
+      .request(server)
+      .get('/')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        res.should.redirectTo(/^.*127\.0\.0\.1.*\/register$/);
+        done();
+      });
+  });
+});
+
+describe('Testing base get /register route render', () => {
+  it('/register get route should render the register page', done => {
+    chai
+      .request(server)
+      .get('/register')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        res.should.be.html;
+        done();
+      });
+  });
+});
+
+describe('Testing base get /search route', () => {
+  it('/search get route should render the search page', done => {
+    chai
+      .request(server)
+      .get('/search')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        res.should.be.html;
+        //should add more tests
+        done();
+      });
+  });
+});
+
+describe('Testing base get /home route', () => {
+  it('/home get route should render the home page', done => {
+    chai
+      .request(server)
+      .get('/home')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        res.should.be.html;
+        //should add more tests
+        done();
+      });
+  });
+});
+
+describe('Testing base get /login route', () => {
+  it('/login get route should render the login page', done => {
+    chai
+      .request(server)
+      .get('/login')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        res.should.be.html;
+        //should add more tests
+        done();
+      });
+  });
+});
