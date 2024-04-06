@@ -114,6 +114,10 @@ app.get('/recipe/:id', (req, res) => {
   res.render('pages/recipe', { recipeId: recipeId });
 });
 
+app.get('/welcome', (req, res) => {
+  res.json({status: 'success', message: 'Welcome!'});
+});
+
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.render('pages/logout');
@@ -149,15 +153,17 @@ app.post('pages/login', async (req, res) => {
       }
 });
 
-app.post('pages/register', async (req, res) => {
+app.post('/register', async (req, res) => {
   //hash the password using bcrypt 
   try{
       const hash = await bcrypt.hash(req.body.password, 10);
       // To-DO: Insert username and hashed password into the 'users' table
-      await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
-      res.redirect('pages/login'); 
+      await db.one('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
+      res.status(200);
+      res.redirect('/login'); 
   } catch (error) {
-      res.redirect('pages/register'); 
+      res.status(400);
+      res.redirect('/register'); 
   }
 });
 
@@ -168,5 +174,6 @@ app.post('pages/register', async (req, res) => {
 // <!-- Section 5 : Start Server-->
 // *****************************************************
 // starting the server and keeping the connection open to listen for more requests
-app.listen(3000);
+//app.listen(3000);
+module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
