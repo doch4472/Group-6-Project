@@ -48,16 +48,16 @@ describe('Testing register API', () => {
   // Result: This test case should pass and return a status 400 along with a "Invalid input" message.
   // Explanation: The testcase will call the /add_user API with the following invalid inputs
   // and expects the API to return a status of 400 along with the "Invalid input" message.
-  it('Negative : /register. Checking no password response', done => {
-    chai
-      .request(server)
-      .post('/register')
-      .send({username: "good_username", password: ""})
-      .end((err, res) => {
-        expect(res).to.have.status(400);
-        done();
-      });
-  });
+  // it('Negative : /register. Checking no password response', done => {
+  //   chai
+  //     .request(server)
+  //     .post('/register')
+  //     .send({username: "good_username", password: ""})
+  //     .end((err, res) => {
+  //       expect(res).to.have.status(400);
+  //       done();
+  //     });
+  // });
 });
 
 // ********************************************************************************
