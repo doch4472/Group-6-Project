@@ -90,7 +90,7 @@ app.use("/images", express.static(path.join(__dirname, "resources", "images")));
 // *****************************************************
 
 app.get('/', (req, res) => {
-  res.redirect('/register'); 
+  res.redirect('/register');  
 });
 
 app.get('/register', (req, res) => {
@@ -114,24 +114,28 @@ app.get('/recipe/:id', (req, res) => {
   res.render('pages/recipe', { recipeId: recipeId });
 });
 
+app.get('/welcome', (req, res) => {
+  res.json({status: 'success', message: 'Welcome!'});
+});
+
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.render('pages/logout');
 });
 
-app.post('pages/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
         const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [req.body.username]);
     
         if (!user) {
-          throw new Error('Incorrect username or password.');
+          throw new Error('Incorrect username.');
         }
     
         // Compare
         const passwordMatch = await bcrypt.compare(req.body.password, user.password);
     
         if (!passwordMatch) {
-          throw new Error('Incorrect username or password.');
+          throw new Error('Incorrect password.');
         }
     
         // Save the user in the session
@@ -142,22 +146,25 @@ app.post('pages/login', async (req, res) => {
       });
       } catch (error) {
         console.error('Error during login:', error);
-        // If the database request fails, send an appropriate message to the user
 
-        // and render the login.hbs page
         res.status(500).render('pages/login', { error: 'Internal Server Error' });
       }
 });
 
-app.post('pages/register', async (req, res) => {
+app.post('/register', async (req, res) => {
   //hash the password using bcrypt 
   try{
+
+    if (!req.body.username || !req.body.password) {
+      return res.status(400).json({ message: 'Username and password are required.' });
+    }
+
       const hash = await bcrypt.hash(req.body.password, 10);
       // To-DO: Insert username and hashed password into the 'users' table
-      await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
-      res.redirect('pages/login'); 
+      await db.one('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
+      res.status(200).redirect('/login'); 
   } catch (error) {
-      res.redirect('pages/register'); 
+      res.status(400).redirect('/register'); 
   }
 });
 
@@ -168,5 +175,6 @@ app.post('pages/register', async (req, res) => {
 // <!-- Section 5 : Start Server-->
 // *****************************************************
 // starting the server and keeping the connection open to listen for more requests
-app.listen(3000);
+//app.listen(3000);
+module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
