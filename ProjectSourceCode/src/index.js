@@ -157,19 +157,18 @@ app.post('/login', async (req, res) => {
 
 app.post('/register', async (req, res) => {
   //hash the password using bcrypt 
-  try{
-
-    if (!req.body.username || !req.body.password) {
-      return res.status(400).json({ message: 'Username and password are required.' });
-    }
-
-      const hash = await bcrypt.hash(req.body.password, 10);
-      // To-DO: Insert username and hashed password into the 'users' table
-      await db.one('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
-      res.status(200).redirect('/login'); 
-  } catch (error) {
-      res.status(400).redirect('/register'); 
-  }
+  try {
+    const hash = await bcrypt.hash(req.body.password, 10);
+    await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
+    // Add success message to session
+    req.session.message = 'Registration successful. Please log in.';
+    res.redirect('/login'); 
+} catch (error) {
+    console.error('Error during registration:', error);
+    // Add error message to session
+    req.session.message = 'Registration failed. Please try again.';
+    res.redirect('/register'); 
+}
 });
 
 
