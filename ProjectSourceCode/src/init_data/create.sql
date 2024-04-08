@@ -5,12 +5,16 @@ CREATE TABLE users(
 
 CREATE TABLE recipe(
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    calorie INT NOT NULL
+    title VARCHAR(100) NOT NULL,
+    description VARCHAR(100) NOT NULL,
+    ingredients VARCHAR(100) NOT NULL,
     author VARCHAR(100), NOT NULL,
-    date_created VARCHAR(100) NOT NULL
+    date_created VARCHAR(100) NOT NULL,
+    image VARCHAR(100) NOT NULL,
+    image_title VARCHAR(100) NOT NULL
  ---- Not done yet, will finish when I figure out API ---
 );
+
 
 CREATE TABLE recipe_to_author(
     recipe_id INT,
