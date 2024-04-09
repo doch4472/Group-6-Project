@@ -148,7 +148,7 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
-  res.render('pages/login', {query: req.query.q});
+  res.render('pages/profile', {query: req.query.q});
 });
 
 app.get('/recipe/:id', (req, res) => {
