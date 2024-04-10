@@ -76,6 +76,8 @@ app.use(express.static(path.join(__dirname, 'resources')));
 // Serve images from the "images" directory inside the "src" folder
 app.use("/images", express.static(path.join(__dirname, "resources", "images")));
 
+// Serve css from the "css" directory inside the "src" folder
+app.use("/css", express.static(path.join(__dirname, "resources", "css")));
 
 // *****************************************************
 // <!-- Section : API HANDLING SEARCH-->
@@ -97,6 +99,44 @@ app.get('/register', (req, res) => {
   res.render('pages/register')
 });
 
+// Register
+app.post("/register", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Check if both username and password are provided
+    if (!username || !password) {
+      return res.status(400).json({ message: "Username and password are required." });
+    }
+
+    // Check if the username already exists in the database
+    const existingUser = await db.oneOrNone("SELECT * FROM users WHERE username = $1", [username]);
+    if (existingUser) {
+      // If the user already exists, render the registration page with an error message
+      return res.render("pages/register", {
+        message: "Username already exists. Please choose a different username.",
+      });
+    }
+
+    // Hash the password using bcrypt library
+    const hash = await bcrypt.hash(password, 10);
+
+    // Insert username and hashed password into the 'users' table
+    await db.none("INSERT INTO users(username, password) VALUES($1, $2)", [username, hash]);
+
+    // Redirect to login page after successful registration
+    res.redirect("/login");
+  } catch (error) {
+    console.error("Error during registration:", error);
+    // Render the registration page with an error message if registration fails
+    res.render("pages/register", {
+      message: "Registration failed. Please try again.",
+    });
+  }
+});
+
+
+
 app.get('/search', (req, res) => {
   res.render('pages/search', { query: req.query.q });
 });
@@ -107,6 +147,10 @@ app.get('/home', (req, res) => {
 
 app.get('/login', (req, res) => {
   res.render('pages/login', {query: req.query.q});
+});
+
+app.get('/profile', (req, res) => {
+  res.render('pages/profile', {query: req.query.q});
 });
 
 app.get('/recipe/:id', (req, res) => {
@@ -141,7 +185,7 @@ app.post('/login', async (req, res) => {
         // Save the user in the session
         req.session.user = user;
         req.session.save(() => {
-        res.redirect('/discover');
+        res.redirect('/home');
 
       });
       } catch (error) {
