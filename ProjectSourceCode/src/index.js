@@ -149,8 +149,17 @@ app.get('/login', (req, res) => {
   res.render('pages/login', {query: req.query.q});
 });
 
-app.get('/profile', (req, res) => {
-  res.render('pages/profile', {query: req.query.q});
+app.get('/profile', async (req, res) => {
+  try {
+     // Retrieve user data from the database based on the user's ID or any other identifier
+     user = req.session.user.username; // Assuming you have the user's ID stored in the session
+     
+    
+    res.render('pages/profile', {userData: req.session.user});
+  } catch (error) {
+      console.error('Error retrieving user data:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
 
 app.get('/recipe/:id', (req, res) => {
