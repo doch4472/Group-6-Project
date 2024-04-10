@@ -13,13 +13,13 @@
     crossorigin="anonymous"
   />
   <style>
-    body {
+    .register-page-body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
     }
 
-    .container-form {
+    .register-page-container-form {
       max-width: 800px;
       margin: 10px auto;
       padding: 20px;
@@ -30,32 +30,32 @@
       align-items: center;
     }
 
-    .form-content {
+    .register-page-form-content {
       flex: 1;
       padding: 20px;
     }
 
-    .register-image {
+    .register-page-register-image {
       width: 200px;
       margin-right: 20px;
     }
 
-    .h2 {
+    .register-page-h2 {
       text-align: center;
       margin-bottom: 20px;
     }
 
-    .form-wrapper {
+    .register-page-form-wrapper {
       display: flex;
       flex-direction: column;
     }
 
-    .form-label {
+    .register-page-form-label {
       margin-bottom: 10px;
       color: #333;
     }
 
-    .form-input {
+    .register-page-form-input {
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
@@ -64,7 +64,7 @@
       box-sizing: border-box;
     }
 
-    .form-submit-btn {
+    .register-page-form-submit-btn {
       background-color: #28a745;
       color: #fff;
       border: none;
@@ -74,11 +74,11 @@
       font-size: 16px;
     }
 
-    .form-submit-btn:hover {
+    .register-page-form-submit-btn:hover {
       background-color: #218838;
     }
 
-    a {
+    .register-page-link {
       color: #007bff;
       text-decoration: none;
       font-weight: bold;
@@ -86,26 +86,26 @@
   </style>
 </head>
 
-<body>
-  <div class="container-form">
-    <img class="register-image" src="/images/gordon.jpg" alt="Registration Image" />
-    <div class="form-content">
-      <h2 class="h2">Register</h2>
+<body class="register-page-body">
+  <div class="register-page-container-form">
+    <img class="register-page-register-image" src="/images/gordon.jpg" alt="Registration Image" />
+    <div class="register-page-form-content">
+      <h2 class="register-page-h2">Register</h2>
       {{#if message}}
       <p>{{message}}</p>
       {{/if}}
-      <a href="/login">Already have an account?</a>
+      <a class="register-page-link" href="/login">Already have an account?</a>
       <br />
       <br />
 
-      <form class="form-wrapper" action="/register" method="post">
+      <form class="register-page-form-wrapper" action="/register" method="post">
         <div class="form-group">
           <p>Please fill in the following information to create an account.</p>
         </div>
         <div class="form-group">
-          <label class="form-label" for="email">Email address</label>
+          <label class="register-page-form-label" for="email">Email address</label>
           <input
-            class="form-input"
+            class="register-page-form-input"
             type="email"
             id="email"
             name="email"
@@ -113,9 +113,9 @@
             required
             style="width: 100%;"
           />
-          <label class="form-label" for="username">Username</label>
+          <label class="register-page-form-label" for="username">Username</label>
           <input
-            class="form-input"
+            class="register-page-form-input"
             type="text"
             id="username"
             name="username"
@@ -125,9 +125,9 @@
           />
         </div>
         <div class="form-group">
-          <label class="form-label" for="password">Password</label>
+          <label class="register-page-form-label" for="password">Password</label>
           <input
-            class="form-input"
+            class="register-page-form-input"
             type="password"
             id="password"
             name="password"
@@ -135,9 +135,9 @@
             required
             style="width: 100%;"
           />
-          <label class="form-label" for="confirmPassword">Confirm Password</label>
+          <label class="register-page-form-label" for="confirmPassword">Confirm Password</label>
           <input
-            class="form-input"
+            class="register-page-form-input"
             type="password"
             id="confirmPassword"
             name="confirmPassword"
@@ -146,7 +146,7 @@
             style="width: 100%;"
           />
         </div>
-        <button class="form-submit-btn" type="submit">Register</button>
+        <button class="register-page-form-submit-btn" type="submit">Register</button>
       </form>
     </div>
   </div>
