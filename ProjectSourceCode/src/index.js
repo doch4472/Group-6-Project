@@ -76,6 +76,7 @@ app.use(express.static(path.join(__dirname, 'resources')));
 // Serve images from the "images" directory inside the "src" folder
 app.use("/images", express.static(path.join(__dirname, "resources", "images")));
 
+// Serve css from the "css" directory inside the "src" folder
 app.use("/css", express.static(path.join(__dirname, "resources", "css")));
 
 // *****************************************************
