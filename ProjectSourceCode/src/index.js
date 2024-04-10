@@ -182,7 +182,7 @@ app.post('/login', async (req, res) => {
         req.session.user = user;
         req.session.save(() => {
         
-
+        res.redirect('/home');
       });
       } catch (error) {
         console.error('Error during login:', error);
