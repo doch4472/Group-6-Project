@@ -76,6 +76,8 @@ app.use(express.static(path.join(__dirname, 'resources')));
 // Serve images from the "images" directory inside the "src" folder
 app.use("/images", express.static(path.join(__dirname, "resources", "images")));
 
+// Serve css from the "css" directory inside the "src" folder
+app.use("/css", express.static(path.join(__dirname, "resources", "css")));
 
 // *****************************************************
 // <!-- Section : API HANDLING SEARCH-->
@@ -147,6 +149,10 @@ app.get('/login', (req, res) => {
   res.render('pages/login', {query: req.query.q});
 });
 
+app.get('/profile', (req, res) => {
+  res.render('pages/profile', {query: req.query.q});
+});
+
 app.get('/recipe/:id', (req, res) => {
   const recipeId = req.params.id;
   res.render('pages/recipe', { recipeId: recipeId });
@@ -179,7 +185,7 @@ app.post('/login', async (req, res) => {
         // Save the user in the session
         req.session.user = user;
         req.session.save(() => {
-        
+        res.redirect('/home');
 
       });
       } catch (error) {
@@ -189,7 +195,22 @@ app.post('/login', async (req, res) => {
       }
 });
 
+app.post('/register', async (req, res) => {
+  //hash the password using bcrypt 
+  try{
 
+    if (!req.body.username || !req.body.password) {
+      return res.status(400).json({ message: 'Username and password are required.' });
+    }
+
+      const hash = await bcrypt.hash(req.body.password, 10);
+      // To-DO: Insert username and hashed password into the 'users' table
+      await db.one('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
+      res.status(200).redirect('/login'); 
+  } catch (error) {
+      res.status(400).redirect('/register'); 
+  }
+});
 
 
 // TODO - Include your API routes here

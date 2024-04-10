@@ -5,6 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recipe Search</title>
+  <link rel="stylesheet" href="/css/style.css" />
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+  />
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 
@@ -326,6 +334,9 @@
 </head>
 
 <body>
+  <div class="recipe-container">
+    <div class="search-section">
+      <h2>Recipe Search</h2>
   <div class="container">
     <div class="search-container">
       <h1>Recipe Search</h1>
@@ -394,12 +405,15 @@
         <button type="button" id="toggleFiltersBtn">Show Filters</button>
       </form>
     </div>
+    <div id="recommendedRecipesSection">
     <div id="recommendedResults" class="recipe-list">
       <h2>Recommended Recipes</h2>
       <!-- Recommended recipe cards will be dynamically generated here -->
     </div>
+    <div id="searchResultsSection">
     <div id="searchResults" class="recipe-list">
       <h2>Search Results</h2>
+      <div id="searchResults"></div>
       <!-- Search result recipe cards will be dynamically generated here -->
     </div>
     <div class="pagination">
@@ -435,6 +449,10 @@
   <script>
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
+    const recommendedResultsContainer = document.getElementById('recommendedResults');
+    const searchResultsContainer = document.getElementById('searchResults');
+
+    // Function to fetch and display recommended recipes
     const ingredientsInput = document.getElementById('ingredientsInput');
     const cuisineSelect = document.getElementById('cuisineSelect');
     const dietSelect = document.getElementById('dietSelect');
@@ -541,6 +559,52 @@
         } else {
           const recipes = await fetchRecommendedRecipes();
           localStorage.setItem('recommendedRecipes', JSON.stringify(recipes));
+          displayRecipes(recipes, recommendedResultsContainer);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+
+    // Function to display recipes in a container
+    function displayRecipes(recipes, container) {
+      container.innerHTML = '';
+
+      recipes.forEach(recipe => {
+        const recipeElement = createRecipeElement(recipe);
+        container.appendChild(recipeElement);
+      });
+    }
+
+    // Function to create a recipe element
+    function createRecipeElement(recipe) {
+      const recipeElement = document.createElement('div');
+      recipeElement.classList.add('recipe-card');
+
+      const imageElement = document.createElement('img');
+      imageElement.src = recipe.image;
+      imageElement.alt = recipe.title;
+
+      const detailsElement = document.createElement('div');
+      detailsElement.classList.add('recipe-details');
+
+      const titleElement = document.createElement('h3');
+      titleElement.textContent = recipe.title;
+
+      const summaryElement = document.createElement('p');
+      summaryElement.innerHTML = recipe.summary;
+
+      detailsElement.appendChild(titleElement);
+      detailsElement.appendChild(summaryElement);
+
+      recipeElement.appendChild(imageElement);
+      recipeElement.appendChild(detailsElement);
+
+      recipeElement.addEventListener('click', function () {
+        window.location.href = `/recipe/${recipe.id}`;
+      });
+
+      return recipeElement;
           displayRecipes(recipes, recommendedContainer);
         }
       } catch (error) {
@@ -549,6 +613,39 @@
       }
     }
 
+    // Fetch recommended recipes on page load
+    fetchRecommendedRecipes();
+
+    // Search functionality
+    searchForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm === '') {
+        alert('Please enter a search term.');
+        return;
+      }
+
+      // Hide the recommended recipes section
+      recommendedResultsContainer.style.display = 'none';
+
+      const cachedResults = localStorage.getItem(`searchResults-${searchTerm}`);
+
+      if (cachedResults) {
+        displayRecipes(JSON.parse(cachedResults), searchResultsContainer);
+      } else {
+        const options = {
+          method: 'GET',
+          url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch',
+          params: {
+            query: searchTerm,
+            number: '10'
+          },
+          headers: {
+            'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
+            'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+          }
+        };
     // Function to perform recipe search
     async function searchRecipes(query, ingredients, cuisine, diet, intolerance, price, page = 1) {
       const options = {
@@ -570,6 +667,18 @@
         }
       };
 
+        try {
+          const response = await axios.request(options);
+          const recipes = response.data.results;
+          localStorage.setItem(`searchResults-${searchTerm}`, JSON.stringify(recipes));
+          displayRecipes(recipes, searchResultsContainer);
+        } catch (error) {
+          console.error(error);
+          searchResultsContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
+        }
+      }
+
+      searchInput.value = '';
       try {
         const response = await axios.request(options);
         return response.data;
