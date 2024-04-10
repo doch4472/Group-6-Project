@@ -33,6 +33,10 @@ const dbConfig = {
   password: process.env.POSTGRES_PASSWORD, // the password of the user account
 };
 
+const user = {
+  username: undefined,
+};
+
 const db = pgp(dbConfig);
 
 // test your database
@@ -138,11 +142,14 @@ app.post("/register", async (req, res) => {
 
 
 app.get('/search', (req, res) => {
-  res.render('pages/search', { query: req.query.q });
+  res.render('pages/search', { query: req.query.q,
+                                username: req.session.user.username});
 });
 
 app.get('/home', (req, res) => {
-  res.render('pages/search', { query: req.query.q });
+
+  res.render('pages/search', { query: req.query.q,
+                                username: req.session.user.username });
 });
 
 app.get('/login', (req, res) => {
@@ -150,12 +157,14 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
-  res.render('pages/profile', {query: req.query.q});
+  res.render('pages/profile', {query: req.query.q,
+                                username: req.session.user.username});
 });
 
 app.get('/recipe/:id', (req, res) => {
   const recipeId = req.params.id;
-  res.render('pages/recipe', { recipeId: recipeId });
+  res.render('pages/recipe', { recipeId: recipeId,
+                                username: req.session.user.username });
 });
 
 app.get('/welcome', (req, res) => {
@@ -181,13 +190,13 @@ app.post('/login', async (req, res) => {
         if (!passwordMatch) {
           throw new Error('Incorrect password.');
         }
-    
+       user.username = req.body.username;
+       console.log(user.username);
         // Save the user in the session
         req.session.user = user;
-        req.session.save(() => {
+        req.session.save();
         res.redirect('/home');
-
-      });
+      
       } catch (error) {
         console.error('Error during login:', error);
 
