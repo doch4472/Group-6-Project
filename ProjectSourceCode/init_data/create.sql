@@ -8,8 +8,9 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(60) NOT NULL
+    password VARCHAR(60) NOT NULL,
+    fav_recipe VARCHAR(100) NULL,
+    your_recipe VARCHAR(100) NULL
 );
 
 -- Commenting these out for now, might use later --
