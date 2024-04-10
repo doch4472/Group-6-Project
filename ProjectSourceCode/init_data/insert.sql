@@ -1,2 +1,2 @@
 INSERT INTO users
-(email, password)
+(username, email, password);
