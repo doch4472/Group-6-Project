@@ -4,7 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    color: rgb(116, 106, 106);
+    text-align: center;
+    padding: 20px 0;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.profile {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.profile img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.profile h2 {
+    margin-bottom: 10px;
+
+}
+
+.profile p {
+    margin-bottom: 5px;
+}
+
+    </style>
+
     <link rel="stylesheet" href="/css/styles.css">
+
 </head>
 <body>
     <header>
@@ -12,7 +60,6 @@
     </header>
     <main>
         <div class="profile">
-            <img src="{{user.avatar}}" alt="User Avatar">
             <h2>{{user.name}}</h2>
             <p>Email: {{user.email}}</p>
             <p>Location: {{user.location}}</p>
