@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reviews, Ratings, and Testimonials</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Reviews, Ratings, and Testimonials</h1>
+    <p>Hear what our customers have to say about our products and services.</p>
+  </header>
+
+  <section id="reviews-and-ratings">
+    <h2>Reviews and Ratings</h2>
+    {{#each reviews}}
+    <div class="review-card">
+      <h3>{{this.title}}</h3>
+      <p>{{this.content}}</p>
+      <div class="rating">
+        {{#each this.stars}}
+        <i class="fa fa-star"></i>
+        {{/each}}
+      </div>
+      <p class="author">- {{this.author}}</p>
+    </div>
+    {{/each}}
+  </section>
+
+  <section id="testimonials">
+    <h2>Testimonials</h2>
+    {{#each testimonials}}
+    <div class="testimonial-card">
+      <blockquote>
+        <p>{{this.content}}</p>
+        <cite>- {{this.author}}</cite>
+      </blockquote>
+    </div>
+    {{/each}}
+  </section>
+
+  <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+</body>
+</html>
