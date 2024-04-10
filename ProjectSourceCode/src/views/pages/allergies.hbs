@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Allergy-Friendly Recipes</title>
+  <style>
+    /* CSS styles for the filter section */
+    .filter-section {
+      margin-bottom: 20px;
+    }
+
+    .filter-section label {
+      margin-right: 10px;
+    }
+
+    .recipe-card {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .recipe-card.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Allergy-Friendly Recipes</h1>
+
+  <div class="filter-section">
+    <h2>Filter Recipes</h2>
+    <label>
+      <input type="checkbox" class="allergen-filter" data-allergen="dairy-free"> Dairy-Free
+    </label>
+    <label>
+      <input type="checkbox" class="allergen-filter" data-allergen="gluten-free"> Gluten-Free
+    </label>
+    <label>
+      <input type="checkbox" class="allergen-filter" data-allergen="nut-free"> Nut-Free
+    </label>
+    <label>
+      <input type="checkbox" class="allergen-filter" data-allergen="soy-free"> Soy-Free
+    </label>
+  </div>
+
+  
+
+  <script>
+    // JavaScript code to handle the allergen filters
+    const allergenFilters = document.querySelectorAll('.allergen-filter');
+    const recipeCards = document.querySelectorAll('.recipe-card');
+
+    allergenFilters.forEach(filter => {
+      filter.addEventListener('change', () => {
+        filterRecipes();
+      });
+    });
+
+    function filterRecipes() {
+      recipeCards.forEach(card => {
+        const allergens = card.dataset.allergens.split(', ');
+        let shouldShow = true;
+
+        allergenFilters.forEach(filter => {
+          if (filter.checked && !allergens.includes(filter.dataset.allergen)) {
+            shouldShow = false;
+          }
+        });
+
+        card.classList.toggle('hidden', !shouldShow);
+      });
+    }
+  </script>
+</body>
+</html>
