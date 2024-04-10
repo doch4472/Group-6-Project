@@ -1,80 +1,90 @@
+<!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register Page</title>
-    <link rel="stylesheet" href="../resources/css/style.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <style>
-      body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-      .container-form { max-width: 400px; margin: 50px auto; padding: 20px;
-      background-color: #fff; border-radius: 8px; box-shadow: 0px 0px 10px
-      rgba(0, 0, 0, 0.1); } .h2 { text-align: center; margin-bottom: 20px; }
-      .form-wrapper { display: flex; flex-direction: column; } .form-label {
-      margin-bottom: 10px; color: #333; } .form-input { width: 100%; padding:
-      10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px;
-      box-sizing: border-box; } .form-submit-btn { background-color: #007bff;
-      color: #fff; border: none; border-radius: 4px; padding: 12px 20px; cursor:
-      pointer; font-size: 16px; } .form-submit-btn:hover { background-color:
-      #0056b3; } a { color: #007bff; text-decoration: none; font-weight: bold; }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register Page</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+  />
+  
+</head>
 
-    </style>
-  </head>
-
-  <body>
-    <div class="container-form">
-      <h2 class="h2">Create an Account</h2>
+<body class="register-page-body">
+  <div class="register-page-container-form">
+    <img class="register-page-register-image" src="/images/gordon.jpg" alt="Registration Image" />
+    <div class="register-page-form-content">
+      <h2 class="register-page-h2">Register</h2>
       {{#if message}}
-        <p>{{message}}</p>
+      <p>{{message}}</p>
       {{/if}}
-      <a href="/login">Back to Login</a>
+      <a class="register-page-link" href="/login">Already have an account?</a>
+      <br />
+      <br />
 
-      <form class="form-wrapper" action="/register" method="post">
-        <label class="form-label" for="email">Email:</label>
-        <input
-          class="form-input"
-          type="text"
-          id="email"
-          name="email"
-          placeholder="Enter your email"
-          required
-        />
-
-        <label class="form-label" for="username">Username:</label>
-        <input
-          class="form-input"
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Choose a username"
-          required
-        />
-
-        <label class="form-label" for="password">Password:</label>
-        <input
-          class="form-input"
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Create a password"
-          required
-        />
-
-        <button class="form-submit-btn" type="submit">Register</button>
+      <form class="register-page-form-wrapper" action="/register" method="post">
+        <div class="form-group">
+          <p>Please fill in the following information to create an account.</p>
+        </div>
+        <div class="form-group">
+          <label class="register-page-form-label" for="email">Email address</label>
+          <input
+            class="register-page-form-input"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter email"
+            required
+            style="width: 100%;"
+          />
+          <label class="register-page-form-label" for="username">Username</label>
+          <input
+            class="register-page-form-input"
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your desired username"
+            required
+            style="width: 100%;"
+          />
+        </div>
+        <div class="form-group">
+          <label class="register-page-form-label" for="password">Password</label>
+          <input
+            class="register-page-form-input"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            style="width: 100%;"
+          />
+          <label class="register-page-form-label" for="confirmPassword">Confirm Password</label>
+          <input
+            class="register-page-form-input"
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm your password"
+            required
+            style="width: 100%;"
+          />
+        </div>
+        <button class="register-page-form-submit-btn" type="submit">Register</button>
       </form>
     </div>
+  </div>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"
+  ></script>
+</body>
 
 </html>

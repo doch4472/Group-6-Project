@@ -76,6 +76,7 @@ app.use(express.static(path.join(__dirname, 'resources')));
 // Serve images from the "images" directory inside the "src" folder
 app.use("/images", express.static(path.join(__dirname, "resources", "images")));
 
+app.use("/css", express.static(path.join(__dirname, "resources", "css")));
 
 // *****************************************************
 // <!-- Section : API HANDLING SEARCH-->
@@ -179,7 +180,7 @@ app.post('/login', async (req, res) => {
         // Save the user in the session
         req.session.user = user;
         req.session.save(() => {
-        res.redirect('/discover');
+        
 
       });
       } catch (error) {
