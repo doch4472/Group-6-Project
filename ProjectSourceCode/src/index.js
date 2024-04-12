@@ -34,7 +34,7 @@ const dbConfig = {
 };
 
 const user = {
-  username: undefined,
+  username: 0,
 };
 
 const db = pgp(dbConfig);
@@ -68,6 +68,8 @@ app.use(
   })
 );
 
+
+
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -96,6 +98,7 @@ app.use("/css", express.static(path.join(__dirname, "resources", "css")));
 // *****************************************************
 
 app.get('/', (req, res) => {
+  
   res.redirect('/register');  
 });
 
@@ -142,14 +145,19 @@ app.post("/register", async (req, res) => {
 
 
 app.get('/search', (req, res) => {
-  res.render('pages/search', { query: req.query.q,
-                                username: req.session.user.username});
+
+    res.render('pages/search', { query: req.query.q});
+
 });
 
 app.get('/home', (req, res) => {
+    if(req.session.user){
+    res.render('pages/search', { query: req.query.q});
+    }
+    else{
+    res.render('pages/login', { query: req.query.q});  
+    }
 
-  res.render('pages/search', { query: req.query.q,
-                                username: req.session.user.username });
 });
 
 app.get('/login', (req, res) => {
@@ -157,14 +165,13 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
-  res.render('pages/profile', {query: req.query.q,
-                                username: req.session.user.username});
+    res.render('pages/profile', { query: req.query.q});
 });
 
 app.get('/recipe/:id', (req, res) => {
   const recipeId = req.params.id;
-  res.render('pages/recipe', { recipeId: recipeId,
-                                username: req.session.user.username });
+    res.render('pages/recipe', { recipeId: recipeId});
+
 });
 
 app.get('/welcome', (req, res) => {
