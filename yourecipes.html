@@ -22,9 +22,6 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
-    .ingredient-inputs {
-        margin-bottom: 10px;
-    }
     .instruction-inputs {
         margin-bottom: 10px;
     }
@@ -57,23 +54,26 @@
 <div class="form-container">
     <h2>Recipe Form</h2>
     <form id="recipeForm" action="#" method="post">
+        <label for="username">Username:</label>
+        <textarea type="text" id="username" name="username" placeholder="Add your username so we can add this recipe to your account!" required></textarea>
+        
         <label for="recipeName">Recipe Name:</label>
-        <input type="text" id="recipeName" name="recipeName" required>
+        <textarea type="text" id="recipeName" name="recipeName" placeholder="Please enter your recipe name." required></textarea>
         
         <div class="ingredient-inputs">
             <h3>Ingredients:</h3>
-            <div class="ingredient">
-                <input type="text" name="ingredients[]" placeholder="Ingredient" required>
-                <button type="button" class="add-button" onclick="addIngredientInput()">Add Ingredient</button>
-            </div>
+            <textarea id="ingredients" name="ingredients" placeholder="Enter the ingredients needed for your recipes separated by commas." required></textarea>
         </div>
 
         <div class="instruction-inputs">
             <h3>Instructions:</h3>
-            <div class="instruction">
-                <textarea name="instructions[]" placeholder="Instruction" required></textarea>
-                <button type="button" class="add-button" onclick="addInstructionInput()">Add Instruction</button>
+            <div id="instructionContainer">
+                <div class="instruction">
+                    <textarea name="instructions[]" placeholder="Step 1: Once you have added a step, select the add step button to make a new instruction. When done, hit submit." required></textarea>
+                    <button type="button" class="remove-button" onclick="removeInstructionInput(this)">Remove</button>
+                </div>
             </div>
+            <button type="button" class="add-button" onclick="addInstructionInput()">Add Step</button>
         </div>
 
         <input type="submit" value="Submit">
@@ -81,29 +81,19 @@
 </div>
 
 <script>
-    function addIngredientInput() {
-        var ingredientInputs = document.querySelector('.ingredient-inputs');
-        var newIngredientInput = document.createElement('div');
-        newIngredientInput.innerHTML = `
-            <div class="ingredient">
-                <input type="text" name="ingredients[]" placeholder="Ingredient" required>
-                <button type="button" class="remove-button" onclick="removeInput(this)">Remove</button>
-            </div>`;
-        ingredientInputs.appendChild(newIngredientInput);
-    }
-
     function addInstructionInput() {
-        var instructionInputs = document.querySelector('.instruction-inputs');
+        var instructionContainer = document.getElementById("instructionContainer");
+        var instructionInputs = instructionContainer.querySelectorAll('.instruction');
         var newInstructionInput = document.createElement('div');
+        newInstructionInput.classList.add("instruction");
+        var stepNumber = instructionInputs.length + 1;
         newInstructionInput.innerHTML = `
-            <div class="instruction">
-                <textarea name="instructions[]" placeholder="Instruction" required></textarea>
-                <button type="button" class="remove-button" onclick="removeInput(this)">Remove</button>
-            </div>`;
-        instructionInputs.appendChild(newInstructionInput);
+            <textarea name="instructions[]" placeholder="Step ${stepNumber}: Once you have added a step, select the add step button to make a new instruction. When done, hit submit." required></textarea>
+            <button type="button" class="remove-button" onclick="removeInstructionInput(this)">Remove</button>`;
+        instructionContainer.appendChild(newInstructionInput);
     }
 
-    function removeInput(button) {
+    function removeInstructionInput(button) {
         button.parentNode.parentNode.removeChild(button.parentNode);
     }
 </script>
