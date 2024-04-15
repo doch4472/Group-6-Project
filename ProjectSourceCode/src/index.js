@@ -17,11 +17,15 @@ const hbs = handlebars.create({
 
 // Database configuration
 const dbConfig = {
-  host: 'db',
-  port: 5432,
-  database: process.env.POSTGRES_DB,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD
+  host: 'db', // the database server
+  port: 5432, // the database port
+  database: process.env.POSTGRES_DB, // the database name
+  user: process.env.POSTGRES_USER, // the user account to connect with
+  password: process.env.POSTGRES_PASSWORD, // the password of the user account
+};
+
+const user = {
+  username: 0,
 };
 const db = pgp(dbConfig);
 
@@ -39,15 +43,26 @@ db.connect()
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
 
-// Set up middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  saveUninitialized: false,
-  resave: false
-}));
+// initialize session variables
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    resave: false,
+  })
+);
+
+
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+// Serve static files from the "src" directory
 app.use(express.static(path.join(__dirname, 'resources')));
 app.use("/images", express.static(path.join(__dirname, "resources", "images")));
 app.use("/css", express.static(path.join(__dirname, "resources", "css")));
@@ -63,6 +78,7 @@ app.use("/css", express.static(path.join(__dirname, "resources", "css")));
 // *****************************************************
 
 app.get('/', (req, res) => {
+  
   res.redirect('/register');  
 });
 
@@ -98,11 +114,19 @@ app.post("/register", async (req, res) => {
 });
 
 app.get('/search', (req, res) => {
-  res.render('pages/search', { query: req.query.q });
+
+    res.render('pages/search', { query: req.query.q});
+
 });
 
 app.get('/home', (req, res) => {
-  res.render('pages/search', { query: req.query.q });
+    if(req.session.user){
+    res.render('pages/search', { query: req.query.q});
+    }
+    else{
+    res.render('pages/login', { query: req.query.q});  
+    }
+
 });
 
 app.get('/login', (req, res) => {
@@ -110,12 +134,13 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
-  res.render('pages/profile', {query: req.query.q});
+    res.render('pages/profile', { query: req.query.q});
 });
 
 app.get('/recipe/:id', (req, res) => {
   const recipeId = req.params.id;
-  res.render('pages/recipe', { recipeId: recipeId });
+    res.render('pages/recipe', { recipeId: recipeId});
+
 });
 
 app.get('/welcome', (req, res) => {
