@@ -1,433 +1,153 @@
-<!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipe Search</title>
-  <link rel="stylesheet" href="/css/style.css" />
+  <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Recipe Search</title>
+      <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
     <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-  />
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+      <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+    />
+      <script
+      src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"
+    ></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  </head>
 
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f5f5;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .search-container {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .search-container h1 {
-      font-size: 48px;
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    .search-container form {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .search-container input[type="text"],
-    .search-container select {
-      width: 300px;
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 4px;
-      margin: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .search-container button {
-      padding: 12px 24px;
-      font-size: 18px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin: 10px;
-      transition: background-color 0.3s ease;
-    }
-
-    .search-container button:hover {
-      background-color: #45a049;
-    }
-
-    .recipe-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      grid-gap: 20px;
-    }
-
-    .recipe-card {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform 0.3s ease;
-      cursor: pointer;
-    }
-
-    .recipe-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .recipe-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-
-    .recipe-card .recipe-details {
-      padding: 20px;
-    }
-
-    .recipe-card h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 24px;
-      color: #333;
-    }
-
-    .recipe-card p {
-      margin-top: 0;
-      margin-bottom: 10px;
-      color: #777;
-    }
-
-    .recipe-card .recipe-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #777;
-    }
-
-    .recipe-card .recipe-info i {
-      margin-right: 5px;
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    .pagination button {
-      padding: 8px 16px;
-      font-size: 16px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin: 0 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    .pagination button:hover {
-      background-color: #45a049;
-    }
-
-    .pagination button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-
-    .recipe-details-container {
-      margin-top: 40px;
-    }
-
-    .recipe-details-container h2 {
-      margin-top: 0;
-    }
-
-    .recipe-details-container img {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 20px;
-    }
-
-    .recipe-details-container ul,
-    .recipe-details-container ol {
-      padding-left: 20px;
-    }
-
-    .select-container {
-      display: inline-block;
-      position: relative;
-      margin: 10px;
-    }
-
-    .select-container select {
-      width: 300px;
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8.59L1.41 4 0 5.41l6 6 6-6L10.59 4 6 8.59z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-    }
-
-    .select-container select::-ms-expand {
-      display: none;
-    }
-
-    .select-container select[multiple] {
-      height: auto;
-      padding: 8px;
-    }
-
-    .select-container select[multiple] option {
-      padding: 4px;
-    }
-
-    .select-container {
-      display: inline-block;
-      margin: 10px;
-    }
-
-    .select-container .choices__inner {
-      min-height: 50px;
-      border-radius: 4px;
-      background-color: #fff;
-      font-size: 18px;
-    }
-
-    .select-container .choices__list--multiple .choices__item {
-      background-color: #4CAF50;
-      border: none;
-      border-radius: 4px;
-      color: #fff;
-      font-size: 16px;
-      padding: 6px 10px;
-
-    }
-
-    .filter-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #f5f5f5;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .select-container {
-      flex: 1;
-      margin: 0 10px;
-    }
-
-    .select-container .choices__inner {
-      min-height: 50px;
-      border-radius: 4px;
-      background-color: #fff;
-      font-size: 18px;
-      border: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .select-container .choices__list--multiple .choices__item {
-      background-color: #4CAF50;
-      border: none;
-      border-radius: 4px;
-      color: #fff;
-      font-size: 16px;
-      padding: 6px 10px;
-    }
-
-    .select-container .choices__list--dropdown .choices__item--selectable {
-      padding: 10px;
-      font-size: 16px;
-    }
-
-    .select-container .choices__list--dropdown .choices__item--selectable.is-highlighted {
-      background-color: #f5f5f5;
-      color: #333;
-    }
-
-    /* Apply fixed width and height to the select elements (Choices.js replacement) */
-    .select-container .choices {
-      width: 300px;
-      /* Fixed width */
-      min-height: 50px;
-      /* Minimum height, can increase if you need more space */
-    }
-
-    /* Ensuring the height remains constant regardless of the number of selections */
-    .select-container .choices__list--multiple .choices__item {
-      padding: 6px 10px;
-      margin: 4px;
-      /* Adjust margins to ensure items fit nicely within the fixed height */
-    }
-
-    /* If using a search field within the dropdown, you may want to ensure it doesn't expand the container */
-    .select-container .choices__list--multiple .choices__item--selectable,
-    .select-container .choices__list--multiple .choices__input {
-      height: auto;
-      /* Or set a specific height */
-      padding: 8px 10px;
-      /* Adjust padding to fit the fixed height of the container */
-    }
-
-    /* Additional styling to make sure the dropdown does not make the box larger when opened */
-    .select-container .choices__list--dropdown {
-      max-height: 200px;
-      /* Set a maximum height for the dropdown */
-      overflow-y: auto;
-      /* Enable scrolling for many options */
-    }
-
-    /* Adjusting the appearance when no items are selected to maintain height */
-    .select-container .choices__inner {
-      height: 100%;
-      /* Fill the height of the parent */
-      align-items: center;
-      /* Vertically center content if you have space */
-    }
-
-    #toggleFiltersBtn {
-      padding: 10px 20px;
-      margin: 10px 0;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    #toggleFiltersBtn:hover {
-      background-color: #45a049;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="recipe-container">
-    <div class="search-section">
-      <h2>Recipe Search</h2>
-  <div class="container">
-    <div class="search-container">
-      <h1>Recipe Search</h1>
-      <form id="searchForm">
-        <input type="text" id="searchInput" placeholder="Enter a recipe name" required>
-        <div id="filtersContainer" style="display: none;">
-          <input type="text" id="ingredientsInput" placeholder="Enter ingredients (comma-separated)">
-          <div class="filter-container">
-            <div class="select-container">
-              <select id="cuisineSelect" multiple data-placeholder="Select cuisines">
-                <option value="">All Cuisines</option>
-                <option value="American">American</option>
-                <option value="Italian">Italian</option>
-                <option value="Mexican">Mexican</option>
-                <option value="French">French</option>
-                <option value="Chinese">Chinese</option>
-                <option value="Indian">Indian</option>
-                <option value="Japanese">Japanese</option>
-                <option value="Mediterranean">Mediterranean</option>
-                <option value="Thai">Thai</option>
-                <option value="Vietnamese">Vietnamese</option>
+  <body>
+      <div class="recipe-container">
+      <div class="recipe-search-container">
+        <h1>Recipe Search</h1>
+        <form id="searchForm" class="recipe-search-form">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Enter a recipe name"
+            required
+          />
+          <div
+            id="filtersContainer"
+            class="recipe-filter-container"
+            style="display: none;"
+          >
+            <input
+              type="text"
+              id="ingredientsInput"
+              placeholder="Enter ingredients (comma-separated)"
+            />
+            <div class="filter-container">
+              <div class="recipe-select-container">
+                <select
+                  id="cuisineSelect"
+                  multiple
+                  data-placeholder="Select cuisines"
+                  class="recipe-choices"
+                >
+                  <option value="">All Cuisines</option>
+                  <option value="American">American</option>
+                  <option value="Italian">Italian</option>
+                  <option value="Mexican">Mexican</option>
+                  <option value="French">French</option>
+                  <option value="Chinese">Chinese</option>
+                  <option value="Indian">Indian</option>
+                  <option value="Japanese">Japanese</option>
+                  <option value="Mediterranean">Mediterranean</option>
+                  <option value="Thai">Thai</option>
+                  <option value="Vietnamese">Vietnamese</option>
+                </select>
+              </div>
+              <div class="recipe-select-container">
+                <select
+                  id="dietSelect"
+                  multiple
+                  data-placeholder="Select diets"
+                  class="recipe-choices"
+                >
+                  <option value="">All Diets</option>
+                  <option value="Gluten Free">Gluten Free</option>
+                  <option value="Ketogenic">Ketogenic</option>
+                  <option value="Vegetarian">Vegetarian</option>
+                  <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+                  <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
+                  <option value="Vegan">Vegan</option>
+                  <option value="Pescetarian">Pescetarian</option>
+                  <option value="Paleo">Paleo</option>
+                  <option value="Primal">Primal</option>
+                  <option value="Whole30">Whole30</option>
+                </select>
+              </div>
+              <div class="recipe-select-container">
+                <select
+                  id="intoleranceSelect"
+                  multiple
+                  data-placeholder="Select intolerances"
+                  class="recipe-choices"
+                >
+                  <option value="">No Intolerances</option>
+                  <option value="Dairy">Dairy</option>
+                  <option value="Egg">Egg</option>
+                  <option value="Gluten">Gluten</option>
+                  <option value="Grain">Grain</option>
+                  <option value="Peanut">Peanut</option>
+                  <option value="Seafood">Seafood</option>
+                  <option value="Sesame">Sesame</option>
+                  <option value="Shellfish">Shellfish</option>
+                  <option value="Soy">Soy</option>
+                  <option value="Sulfite">Sulfite</option>
+                  <option value="Tree Nut">Tree Nut</option>
+                  <option value="Wheat">Wheat</option>
+                </select>
+              </div>
+              <select id="priceSelect" class="recipe-select">
+                <option value="">All Prices</option>
+                <option value="$">$</option>
+                <option value="$$">$$</option>
+                <option value="$$$">$$$</option>
+                <option value="$$$$">$$$$</option>
               </select>
             </div>
-            <div class="select-container">
-              <select id="dietSelect" multiple data-placeholder="Select diets">
-                <option value="">All Diets</option>
-                <option value="Gluten Free">Gluten Free</option>
-                <option value="Ketogenic">Ketogenic</option>
-                <option value="Vegetarian">Vegetarian</option>
-                <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
-                <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
-                <option value="Vegan">Vegan</option>
-                <option value="Pescetarian">Pescetarian</option>
-                <option value="Paleo">Paleo</option>
-                <option value="Primal">Primal</option>
-                <option value="Whole30">Whole30</option>
-              </select>
-            </div>
-            <div class="select-container">
-              <select id="intoleranceSelect" multiple data-placeholder="Select intolerances">
-                <option value="">No Intolerances</option>
-                <option value="Dairy">Dairy</option>
-                <option value="Egg">Egg</option>
-                <option value="Gluten">Gluten</option>
-                <option value="Grain">Grain</option>
-                <option value="Peanut">Peanut</option>
-                <option value="Seafood">Seafood</option>
-                <option value="Sesame">Sesame</option>
-                <option value="Shellfish">Shellfish</option>
-                <option value="Soy">Soy</option>
-                <option value="Sulfite">Sulfite</option>
-                <option value="Tree Nut">Tree Nut</option>
-                <option value="Wheat">Wheat</option>
-              </select>
-            </div>
-            <select id="priceSelect">
-              <option value="">All Prices</option>
-              <option value="$">$</option>
-              <option value="$$">$$</option>
-              <option value="$$$">$$$</option>
-              <option value="$$$$">$$$$</option>
-            </select>
           </div>
-        </div>
-        <button type="submit">Search</button>
-        <button type="button" id="toggleFiltersBtn">Show Filters</button>
-      </form>
-    </div>
-    <div id="recommendedRecipesSection">
-    <div id="recommendedResults" class="recipe-list">
-      <h2>Recommended Recipes</h2>
-      <!-- Recommended recipe cards will be dynamically generated here -->
-    </div>
-    <div id="searchResultsSection">
-    <div id="searchResults" class="recipe-list">
-      <h2>Search Results</h2>
-      <div id="searchResults"></div>
-      <!-- Search result recipe cards will be dynamically generated here -->
-    </div>
-    <div class="pagination">
-      <button id="prevPage" disabled>Previous</button>
-      <button id="nextPage">Next</button>
-    </div>
+          <button type="submit" class="recipe-search-button">Search</button>
+          <button
+            type="button"
+            id="toggleFiltersBtn"
+            class="recipe-toggle-filters-button"
+          >Show Filters</button>
+        </form>
+      </div>
+      <div id="recommendedResults" class="recipe-list">
+        <h2>Recommended Recipes</h2>
+        <!-- Recommended recipe cards will be dynamically generated here -->
+      </div>
+      <div id="searchResults" class="recipe-list">
+        <h2>Search Results</h2>
+        <!-- Search result recipe cards will be dynamically generated here -->
+      </div>
+      <div class="pagination">
+        <button
+          id="prevPage"
+          disabled
+          class="recipe-pagination-button"
+        >Previous</button>
+        <button id="nextPage" class="recipe-pagination-button">Next</button>
+      </div>
 
-    <div id="recipeDetails" class="recipe-details-container">
-      <!-- Recipe details will be dynamically generated here -->
+      <div id="recipeDetails" class="recipe-details-container">
+        <!-- Recipe details will be dynamically generated here -->
+      </div>
     </div>
-  </div>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
   <script id="recipeTemplate" type="text/x-handlebars-template">
     <h2>{{title}}</h2>
@@ -449,10 +169,6 @@
   <script>
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
-    const recommendedResultsContainer = document.getElementById('recommendedResults');
-    const searchResultsContainer = document.getElementById('searchResults');
-
-    // Function to fetch and display recommended recipes
     const ingredientsInput = document.getElementById('ingredientsInput');
     const cuisineSelect = document.getElementById('cuisineSelect');
     const dietSelect = document.getElementById('dietSelect');
@@ -525,8 +241,6 @@
       });
     });
 
-
-
     // Function to fetch random recommended recipes
     async function fetchRecommendedRecipes() {
       const options = {
@@ -559,52 +273,6 @@
         } else {
           const recipes = await fetchRecommendedRecipes();
           localStorage.setItem('recommendedRecipes', JSON.stringify(recipes));
-          displayRecipes(recipes, recommendedResultsContainer);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-
-    // Function to display recipes in a container
-    function displayRecipes(recipes, container) {
-      container.innerHTML = '';
-
-      recipes.forEach(recipe => {
-        const recipeElement = createRecipeElement(recipe);
-        container.appendChild(recipeElement);
-      });
-    }
-
-    // Function to create a recipe element
-    function createRecipeElement(recipe) {
-      const recipeElement = document.createElement('div');
-      recipeElement.classList.add('recipe-card');
-
-      const imageElement = document.createElement('img');
-      imageElement.src = recipe.image;
-      imageElement.alt = recipe.title;
-
-      const detailsElement = document.createElement('div');
-      detailsElement.classList.add('recipe-details');
-
-      const titleElement = document.createElement('h3');
-      titleElement.textContent = recipe.title;
-
-      const summaryElement = document.createElement('p');
-      summaryElement.innerHTML = recipe.summary;
-
-      detailsElement.appendChild(titleElement);
-      detailsElement.appendChild(summaryElement);
-
-      recipeElement.appendChild(imageElement);
-      recipeElement.appendChild(detailsElement);
-
-      recipeElement.addEventListener('click', function () {
-        window.location.href = `/recipe/${recipe.id}`;
-      });
-
-      return recipeElement;
           displayRecipes(recipes, recommendedContainer);
         }
       } catch (error) {
@@ -613,39 +281,6 @@
       }
     }
 
-    // Fetch recommended recipes on page load
-    fetchRecommendedRecipes();
-
-    // Search functionality
-    searchForm.addEventListener('submit', async function (event) {
-      event.preventDefault();
-
-      const searchTerm = searchInput.value.trim();
-      if (searchTerm === '') {
-        alert('Please enter a search term.');
-        return;
-      }
-
-      // Hide the recommended recipes section
-      recommendedResultsContainer.style.display = 'none';
-
-      const cachedResults = localStorage.getItem(`searchResults-${searchTerm}`);
-
-      if (cachedResults) {
-        displayRecipes(JSON.parse(cachedResults), searchResultsContainer);
-      } else {
-        const options = {
-          method: 'GET',
-          url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch',
-          params: {
-            query: searchTerm,
-            number: '10'
-          },
-          headers: {
-            'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
-            'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-          }
-        };
     // Function to perform recipe search
     async function searchRecipes(query, ingredients, cuisine, diet, intolerance, price, page = 1) {
       const options = {
@@ -667,18 +302,6 @@
         }
       };
 
-        try {
-          const response = await axios.request(options);
-          const recipes = response.data.results;
-          localStorage.setItem(`searchResults-${searchTerm}`, JSON.stringify(recipes));
-          displayRecipes(recipes, searchResultsContainer);
-        } catch (error) {
-          console.error(error);
-          searchResultsContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
-        }
-      }
-
-      searchInput.value = '';
       try {
         const response = await axios.request(options);
         return response.data;
@@ -688,7 +311,7 @@
       }
     }
 
-    // Function to fetch recipe details
+      // Function to fetch recipe details
     async function getRecipeDetails(recipeId) {
       const options = {
         method: 'GET',
@@ -814,6 +437,6 @@
     displayRecommendedRecipes();
 
   </script>
-</body>
+  </body>
 
 </html>
