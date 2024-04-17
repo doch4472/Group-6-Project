@@ -166,6 +166,7 @@ app.get("/profile", (req, res) => {
 
 app.get("/recipe/:id", (req, res) => {
   const recipeId = req.params.id;
+  console.log(recipeId);
   res.render("pages/recipe", { recipeId: recipeId });
 });
 
