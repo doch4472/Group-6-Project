@@ -124,85 +124,6 @@ app.get("/search", (req, res) => {
   res.render("pages/search", { query: req.query.q });
 });
 
-<<<<<<< HEAD
-app.get('/home', (req, res) => {
-  res.render('pages/search', { query: req.query.q });
-});
-
-app.get('/login', (req, res) => {
-  res.render('pages/login', {query: req.query.q});
-});
-
-app.get('/profile', async (req, res) => {
-  try {
-     // Retrieve user data from the database based on the user's ID or any other identifier
-     user = req.session.user.username; // Assuming you have the user's ID stored in the session
-     
-    
-    res.render('pages/profile', {userData: req.session.user});
-  } catch (error) {
-      console.error('Error retrieving user data:', error);
-      res.status(500).send('Internal Server Error');
-  }
-});
-
-app.get('/recipe/:id', (req, res) => {
-  const recipeId = req.params.id;
-  res.render('pages/recipe', { recipeId: recipeId });
-});
-
-app.get('/welcome', (req, res) => {
-  res.json({status: 'success', message: 'Welcome!'});
-});
-
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.render('pages/logout');
-});
-
-app.post('/login', async (req, res) => {
-  try {
-        const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [req.body.username]);
-    
-        if (!user) {
-          throw new Error('Incorrect username.');
-        }
-    
-        // Compare
-        const passwordMatch = await bcrypt.compare(req.body.password, user.password);
-    
-        if (!passwordMatch) {
-          throw new Error('Incorrect password.');
-        }
-    
-        // Save the user in the session
-        req.session.user = user;
-        req.session.save(() => {
-        res.redirect('/home');
-
-      });
-      } catch (error) {
-        console.error('Error during login:', error);
-
-        res.status(500).render('pages/login', { error: 'Internal Server Error' });
-      }
-});
-
-app.post('/register', async (req, res) => {
-  //hash the password using bcrypt 
-  try{
-
-    if (!req.body.username || !req.body.password) {
-      return res.status(400).json({ message: 'Username and password are required.' });
-    }
-
-      const hash = await bcrypt.hash(req.body.password, 10);
-      // To-DO: Insert username and hashed password into the 'users' table
-      await db.one('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
-      res.status(200).redirect('/login'); 
-  } catch (error) {
-      res.status(400).redirect('/register'); 
-=======
 app.get("/home", (req, res) => {
   if (req.session.username) {
     res.render("pages/search", {
@@ -211,7 +132,6 @@ app.get("/home", (req, res) => {
     });
   } else {
     res.render("pages/login", { query: req.query.q });
->>>>>>> 3d968e8e4926db959692f1e74abde51557806e50
   }
 });
 
