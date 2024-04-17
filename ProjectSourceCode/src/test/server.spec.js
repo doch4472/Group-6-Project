@@ -77,7 +77,7 @@ describe('Testing base configuration redirect', () => {
       .get('/')
       .end((err, res) => {
         expect(res).to.have.status(200);
-        res.should.redirectTo(/^.*127\.0\.0\.1.*\/register$/);
+        res.should.redirectTo(/^.*127\.0\.0\.1.*\/aboutus$/);
         done();
       });
   });
