@@ -1,19 +1,37 @@
 DROP TABLE IF EXISTS users;
--- DROP TABLE IF EXISTS recipe;
+DROP TABLE IF EXISTS user_recipe;
 -- DROP TABLE IF EXISTS recipe_to_author;
 -- DROP TABLE IF EXISTS author;
 -- DROP TABLE IF EXISTS recipe_to_ingredient;
 -- DROP TABLE IF EXISTS allergy;
 
 CREATE TABLE users(
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
+    id SERIAL,
+    username VARCHAR(50) PRIMARY KEY,
     password VARCHAR(60) NOT NULL,
     fav_recipe VARCHAR(100) NULL,
-    your_recipe VARCHAR(100) NULL,
     bio VARCHAR(2000),
     email VARCHAR(50)
 );
+
+CREATE TABLE user_to_recipe(
+    user_id INT,
+    recipe_id INT
+);
+
+CREATE TABLE user_recipe(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(51) NOT NULL,
+    recipe_name VARCHAR NOT NULL,
+    instruction VARCHAR NOT NULL
+    ingredient VARCHAR NOT NULL
+
+    CONSTRAINT fk_username, fk_recipe,
+        FOREIGN KEY(user_id, recipe_id)
+            REFERENCES users(username)
+            REFERENCES user_recipe(id)
+);
+
 
 -- Commenting these out for now, might use later --
 
