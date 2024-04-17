@@ -1,80 +1,147 @@
-<!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Register Page</title>
-  <link rel="stylesheet" href="/css/style.css" />
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-  />
-  
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Page</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
 
-<body class="register-page-body">
-  <div class="register-page-container-form">
-    <img class="register-page-register-image" src="/images/gordon.jpg" alt="Registration Image" />
-    <div class="register-page-form-content">
-      <h2 class="register-page-h2">Register</h2>
-      {{#if message}}
-      <p>{{message}}</p>
-      {{/if}}
-      <a class="register-page-link" href="/login">Already have an account?</a>
-      <br />
-      <br />
+  </head>
 
-      <form class="register-page-form-wrapper" action="/register" method="post">
-        <div class="form-group">
-          <p>Please fill in the following information to create an account.</p>
-        </div>
-        <div class="form-group">
-          <label class="register-page-form-label" for="username">Username</label>
-          <input
-            class="register-page-form-input"
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your desired username"
-            required
-            style="width: 100%;"
-          />
-        </div>
-        <div class="form-group">
-          <label class="register-page-form-label" for="password">Password</label>
-          <input
-            class="register-page-form-input"
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-            style="width: 100%;"
-          />
-          <label class="register-page-form-label" for="confirmPassword">Confirm Password</label>
-          <input
-            class="register-page-form-input"
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Confirm your password"
-            required
-            style="width: 100%;"
-          />
-        </div>
-        <button class="register-page-form-submit-btn" type="submit">Register</button>
-      </form>
+  <body class="register-page-body">
+    <div class="register-page-container-form">
+      <img
+        class="register-page-register-image"
+        src="/images/gordon.jpg"
+        alt="Registration Image"
+      />
+      <div class="register-page-form-content">
+        <h2 class="register-page-h2">Register</h2>
+        {{#if message}}
+          <p>{{message}}</p>
+        {{/if}}
+        <a class="register-page-link" href="/login">Already have an account?</a>
+        <br />
+        <br />
+
+        <form
+          class="register-page-form-wrapper"
+          action="/register"
+          method="post"
+          onsubmit="return validateForm()"
+        >
+          <div class="form-group">
+            <p>Please fill in the following information to create an account.</p>
+          </div>
+          <div class="form-group">
+            <label
+              class="register-page-form-label"
+              for="username"
+            >Username</label>
+            <input
+              class="register-page-form-input"
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your desired username"
+              required
+              style="width: 100%;"
+            />
+          </div>
+          <div class="form-group">
+            <label
+              class="register-page-form-label"
+              for="password"
+            >Password</label>
+            <div class="input-group">
+              <input
+                class="form-control"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="togglePasswordVisibility('password')"
+              >
+                <i id="togglePasswordIcon" class="far fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;"></div>
+
+          <div class="form-group">
+            <label
+              class="register-page-form-label"
+              for="confirmPassword"
+            >Confirm Password</label>
+            <div class="input-group">
+              <input
+                class="form-control"
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                required
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="togglePasswordVisibility('confirmPassword')"
+              >
+                <i id="toggleConfirmPasswordIcon" class="far fa-eye"></i>
+              </button>
+            </div>
+            <p
+              id="passwordError"
+              style="color: red; display: none; font-size: 20px;"
+            >Passwords do not match.</p>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;"></div>
+          
+          <button
+            class="register-page-form-submit-btn"
+            type="submit"
+          >Register</button>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"
-  ></script>
-</body>
+    <script>
+      function togglePasswordVisibility(fieldId) { var field =
+      document.getElementById(fieldId); var icon =
+      document.getElementById(`toggle${fieldId.charAt(0).toUpperCase() +
+      fieldId.slice(1)}Icon`); if (field.type === "password") { field.type =
+      "text"; icon.classList.remove("far", "fa-eye"); icon.classList.add("fas",
+      "fa-eye-slash"); } else { field.type = "password";
+      icon.classList.remove("fas", "fa-eye-slash"); icon.classList.add("far",
+      "fa-eye"); } } function validateForm() { var password =
+      document.getElementById("password").value; var confirmPassword =
+      document.getElementById("confirmPassword").value; if (password !==
+      confirmPassword) { document.getElementById("passwordError").style.display
+      = "block"; return false; } else {
+      document.getElementById("passwordError").style.display = "none"; return
+      true; } }
+    </script>
+
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 
 </html>
