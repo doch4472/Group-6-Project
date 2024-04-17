@@ -26,6 +26,8 @@ const dbConfig = {
 
 const user = {
   username: 0,
+  bio: undefined,
+  email: undefined
 };
 const db = pgp(dbConfig);
 
@@ -119,11 +121,12 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/search", (req, res) => {
+
   res.render("pages/search", { query: req.query.q });
 });
 
 app.get("/home", (req, res) => {
-  if (req.session.user) {
+  if (req.session.username) {
     res.render("pages/search", { query: req.query.q });
   } else {
     res.render("pages/login", { query: req.query.q });
@@ -135,7 +138,26 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
-  res.render("pages/profile", { query: req.query.q });
+  try{
+  const username = req.session.username;
+  if(req.session.username){
+  db.any( "SELECT bio, email\
+          FROM users\
+          WHERE username = $1;", [username])
+    .then(information => {
+  res.render("pages/profile", { query: req.query.q,
+                                username: username,
+                                bio: information[0].bio,
+                                email: information[0].email });
+    })
+  }
+  else{
+    res.redirect("login");
+  }
+  }
+  catch(error){
+    res.status(500).render("pages/search", { error: "Internal Server Error" });
+  }
 });
 
 app.get("/recipe/:id", (req, res) => {
@@ -178,7 +200,7 @@ app.post("/login", async (req, res) => {
         .status(500)
         .render("pages/login", { message: "Incorrect password." });
     }
-
+    req.session.username = req.body.username;
     req.session.user = user;
     req.session.save(() => {
       res.redirect("/home");
@@ -190,26 +212,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/register", async (req, res) => {
-  //hash the password using bcrypt
-  try {
-    if (!req.body.username || !req.body.password) {
-      return res
-        .status(400)
-        .json({ message: "Username and password are required." });
-    }
 
-    const hash = await bcrypt.hash(req.body.password, 10);
-    // To-DO: Insert username and hashed password into the 'users' table
-    await db.one("INSERT INTO users(username, password) VALUES($1, $2)", [
-      req.body.username,
-      hash,
-    ]);
-    res.status(200).redirect("/login");
-  } catch (error) {
-    res.status(400).redirect("/register");
-  }
-});
 
 app.get("/favorite-recipe", (req, res) => {
   // Check if the user is logged in
@@ -219,6 +222,45 @@ app.get("/favorite-recipe", (req, res) => {
   } else {
     // If not logged in, redirect to the register page
     res.redirect("/login");
+  }
+});
+
+app.get("/update", (req, res) => {
+  res.render("pages/update");
+});
+
+app.post("/update", async (req, res) => {
+  
+  try {
+
+    if (!req.body.email && !req.body.bio) {
+      return res
+        .status(400)
+        .json({ message: "Email or bio are required." });
+    }
+    else if (req.body.email && !req.body.bio)
+    {
+      await db.none("UPDATE users \
+                    SET email = ($1), \
+                    WHERE username = $2;", [req.body.email, req.session.username]);
+    }
+    else if (!req.body.email && req.body.bio)
+    {
+      await db.none("UPDATE users \
+                    SET bio = ($1), \
+                    WHERE username = $2;", [req.body.bio, req.session.username]);
+    }
+    else
+    {
+      await db.none("UPDATE users \
+                    SET email = ($1), \
+                    bio = ($2) \
+                    WHERE username = $3;", [req.body.email, req.body.bio, req.session.username]);
+    }
+
+    res.status(200).redirect("/profile");
+  } catch (error) {
+    res.status(400).redirect("/profile");
   }
 });
 
