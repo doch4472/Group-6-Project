@@ -45,7 +45,7 @@
   margin: 10px;
 }
 
-.recipe-search-container input[type="text"]{
+.recipe-search-container input[type="text"] {
   text-align: center;
   width: 100%;
   padding: 12px;
@@ -54,7 +54,6 @@
   border-radius: 4px;
   margin: 10px;
 }
-
 
 /* Styling for the search button in the recipe search form */
 .recipe-search-container button {
@@ -589,4 +588,53 @@ div.user-profile p.user-profile-text {
 .register h2 {
   padding-top: 50%;
   color: blue;
+}
+
+/* Reset default margin and padding */
+.reset-margin-padding {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styles */
+.custom-body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+}
+
+/* Main styles */
+.custom-main {
+  padding: 20px;
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack elements vertically */
+}
+
+/* Section styles */
+.section-container {
+  margin-bottom: 30px;
+  width: 50%; /* Each section takes full width */
+}
+
+/* Section heading styles */
+.section-container h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Paragraph styles */
+.section-container p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* List styles */
+.section-container ul {
+  list-style-type: none;
+}
+
+/* Image styles */
+.food-image {
+  width: 100%; /* Image takes full width */
+  margin-bottom: 20px; /* Add space below the image */
 }

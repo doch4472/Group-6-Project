@@ -275,6 +275,11 @@ app.post("/update", async (req, res) => {
   }
 });
 
+app.get("/aboutus", (req, res) => {
+  res.render("pages/aboutus");
+});
+
+
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
