@@ -26,7 +26,7 @@ CREATE TABLE user_recipe(
     instruction VARCHAR NOT NULL,
     ingredient VARCHAR NOT NULL
 
-    CONSTRAINT fk_username, fk_recipe,
+    CONSTRAINT fk_username fk_recipe,
         FOREIGN KEY(user_id, recipe_id)
             REFERENCES users(username)
             REFERENCES user_recipe(id)
