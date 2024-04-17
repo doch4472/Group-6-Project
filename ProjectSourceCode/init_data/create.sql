@@ -23,7 +23,7 @@ CREATE TABLE user_recipe(
     id SERIAL PRIMARY KEY,
     username VARCHAR(51) NOT NULL,
     recipe_name VARCHAR NOT NULL,
-    instruction VARCHAR NOT NULL
+    instruction VARCHAR NOT NULL,
     ingredient VARCHAR NOT NULL
 
     CONSTRAINT fk_username, fk_recipe,
