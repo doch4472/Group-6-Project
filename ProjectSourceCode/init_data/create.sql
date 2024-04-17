@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS user_recipe;
 -- DROP TABLE IF EXISTS allergy;
 
 CREATE TABLE users(
-    id SERIAL,
-    username VARCHAR(50) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
     password VARCHAR(60) NOT NULL,
     fav_recipe VARCHAR(100) NULL,
     bio VARCHAR(2000),
@@ -25,13 +25,11 @@ CREATE TABLE user_recipe(
     recipe_name VARCHAR NOT NULL,
     instruction VARCHAR NOT NULL,
     ingredient VARCHAR NOT NULL
-
-    CONSTRAINT fk_username fk_recipe,
-        FOREIGN KEY(user_id, recipe_id)
-            REFERENCES users(username)
-            REFERENCES user_recipe(id)
 );
 
+ALTER TABLE user_to_recipe ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES users(id);
+
+ALTER TABLE user_to_recipe ADD CONSTRAINT recipe_id FOREIGN KEY (recipe_id) REFERENCES user_recipe(id);
 
 -- Commenting these out for now, might use later --
 
