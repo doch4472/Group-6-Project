@@ -550,38 +550,47 @@ header.user-profile-header {
 }
 
 /* Styling for main content in user profile section */
-main.user-profile-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
+
+.user-profile-main {
+  padding: 20px;
 }
 
-/* Styling for user profile section */
-div.user-profile {
-  background-color: white;
+.user-profile {
+  background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  text-align: center;
-}
-
-/* Styling for user profile image */
-div.user-profile img.user-profile-img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
   margin-bottom: 20px;
 }
 
-/* Styling for user profile headings */
-div.user-profile h2.user-profile-heading {
-  margin-bottom: 10px;
+.user-profile-heading {
+  margin-top: 0;
+  color: #333;
 }
 
-/* Styling for user profile text */
-div.user-profile p.user-profile-text {
-  margin-bottom: 5px;
+.user-profile-text {
+  margin-top: 0;
+  color: #666;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #c82333;
 }
 
 /* Styling for register page heading */
@@ -637,4 +646,43 @@ div.user-profile p.user-profile-text {
 .food-image {
   width: 100%; /* Image takes full width */
   margin-bottom: 20px; /* Add space below the image */
+}
+
+/*Update pagestyling*/
+.update-page-form-wrapper {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.login-page-form-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.login-page-form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-page-form-submit-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-page-form-submit-btn:hover {
+  background-color: #0056b3;
 }
