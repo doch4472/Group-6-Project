@@ -10,7 +10,9 @@ CREATE TABLE users(
     username VARCHAR(50) NOT NULL,
     password VARCHAR(60) NOT NULL,
     fav_recipe VARCHAR(100) NULL,
-    your_recipe VARCHAR(100) NULL
+    your_recipe VARCHAR(100) NULL,
+    bio VARCHAR(2000),
+    email VARCHAR(50)
 );
 
 -- Commenting these out for now, might use later --

@@ -20,8 +20,8 @@
 }
 
 /* Styling for the heading of the recipe search section */
-.recipe-search-container h1 {
-  font-size: 48px;
+.recipe-search-container h2 {
+  font-size: 30px;
   margin-bottom: 20px;
   color: #333;
 }
@@ -35,15 +35,24 @@
 }
 
 /* Styling for text input and select elements in the recipe search form */
-.recipe-search-container input[type="text"],
 .recipe-search-container select {
-  width: 300px;
+  text-align: center;
+  width: 100%;
   padding: 12px;
-  font-size: 18px;
+  font-size: 14px;
   border: none;
   border-radius: 4px;
   margin: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-search-container input[type="text"] {
+  text-align: center;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  margin: 10px;
 }
 
 /* Styling for the search button in the recipe search form */
@@ -182,14 +191,16 @@
 
 /* Styling for select containers */
 .recipe-select-container {
-  display: inline-block;
+  /* display: inline-block; */
+  display: flex;
   position: relative;
   margin: 10px;
+  flex-direction: column;
 }
 
 /* Styling for select elements */
 .recipe-select-container select {
-  width: 300px;
+  width: 300px; /* Fixed width */
   padding: 12px;
   font-size: 18px;
   border: none;
@@ -207,11 +218,22 @@
 .recipe-select-container select[multiple] {
   height: auto;
   padding: 8px;
+  background-color: #f5f5f5; /* Add background color */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 4px; /* Add border radius */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Styling for options within multiple select elements */
 .recipe-select-container select[multiple] option {
-  padding: 4px;
+  padding: 8px;
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Styling for selected options within multiple select elements */
+.recipe-select-container select[multiple] option:checked {
+  background-color: #007bff; /* Change background color for selected options */
+  color: white; /* Change text color for selected options */
 }
 
 /* Styling for filter container */
@@ -223,12 +245,6 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Styling for select containers within filter container */
-.recipe-filter-container .recipe-select-container {
-  flex: 1;
-  margin: 0 10px;
 }
 
 /* Styling for inner content of select containers */
@@ -572,4 +588,53 @@ div.user-profile p.user-profile-text {
 .register h2 {
   padding-top: 50%;
   color: blue;
+}
+
+/* Reset default margin and padding */
+.reset-margin-padding {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styles */
+.custom-body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+}
+
+/* Main styles */
+.custom-main {
+  padding: 20px;
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack elements vertically */
+}
+
+/* Section styles */
+.section-container {
+  margin-bottom: 30px;
+  width: 50%; /* Each section takes full width */
+}
+
+/* Section heading styles */
+.section-container h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Paragraph styles */
+.section-container p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* List styles */
+.section-container ul {
+  list-style-type: none;
+}
+
+/* Image styles */
+.food-image {
+  width: 100%; /* Image takes full width */
+  margin-bottom: 20px; /* Add space below the image */
 }

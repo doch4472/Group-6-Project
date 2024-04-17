@@ -1,5 +1,4 @@
 <html lang="en">
-
   <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,108 +22,126 @@
       src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"
     ></script>
 
+<style>
+  .recipe-search-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-filter-container {
+  margin-top: 20px; /* Adjust the margin as needed */
+}
+
+/* Styling for pagination section */
+.recipe-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.recipe-pagination-button {
+  background-color: #4caf50; /* Green background */
+  border: none;
+  color: white; /* White text */
+  padding: 10px 20px; /* Padding */
+  text-align: center; /* Centered text */
+  text-decoration: none;
+  display: inline-block; /* Displayed as inline-block */
+  font-size: 16px; /* Font size */
+  margin: 4px 2px; /* Margin */
+  cursor: pointer; /* Cursor on hover */
+}
+
+/* Style for the Previous button */
+#prevPage {
+  background-color: #f44336; /* Red background for disabled state */
+  cursor: not-allowed; /* Cursor when disabled */
+}
+
+/* Style for the Next button */
+#nextPage {
+  background-color: #4caf50; /* Green background */
+}
+
+
+  </style>
+
+
   </head>
 
   <body>
-      <div class="recipe-container">
-      <div class="recipe-search-container">
-        <h1>Recipe Search</h1>
-        <form id="searchForm" class="recipe-search-form">
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Enter a recipe name"
-            required
-          />
-          <div
-            id="filtersContainer"
-            class="recipe-filter-container"
-            style="display: none;"
-          >
-            <input
-              type="text"
-              id="ingredientsInput"
-              placeholder="Enter ingredients (comma-separated)"
-            />
-            <div class="filter-container">
-              <div class="recipe-select-container">
-                <select
-                  id="cuisineSelect"
-                  multiple
-                  data-placeholder="Select cuisines"
-                  class="recipe-choices"
-                >
-                  <option value="">All Cuisines</option>
-                  <option value="American">American</option>
-                  <option value="Italian">Italian</option>
-                  <option value="Mexican">Mexican</option>
-                  <option value="French">French</option>
-                  <option value="Chinese">Chinese</option>
-                  <option value="Indian">Indian</option>
-                  <option value="Japanese">Japanese</option>
-                  <option value="Mediterranean">Mediterranean</option>
-                  <option value="Thai">Thai</option>
-                  <option value="Vietnamese">Vietnamese</option>
-                </select>
-              </div>
-              <div class="recipe-select-container">
-                <select
-                  id="dietSelect"
-                  multiple
-                  data-placeholder="Select diets"
-                  class="recipe-choices"
-                >
-                  <option value="">All Diets</option>
-                  <option value="Gluten Free">Gluten Free</option>
-                  <option value="Ketogenic">Ketogenic</option>
-                  <option value="Vegetarian">Vegetarian</option>
-                  <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
-                  <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
-                  <option value="Vegan">Vegan</option>
-                  <option value="Pescetarian">Pescetarian</option>
-                  <option value="Paleo">Paleo</option>
-                  <option value="Primal">Primal</option>
-                  <option value="Whole30">Whole30</option>
-                </select>
-              </div>
-              <div class="recipe-select-container">
-                <select
-                  id="intoleranceSelect"
-                  multiple
-                  data-placeholder="Select intolerances"
-                  class="recipe-choices"
-                >
-                  <option value="">No Intolerances</option>
-                  <option value="Dairy">Dairy</option>
-                  <option value="Egg">Egg</option>
-                  <option value="Gluten">Gluten</option>
-                  <option value="Grain">Grain</option>
-                  <option value="Peanut">Peanut</option>
-                  <option value="Seafood">Seafood</option>
-                  <option value="Sesame">Sesame</option>
-                  <option value="Shellfish">Shellfish</option>
-                  <option value="Soy">Soy</option>
-                  <option value="Sulfite">Sulfite</option>
-                  <option value="Tree Nut">Tree Nut</option>
-                  <option value="Wheat">Wheat</option>
-                </select>
-              </div>
-              <select id="priceSelect" class="recipe-select">
-                <option value="">All Prices</option>
-                <option value="$">$</option>
-                <option value="$$">$$</option>
-                <option value="$$$">$$$</option>
-                <option value="$$$$">$$$$</option>
+<div class="recipe-container">
+  <div class="recipe-search-container">
+    <h2>Recipe Search</h2>
+    <div class="search-filter-container">
+      <form id="searchForm" class="recipe-search-form">
+        <input type="text" id="searchInput" placeholder="Enter a recipe name">
+        <button type="submit" class="recipe-search-button">Search</button>
+        <button type="button" id="toggleFiltersBtn" class="recipe-toggle-filters-button">Show Filters</button>
+      </form>
+    </div>
+    <div id="filtersContainer" class="recipe-filter-container" style="display: none;">
+      <input type="text" id="ingredientsInput" placeholder="Enter ingredients (comma-separated)">
+      <div class="filter-container">
+        <div class="recipe-select-container">
+              <select id="cuisineSelect" multiple data-placeholder="Select cuisines" class="recipe-choices">
+                <option value="">All Cuisines</option>
+                <option value="American">American</option>
+                <option value="Italian">Italian</option>
+                <option value="Mexican">Mexican</option>
+                <option value="French">French</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Indian">Indian</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Mediterranean">Mediterranean</option>
+                <option value="Thai">Thai</option>
+                <option value="Vietnamese">Vietnamese</option>
               </select>
             </div>
+            <div class="recipe-select-container">
+              <select id="dietSelect" multiple data-placeholder="Select diets" class="recipe-choices">
+                <option value="">All Diets</option>
+                <option value="Gluten Free">Gluten Free</option>
+                <option value="Ketogenic">Ketogenic</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+                <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Pescetarian">Pescetarian</option>
+                <option value="Paleo">Paleo</option>
+                <option value="Primal">Primal</option>
+                <option value="Whole30">Whole30</option>
+              </select>
+            </div>
+            <div class="recipe-select-container">
+              <select id="intoleranceSelect" multiple data-placeholder="Select intolerances" class="recipe-choices">
+                <option value="">No Intolerances</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Egg">Egg</option>
+                <option value="Gluten">Gluten</option>
+                <option value="Grain">Grain</option>
+                <option value="Peanut">Peanut</option>
+                <option value="Seafood">Seafood</option>
+                <option value="Sesame">Sesame</option>
+                <option value="Shellfish">Shellfish</option>
+                <option value="Soy">Soy</option>
+                <option value="Sulfite">Sulfite</option>
+                <option value="Tree Nut">Tree Nut</option>
+                <option value="Wheat">Wheat</option>
+              </select>
+            </div>
+            <select id="priceSelect" class="recipe-select">
+              <option value="">All Prices</option>
+              <option value="$">$</option>
+              <option value="$$">$$</option>
+              <option value="$$$">$$$</option>
+              <option value="$$$$">$$$$</option>
+            </select>
           </div>
-          <button type="submit" class="recipe-search-button">Search</button>
-          <button
-            type="button"
-            id="toggleFiltersBtn"
-            class="recipe-toggle-filters-button"
-          >Show Filters</button>
-        </form>
+        </div>
+        
+
+
       </div>
       <div id="recommendedResults" class="recipe-list">
         <h2>Recommended Recipes</h2>
@@ -134,6 +151,7 @@
         <h2>Search Results</h2>
         <!-- Search result recipe cards will be dynamically generated here -->
       </div>
+
       <div class="pagination">
         <button
           id="prevPage"
@@ -146,9 +164,11 @@
       <div id="recipeDetails" class="recipe-details-container">
         <!-- Recipe details will be dynamically generated here -->
       </div>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  
   <script id="recipeTemplate" type="text/x-handlebars-template">
     <h2>{{title}}</h2>
     <img src="{{image}}" alt="{{title}}">
@@ -166,277 +186,292 @@
       {{/each}}
     </ol>
   </script>
+
   <script>
-    const searchForm = document.getElementById('searchForm');
-    const searchInput = document.getElementById('searchInput');
-    const ingredientsInput = document.getElementById('ingredientsInput');
-    const cuisineSelect = document.getElementById('cuisineSelect');
-    const dietSelect = document.getElementById('dietSelect');
-    const intoleranceSelect = document.getElementById('intoleranceSelect');
-    const priceSelect = document.getElementById('priceSelect');
-    const recommendedContainer = document.getElementById('recommendedResults');
-    const resultsContainer = document.getElementById('searchResults');
-    const prevPageBtn = document.getElementById('prevPage');
-    const nextPageBtn = document.getElementById('nextPage');
-    const recipeDetailsContainer = document.getElementById('recipeDetails');
+const searchForm = document.getElementById('searchForm');
+const searchInput = document.getElementById('searchInput');
+const ingredientsInput = document.getElementById('ingredientsInput');
+const cuisineSelect = document.getElementById('cuisineSelect');
+const dietSelect = document.getElementById('dietSelect');
+const intoleranceSelect = document.getElementById('intoleranceSelect');
+const priceSelect = document.getElementById('priceSelect');
+const recommendedContainer = document.getElementById('recommendedResults');
+const resultsContainer = document.getElementById('searchResults');
+const prevPageBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+const recipeDetailsContainer = document.getElementById('recipeDetails');
 
-    let currentPage = 1;
-    let totalResults = 0;
+let currentPage = 1;
+let totalResults = 0;
 
-    // Handlebars template
-    const recipeTemplate = Handlebars.compile(document.getElementById('recipeTemplate').innerHTML);
+// Handlebars template
+const recipeTemplate = Handlebars.compile(document.getElementById('recipeTemplate').innerHTML);
 
-    new Choices('#cuisineSelect', {
-      removeItemButton: true,
-      maxItemCount: 5,
-      searchResultLimit: 5,
-      renderChoiceLimit: 5
-    });
+// Initialize Choices dropdowns
+new Choices('#cuisineSelect', { removeItemButton: true, maxItemCount: 5, searchResultLimit: 5, renderChoiceLimit: 5 });
+new Choices('#dietSelect', { removeItemButton: true, maxItemCount: 5, searchResultLimit: 5, renderChoiceLimit: 5 });
+new Choices('#intoleranceSelect', { removeItemButton: true, maxItemCount: 5, searchResultLimit: 5, renderChoiceLimit: 5 });
 
-    new Choices('#dietSelect', {
-      removeItemButton: true,
-      maxItemCount: 5,
-      searchResultLimit: 5,
-      renderChoiceLimit: 5
-    });
+// Function to update placeholder text based on selection
+document.addEventListener('DOMContentLoaded', () => {
+  const cuisineSelect = document.getElementById('cuisineSelect');
+  const dietSelect = document.getElementById('dietSelect');
+  const intoleranceSelect = document.getElementById('intoleranceSelect');
 
-    new Choices('#intoleranceSelect', {
-      removeItemButton: true,
-      maxItemCount: 5,
-      searchResultLimit: 5,
-      renderChoiceLimit: 5
-    });
-
-    searchForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      // Clear or hide the recommended recipes container
-      recommendedContainer.innerHTML = ''; // This clears the content
-      recommendedContainer.style.display = 'none'; // This hides the container
-
-      const query = searchInput.value.trim();
-      const ingredients = ingredientsInput.value.trim();
-      const cuisine = Array.from(cuisineSelect.selectedOptions).map(option => option.value).join(',');
-      const diet = Array.from(dietSelect.selectedOptions).map(option => option.value).join(',');
-      const intolerance = Array.from(intoleranceSelect.selectedOptions).map(option => option.value).join(',');
-      const price = priceSelect.value;
-
-      const searchResults = await searchRecipes(query, ingredients, cuisine, diet, intolerance, price, currentPage);
-      displayRecipes(searchResults.results, resultsContainer);
-      totalResults = searchResults.totalResults;
-      updatePagination();
-    });
-
-    document.addEventListener('DOMContentLoaded', (event) => {
-      const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
-      const filtersContainer = document.getElementById('filtersContainer');
-
-      toggleFiltersBtn.addEventListener('click', () => {
-        // Check the current display style and toggle it
-        if (filtersContainer.style.display === 'none' || filtersContainer.style.display === '') {
-          filtersContainer.style.display = 'block'; // Show the filters
-        } else {
-          filtersContainer.style.display = 'none'; // Hide the filters
-        }
-      });
-    });
-
-    // Function to fetch random recommended recipes
-    async function fetchRecommendedRecipes() {
-      const options = {
-        method: 'GET',
-        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
-        params: { number: '10' },
-        headers: {
-          'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
-          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-        }
-      };
-
-      try {
-        const response = await axios.request(options);
-        return response.data.recipes;
-      } catch (error) {
-        console.error(error);
-        throw error;
+  function updatePlaceholder(selectElement) {
+    const placeholderOption = selectElement.querySelector('option[value=""]');
+    if (placeholderOption) {
+      if (selectElement.selectedOptions.length > 0) {
+        placeholderOption.textContent = ''; // Remove placeholder text
+      } else {
+        placeholderOption.textContent = selectElement.getAttribute('data-placeholder'); // Restore placeholder text
       }
     }
+  }
 
-    // Function to display recommended recipes
-    async function displayRecommendedRecipes() {
-      try {
-        const cachedRecipes = localStorage.getItem('recommendedRecipes');
+  cuisineSelect.addEventListener('change', () => { updatePlaceholder(cuisineSelect); });
+  dietSelect.addEventListener('change', () => { updatePlaceholder(dietSelect); });
+  intoleranceSelect.addEventListener('change', () => { updatePlaceholder(intoleranceSelect); });
+});
 
-        if (cachedRecipes) {
-          const recipes = JSON.parse(cachedRecipes);
-          displayRecipes(recipes, recommendedContainer);
-        } else {
-          const recipes = await fetchRecommendedRecipes();
-          localStorage.setItem('recommendedRecipes', JSON.stringify(recipes));
-          displayRecipes(recipes, recommendedContainer);
-        }
-      } catch (error) {
-        console.error(error);
-        recommendedContainer.innerHTML = '<p>Failed to load recommended recipes. Please try again later.</p>';
+// Event listener for search form submission
+searchForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  // Clear or hide the recommended recipes container
+  recommendedContainer.innerHTML = '';
+  recommendedContainer.style.display = 'none';
+
+  // Gather form data
+  const query = searchInput.value.trim();
+  const ingredients = ingredientsInput.value.trim();
+  const cuisine = Array.from(cuisineSelect.selectedOptions).map(option => option.value).join(',');
+  const diet = Array.from(dietSelect.selectedOptions).map(option => option.value).join(',');
+  const intolerance = Array.from(intoleranceSelect.selectedOptions).map(option => option.value).join(',');
+  const price = priceSelect.value;
+
+  // Search for recipes
+  const searchResults = await searchRecipes(query, ingredients, cuisine, diet, intolerance, price, currentPage);
+  displayRecipes(searchResults.results, resultsContainer);
+  totalResults = searchResults.totalResults;
+  updatePagination();
+});
+
+// Toggle filters button
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+  const filtersContainer = document.getElementById('filtersContainer');
+
+  toggleFiltersBtn.addEventListener('click', () => {
+    if (filtersContainer.style.display === 'none' || filtersContainer.style.display === '') {
+      filtersContainer.style.display = 'block';
+    } else {
+      filtersContainer.style.display = 'none';
+    }
+  });
+});
+
+// Function to update placeholder text based on selection
+document.addEventListener('DOMContentLoaded', () => {
+  const cuisineSelect = document.getElementById('cuisineSelect');
+  const dietSelect = document.getElementById('dietSelect');
+  const intoleranceSelect = document.getElementById('intoleranceSelect');
+
+  function updatePlaceholder(selectElement) {
+    const placeholderOption = selectElement.querySelector('option[value=""]');
+    if (placeholderOption) {
+      if (selectElement.selectedOptions.length > 0) {
+        // Hide placeholder if any option is selected
+        placeholderOption.style.display = 'none';
+      } else {
+        // Show placeholder if no option is selected
+        placeholderOption.style.display = 'block';
       }
     }
+  }
 
-    // Function to perform recipe search
-    async function searchRecipes(query, ingredients, cuisine, diet, intolerance, price, page = 1) {
-      const options = {
-        method: 'GET',
-        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch',
-        params: {
-          query: query,
-          includeIngredients: ingredients,
-          cuisine: cuisine,
-          diet: diet,
-          intolerances: intolerance,
-          maxPrice: price,
-          number: '10',
-          offset: (page - 1) * 10
-        },
-        headers: {
-          'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
-          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-        }
-      };
+  cuisineSelect.addEventListener('change', () => { updatePlaceholder(cuisineSelect); });
+  dietSelect.addEventListener('change', () => { updatePlaceholder(dietSelect); });
+  intoleranceSelect.addEventListener('change', () => { updatePlaceholder(intoleranceSelect); });
+});
 
-      try {
-        const response = await axios.request(options);
-        return response.data;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
+// Function to fetch random recommended recipes
+async function fetchRecommendedRecipes() {
+  const options = {
+    method: 'GET',
+    url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
+    params: { number: '10' },
+    headers: {
+      'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
+      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
     }
+  };
 
-      // Function to fetch recipe details
-    async function getRecipeDetails(recipeId) {
-      const options = {
-        method: 'GET',
-        url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
-        headers: {
-          'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
-          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-        }
-      };
+  try {
+    const response = await axios.request(options);
+    return response.data.recipes;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
-      try {
-        const response = await axios.request(options);
-        return response.data;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
+// Function to display recommended recipes
+async function displayRecommendedRecipes() {
+  try {
+    const cachedRecipes = localStorage.getItem('recommendedRecipes');
+
+    if (cachedRecipes) {
+      const recipes = JSON.parse(cachedRecipes);
+      displayRecipes(recipes, recommendedContainer);
+    } else {
+      const recipes = await fetchRecommendedRecipes();
+      localStorage.setItem('recommendedRecipes', JSON.stringify(recipes));
+      displayRecipes(recipes, recommendedContainer);
     }
+  } catch (error) {
+    console.error(error);
+    recommendedContainer.innerHTML = '<p>Failed to load recommended recipes. Please try again later.</p>';
+  }
+}
 
-    // Function to display recipe details
-    async function displayRecipeDetails(recipeId) {
-      try {
-        const recipe = await getRecipeDetails(recipeId);
-        const recipeHtml = recipeTemplate(recipe);
-        recipeDetailsContainer.innerHTML = recipeHtml;
-      } catch (error) {
-        console.error(error);
-        recipeDetailsContainer.innerHTML = '<p>Failed to load recipe details. Please try again later.</p>';
-      }
+// Function to perform recipe search
+async function searchRecipes(query, ingredients, cuisine, diet, intolerance, price, page = 1) {
+  const options = {
+    method: 'GET',
+    url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch',
+    params: {
+      query: query,
+      includeIngredients: ingredients,
+      cuisine: cuisine,
+      diet: diet,
+      intolerances: intolerance,
+      maxPrice: price,
+      number: '10',
+      offset: (page - 1) * 10
+    },
+    headers: {
+      'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
+      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
     }
+  };
 
-    // Function to display recipes
-    // Adjusted Function to Display Recipes with Click Event for Redirection
-    async function displayRecipes(recipes, container) {
-      container.innerHTML = '';
+  try {
+    const response = await axios.request(options);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
-      recipes.forEach(recipe => {
-        const recipeCard = document.createElement('div');
-        recipeCard.classList.add('recipe-card');
-
-        const recipeImage = document.createElement('img');
-        recipeImage.src = recipe.image;
-        recipeImage.alt = recipe.title;
-
-        const recipeDetails = document.createElement('div');
-        recipeDetails.classList.add('recipe-details');
-
-        const recipeTitle = document.createElement('h3');
-        recipeTitle.textContent = recipe.title;
-
-        const recipeSummary = document.createElement('p');
-        recipeSummary.innerHTML = recipe.summary;
-
-        recipeDetails.appendChild(recipeTitle);
-        recipeDetails.appendChild(recipeSummary);
-
-        recipeCard.appendChild(recipeImage);
-        recipeCard.appendChild(recipeDetails);
-
-        container.appendChild(recipeCard);
-
-        // Event listener for redirection
-        recipeCard.addEventListener('click', () => {
-          window.location.href = `recipeDetails.html?recipeId=${recipe.id}`; // Redirect to the details page with recipe ID
-        });
-      });
+// Function to fetch recipe details
+async function getRecipeDetails(recipeId) {
+  const options = {
+    method: 'GET',
+    url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
+    headers: {
+      'X-RapidAPI-Key': '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544',
+      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
     }
+  };
 
+  try {
+    const response = await axios.request(options);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
-    // Function to update pagination buttons
-    function updatePagination() {
-      prevPageBtn.disabled = currentPage === 1;
-      nextPageBtn.disabled = currentPage * 10 >= totalResults;
-    }
+// Function to display recipe details
+async function displayRecipeDetails(recipeId) {
+  try {
+    const recipe = await getRecipeDetails(recipeId);
+    const recipeHtml = recipeTemplate(recipe);
+    recipeDetailsContainer.innerHTML = recipeHtml;
+  } catch (error) {
+    console.error(error);
+    recipeDetailsContainer.innerHTML = '<p>Failed to load recipe details. Please try again later.</p>';
+  }
+}
 
-    // Event listener for search form submission
-    searchForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
+// Function to display recipes
+async function displayRecipes(recipes, container) {
+  container.innerHTML = '';
 
-      const query = searchInput.value.trim();
-      const ingredients = ingredientsInput.value.trim();
-      const cuisine = Array.from(cuisineSelect.selectedOptions).map(option => option.value).join(',');
-      const diet = Array.from(dietSelect.selectedOptions).map(option => option.value).join(',');
-      const intolerance = Array.from(intoleranceSelect.selectedOptions).map(option => option.value).join(',');
-      const price = priceSelect.value;
-      const searchResults = await searchRecipes(query, ingredients, cuisine, diet, intolerance, price, currentPage);
-      displayRecipes(searchResults.results, resultsContainer);
-      totalResults = searchResults.totalResults;
-      updatePagination();
+  recipes.forEach(recipe => {
+    const recipeCard = document.createElement('div');
+    recipeCard.classList.add('recipe-card');
+
+    const recipeImage = document.createElement('img');
+    recipeImage.src = recipe.image;
+    recipeImage.alt = recipe.title;
+
+    const recipeDetails = document.createElement('div');
+    recipeDetails.classList.add('recipe-details');
+
+    const recipeTitle = document.createElement('h3');
+    recipeTitle.textContent = recipe.title;
+
+    const recipeSummary = document.createElement('p');
+    recipeSummary.innerHTML = recipe.summary; // This line might be causing the issue
+
+    recipeDetails.appendChild(recipeTitle);
+    recipeDetails.appendChild(recipeSummary);
+
+    recipeCard.appendChild(recipeImage);
+    recipeCard.appendChild(recipeDetails);
+
+    container.appendChild(recipeCard);
+
+    // Event listener for redirection
+    recipeCard.addEventListener('click', () => {
+      window.location.href = `recipeDetails.html?recipeId=${recipe.id}`;
     });
+  });
+}
 
-    // Event listeners for pagination buttons
-    prevPageBtn.addEventListener('click', async () => {
-      if (currentPage > 1) {
-        currentPage--;
-        const query = searchInput.value.trim();
-        const ingredients = ingredientsInput.value.trim();
-        const cuisine = Array.from(cuisineSelect.selectedOptions).map(option => option.value).join(',');
-        const diet = Array.from(dietSelect.selectedOptions).map(option => option.value).join(',');
-        const intolerance = Array.from(intoleranceSelect.selectedOptions).map(option => option.value).join(',');
-        const price = priceSelect.value;
-        const searchResults = await searchRecipes(query, ingredients, cuisine, diet, intolerance, price, currentPage);
-        displayRecipes(searchResults.results, resultsContainer);
-        updatePagination();
-      }
-    });
+// Function to update pagination buttons
+function updatePagination() {
+  prevPageBtn.disabled = currentPage === 1;
+  nextPageBtn.disabled = currentPage * 10 >= totalResults;
+}
 
-    nextPageBtn.addEventListener('click', async () => {
-      currentPage++;
-      const query = searchInput.value.trim();
-      const ingredients = ingredientsInput.value.trim();
-      const cuisine = Array.from(cuisineSelect.selectedOptions).map(option => option.value).join(',');
-      const diet = Array.from(dietSelect.selectedOptions).map(option => option.value).join(',');
-      const intolerance = Array.from(intoleranceSelect.selectedOptions).map(option => option.value).join(',');
-      const price = priceSelect.value;
-      const searchResults = await searchRecipes(query, ingredients, cuisine, diet, intolerance, price, currentPage);
-      displayRecipes(searchResults.results, resultsContainer);
-      updatePagination();
-    });
+// Event listeners for pagination buttons
+prevPageBtn.addEventListener('click', async () => {
+  if (currentPage > 1) {
+    currentPage--;
+    const query = searchInput.value.trim();
+    const ingredients = ingredientsInput.value.trim();
+    const cuisine = Array.from(cuisineSelect.selectedOptions).map(option => option.value).join(',');
+    const diet = Array.from(dietSelect.selectedOptions).map(option => option.value).join(',');
+    const intolerance = Array.from(intoleranceSelect.selectedOptions).map(option => option.value).join(',');
+    const price = priceSelect.value;
+    const searchResults = await searchRecipes(query, ingredients, cuisine, diet, intolerance, price, currentPage);
+    displayRecipes(searchResults.results, resultsContainer);
+    updatePagination();
+  }
+});
 
+nextPageBtn.addEventListener('click', async () => {
+  currentPage++;
+  const query = searchInput.value.trim();
+  const ingredients = ingredientsInput.value.trim();
+  const cuisine = Array.from(cuisineSelect.selectedOptions).map(option => option.value).join(',');
+  const diet = Array.from(dietSelect.selectedOptions).map(option => option.value).join(',');
+  const intolerance = Array.from(intoleranceSelect.selectedOptions).map(option => option.value).join(',');
+  const price = priceSelect.value;
+  const searchResults = await searchRecipes(query, ingredients, cuisine, diet, intolerance, price, currentPage);
+  displayRecipes(searchResults.results, resultsContainer);
+  updatePagination();
+});
 
-    // Initial call to display recommended recipes
-    displayRecommendedRecipes();
-
+// Initial call to display recommended recipes
+displayRecommendedRecipes();
   </script>
+
   </body>
 
 </html>
