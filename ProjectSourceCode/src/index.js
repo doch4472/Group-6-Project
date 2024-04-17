@@ -126,7 +126,10 @@ app.get("/search", (req, res) => {
 
 app.get("/home", (req, res) => {
   if (req.session.username) {
-    res.render("pages/search", { query: req.query.q, username: req.session.username });
+    res.render("pages/search", {
+      query: req.query.q,
+      username: req.session.username,
+    });
   } else {
     res.render("pages/login", { query: req.query.q });
   }
@@ -173,6 +176,17 @@ app.get("/welcome", (req, res) => {
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.render("pages/logout");
+});
+
+app.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      res.status(500).send("Error logging out");
+    } else {
+      res.redirect("/login");
+    }
+  });
 });
 
 app.post("/login", async (req, res) => {
