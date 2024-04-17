@@ -1,16 +1,340 @@
-.register h2 {
-  padding-top: 50%;
-  color: blue;
+/* General styling for the entire recipe page */
+.recipe-body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
 }
 
-/* custom-style.css */
+/* Container for all recipe content */
+.recipe-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
+/* Container for the recipe search section */
+.recipe-search-container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Styling for the heading of the recipe search section */
+.recipe-search-container h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Styling for the form within the recipe search section */
+.recipe-search-container form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Styling for text input and select elements in the recipe search form */
+.recipe-search-container select {
+  text-align: center;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  margin: 10px;
+}
+
+.recipe-search-container input[type="text"] {
+  text-align: center;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  margin: 10px;
+}
+
+/* Styling for the search button in the recipe search form */
+.recipe-search-container button {
+  padding: 12px 24px;
+  font-size: 18px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for the search button */
+.recipe-search-container button:hover {
+  background-color: #45a049;
+}
+
+/* Styling for the grid layout of recipe cards */
+.recipe-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+/* Styling for each recipe card */
+.recipe-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect for recipe cards */
+.recipe-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Styling for images within recipe cards */
+.recipe-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Styling for details section within recipe cards */
+.recipe-card .recipe-details {
+  padding: 20px;
+}
+
+/* Styling for headings within recipe cards */
+.recipe-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Styling for paragraphs within recipe cards */
+.recipe-card p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #777;
+}
+
+/* Styling for info section within recipe cards */
+.recipe-card .recipe-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #777;
+}
+
+/* Styling for icons within recipe cards */
+.recipe-card .recipe-info i {
+  margin-right: 5px;
+}
+
+/* Styling for pagination section */
+.recipe-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Styling for pagination buttons */
+.recipe-pagination button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for pagination buttons */
+.recipe-pagination button:hover {
+  background-color: #45a049;
+}
+
+/* Styling for disabled pagination buttons */
+.recipe-pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Styling for the container of recipe details */
+.recipe-details-container {
+  margin-top: 40px;
+}
+
+/* Styling for headings within recipe details */
+.recipe-details-container h2 {
+  margin-top: 0;
+}
+
+/* Styling for images within recipe details */
+.recipe-details-container img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Styling for lists within recipe details */
+.recipe-details-container ul,
+.recipe-details-container ol {
+  padding-left: 20px;
+}
+
+/* Styling for select containers */
+.recipe-select-container {
+  /* display: inline-block; */
+  display: flex;
+  position: relative;
+  margin: 10px;
+  flex-direction: column;
+}
+
+/* Styling for select elements */
+.recipe-select-container select {
+  width: 300px; /* Fixed width */
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8.59L1.41 4 0 5.41l6 6 6-6L10.59 4 6 8.59z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+/* Styling for multiple select elements */
+.recipe-select-container select[multiple] {
+  height: auto;
+  padding: 8px;
+  background-color: #f5f5f5; /* Add background color */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 4px; /* Add border radius */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Styling for options within multiple select elements */
+.recipe-select-container select[multiple] option {
+  padding: 8px;
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Styling for selected options within multiple select elements */
+.recipe-select-container select[multiple] option:checked {
+  background-color: #007bff; /* Change background color for selected options */
+  color: white; /* Change text color for selected options */
+}
+
+/* Styling for filter container */
+.recipe-filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for inner content of select containers */
+.recipe-filter-container .recipe-select-container .recipe-choices__inner {
+  min-height: 50px;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 18px;
+}
+
+/* Styling for items within multiple select containers */
+.recipe-filter-container
+  .recipe-select-container
+  .recipe-choices__list--multiple
+  .recipe-choices__item {
+  background-color: #4caf50;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  padding: 6px 10px;
+}
+
+/* Styling for items within dropdown select containers */
+.recipe-filter-container
+  .recipe-select-container
+  .recipe-choices__list--dropdown
+  .recipe-choices__item--selectable {
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* Styling for highlighted items within dropdown select containers */
+.recipe-filter-container
+  .recipe-select-container
+  .recipe-choices__list--dropdown
+  .recipe-choices__item--selectable.is-highlighted {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Styling for Choices.js replacement */
+.recipe-select-container .recipe-choices {
+  width: 300px; /* Fixed width */
+  min-height: 50px; /* Minimum height */
+}
+
+/* Styling for items within multiple select containers to ensure fixed height */
+.recipe-select-container .recipe-choices__list--multiple .recipe-choices__item {
+  padding: 6px 10px;
+  margin: 4px; /* Adjust margins */
+}
+
+/* Styling for dropdown list to limit height and enable scrolling */
+.recipe-select-container .recipe-choices__list--dropdown {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Styling to maintain constant height when no items are selected */
+.recipe-select-container .recipe-choices__inner {
+  height: 100%;
+  align-items: center;
+}
+
+/* Styling for button to toggle filters */
+#recipe-toggleFiltersBtn {
+  padding: 10px 20px;
+  margin: 10px 0;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for toggle filters button */
+#recipe-toggleFiltersBtn:hover {
+  background-color: #45a049;
+}
+
+/* Styling for login page body */
 .login-page-body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
+/* Styling for container of login page form */
 .login-page-container-form {
   max-width: 800px;
   margin: 10px auto;
@@ -22,31 +346,37 @@
   align-items: center;
 }
 
+/* Styling for content within login page form */
 .login-page-form-content {
   flex: 1;
   padding: 20px;
 }
 
+/* Styling for login page image */
 .login-page-login-image {
   width: 200px;
   margin-right: 20px;
 }
 
+/* Styling for heading within login page */
 .login-page-h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
+/* Styling for wrapper of login page form */
 .login-page-form-wrapper {
   display: flex;
   flex-direction: column;
 }
 
+/* Styling for labels within login page form */
 .login-page-form-label {
   margin-bottom: 10px;
   color: #333;
 }
 
+/* Styling for inputs within login page form */
 .login-page-form-input {
   width: 100%;
   padding: 10px;
@@ -56,6 +386,7 @@
   box-sizing: border-box;
 }
 
+/* Styling for submit button within login page form */
 .login-page-form-submit-btn {
   background-color: #007bff;
   color: #fff;
@@ -66,22 +397,26 @@
   font-size: 16px;
 }
 
+/* Hover effect for submit button within login page form */
 .login-page-form-submit-btn:hover {
   background-color: #0056b3;
 }
 
+/* Styling for links within login page */
 .login-page-link {
   color: #007bff;
   text-decoration: none;
   font-weight: bold;
 }
 
+/* Styling for register page body */
 .register-page-body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
+/* Styling for container of register page form */
 .register-page-container-form {
   max-width: 800px;
   margin: 10px auto;
@@ -93,31 +428,37 @@
   align-items: center;
 }
 
+/* Styling for content within register page form */
 .register-page-form-content {
   flex: 1;
   padding: 20px;
 }
 
+/* Styling for register page image */
 .register-page-register-image {
   width: 200px;
   margin-right: 20px;
 }
 
+/* Styling for heading within register page */
 .register-page-h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
+/* Styling for wrapper of register page form */
 .register-page-form-wrapper {
   display: flex;
   flex-direction: column;
 }
 
+/* Styling for labels within register page form */
 .register-page-form-label {
   margin-bottom: 10px;
   color: #333;
 }
 
+/* Styling for inputs within register page form */
 .register-page-form-input {
   width: 100%;
   padding: 10px;
@@ -127,6 +468,7 @@
   box-sizing: border-box;
 }
 
+/* Styling for submit button within register page form */
 .register-page-form-submit-btn {
   background-color: #28a745;
   color: #fff;
@@ -137,16 +479,19 @@
   font-size: 16px;
 }
 
+/* Hover effect for submit button within register page form */
 .register-page-form-submit-btn:hover {
   background-color: #218838;
 }
 
+/* Styling for links within register page */
 .register-page-link {
   color: #007bff;
   text-decoration: none;
   font-weight: bold;
 }
 
+/* Styling for navbar brand and nav links */
 .custom-navbar-brand,
 .custom-navbar-nav .custom-navbar-nav-link {
   font-family: "Lato";
@@ -154,125 +499,57 @@
   font-weight: light;
 }
 
+/* Styling for navbar brand image */
 .custom-navbar-brand img {
   max-height: 50px;
 }
 
+/* Styling for navbar nav links */
 .custom-navbar-nav .custom-navbar-nav-link {
   color: #343538;
 }
 
+/* Hover effect for navbar nav links */
 .custom-navbar-nav .custom-navbar-nav-link:hover {
   color: #007bff;
 }
 
+/* Styling for navbar toggler */
 .custom-navbar-toggler {
   border-color: transparent;
 }
 
+/* Styling for navbar toggler icon */
 .custom-navbar-toggler-icon {
   background-color: #343538;
 }
 
+/* Styling for navbar collapse */
 .custom-navbar-collapse {
   justify-content: flex-end;
 }
 
+/* Styling for background color */
 .custom-bg-color {
   background-color: #f5f3e9;
 }
 
-/* CSS styles */
+/* Styling for body */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-}
-
-.recipe-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.search-section {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.search-section h2 {
-  font-size: 32px;
-  margin-bottom: 20px;
-}
-
-.search-section form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.search-section input[type="text"] {
-  width: 400px;
-  padding: 12px;
-  font-size: 18px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-
-.search-section button {
-  padding: 12px 24px;
-  font-size: 18px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.recipe-card {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 20px;
-  cursor: pointer;
-}
-
-.recipe-card img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  margin-right: 20px;
-  border-radius: 4px;
-}
-
-.recipe-details {
-  flex: 1;
-}
-
-.recipe-details h3 {
-  margin-top: 0;
-}
-
-.recipe-details p {
-  margin-top: 5px;
-}
-
-body {
-  font-family: Arial, sans-serif;
   background-color: #f0f2f5;
-  margin: 0;
-  padding: 0;
 }
 
+/* Styling for header in user profile section */
 header.user-profile-header {
   color: rgb(116, 106, 106);
   text-align: center;
   padding: 20px 0;
 }
 
+/* Styling for main content in user profile section */
 main.user-profile-main {
   display: flex;
   justify-content: center;
@@ -280,6 +557,7 @@ main.user-profile-main {
   min-height: 80vh;
 }
 
+/* Styling for user profile section */
 div.user-profile {
   background-color: white;
   border-radius: 10px;
@@ -288,6 +566,7 @@ div.user-profile {
   text-align: center;
 }
 
+/* Styling for user profile image */
 div.user-profile img.user-profile-img {
   width: 150px;
   height: 150px;
@@ -295,10 +574,67 @@ div.user-profile img.user-profile-img {
   margin-bottom: 20px;
 }
 
+/* Styling for user profile headings */
 div.user-profile h2.user-profile-heading {
   margin-bottom: 10px;
 }
 
+/* Styling for user profile text */
 div.user-profile p.user-profile-text {
   margin-bottom: 5px;
+}
+
+/* Styling for register page heading */
+.register h2 {
+  padding-top: 50%;
+  color: blue;
+}
+
+/* Reset default margin and padding */
+.reset-margin-padding {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styles */
+.custom-body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+}
+
+/* Main styles */
+.custom-main {
+  padding: 20px;
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack elements vertically */
+}
+
+/* Section styles */
+.section-container {
+  margin-bottom: 30px;
+  width: 50%; /* Each section takes full width */
+}
+
+/* Section heading styles */
+.section-container h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Paragraph styles */
+.section-container p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* List styles */
+.section-container ul {
+  list-style-type: none;
+}
+
+/* Image styles */
+.food-image {
+  width: 100%; /* Image takes full width */
+  margin-bottom: 20px; /* Add space below the image */
 }

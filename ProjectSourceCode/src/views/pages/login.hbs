@@ -1,66 +1,89 @@
-<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="login-page-body">
+    <div class="login-page-container-form">
+      <img
+        class="login-page-login-image"
+        src="/images/gordon.jpg"
+        alt="Login Image"
+      />
+      <div class="login-page-form-content">
+        <h2 class="login-page-h2">Login</h2>
+        {{#if message}}
+          <p>{{message}}</p>
+        {{/if}}
+        <a class="login-page-link" href="/register">Don't have an account?</a>
+        <br /><br />
+        <form class="login-page-form-wrapper" action="/login" method="post">
+          <div class="form-group">
+            <p>We'll never share your information with anyone else.</p>
+          </div>
+          <div class="form-group">
+            <label class="login-page-form-label" for="username">Username</label>
+            <input
+              class="login-page-form-input"
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              required
+              style="width: 100%;"
+            />
+          </div>
+          <div class="form-group">
+            <label class="login-page-form-label" for="password">Password</label>
+            <div class="input-group">
+              <input
+                class="form-control"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="togglePasswordVisibility('password')"
+              >
+                <i id="togglePasswordIcon" class="far fa-eye"></i>
+              </button>
+            </div>
+          </div>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Page</title>
-  <link rel="stylesheet" href="/css/style.css" />
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-  />
-</head>
+          <div class="form-group" style="margin-bottom: 20px;"></div>
 
-<body class="login-page-body">
-  <div class="login-page-container-form">
-    <img class="login-page-login-image" src="/images/gordon.jpg" alt="Login Image" />
-    <div class="login-page-form-content">
-      <h2 class="login-page-h2">Login</h2>
-      <a class="login-page-link" href="/register">Don't have an account?</a>
-      <br />
-      <br />
-
-      <form class="login-page-form-wrapper" action="/login" method="post">
-        <div class="form-group">
-          <p>We'll never share your information with anyone else.</p>
-        </div>
-        <div class="form-group">
-          <label class="login-page-form-label" for="username">Username</label>
-          <input
-            class="login-page-form-input"
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your username"
-            required
-            style="width: 100%;"
-          />
-        </div>
-        <div class="form-group">
-          <label class="login-page-form-label" for="password">Password</label>
-          <input
-            class="login-page-form-input"
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-            style="width: 100%;"
-          />
-        </div>
-        <button class="login-page-form-submit-btn" type="submit">Login</button>
-      </form>
+          <button
+            class="login-page-form-submit-btn"
+            type="submit"
+          >Login</button>
+        </form>
+      </div>
     </div>
-  </div>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"
-  ></script>
-</body>
-
+    <script>
+      function togglePasswordVisibility() { var passwordInput =
+      document.getElementById("password"); var icon =
+      document.getElementById("togglePasswordIcon"); if (passwordInput.type ===
+      "password") { passwordInput.type = "text"; icon.classList.remove("far",
+      "fa-eye"); icon.classList.add("fas", "fa-eye-slash"); } else {
+      passwordInput.type = "password"; icon.classList.remove("fas",
+      "fa-eye-slash"); icon.classList.add("far", "fa-eye"); } }
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

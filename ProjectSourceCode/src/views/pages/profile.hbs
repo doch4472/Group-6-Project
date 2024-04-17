@@ -19,10 +19,18 @@
     <main class="user-profile-main">
       <div class="user-profile">
         <h2 class="user-profile-heading">{{user.name}}</h2>
-        <p class="user-profile-text">Email: {{user.email}}</p>
-        <p class="user-profile-text">Location: {{user.location}}</p>
-        <p class="user-profile-text">Bio: {{user.bio}}</p>
-        <p class="user-profile-text">Joined: {{user.joined}}</p>
+        <p class="user-profile-text">Email: {{email}}</p>
+        <p class="user-profile-text">Username: {{username}}</p>
+        <!-- <p class="user-profile-text">Location: {{user.location}}</p> -->
+        <p class="user-profile-text">Bio: {{bio}}</p>
+        <!-- <p class="user-profile-text">Joined: {{user.joined}}</p> -->
+        <div class="form-group" style="margin-bottom: 20px;"></div>
+        <a href="/update" class="btn btn-primary">Update Information</a>
+        <div class="form-group" style="margin-bottom: 20px;"></div>
+        <form action="/logout" method="post">
+          <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+
       </div>
     </main>
     <footer>
