@@ -27,7 +27,7 @@ const dbConfig = {
 const user = {
   username: 0,
   bio: undefined,
-  email: undefined
+  email: undefined,
 };
 const db = pgp(dbConfig);
 
@@ -121,13 +121,12 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/search", (req, res) => {
-
   res.render("pages/search", { query: req.query.q });
 });
 
 app.get("/home", (req, res) => {
   if (req.session.username) {
-    res.render("pages/search", { query: req.query.q });
+    res.render("pages/search", { query: req.query.q, username: req.session.username });
   } else {
     res.render("pages/login", { query: req.query.q });
   }
@@ -138,24 +137,26 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
-  try{
-  const username = req.session.username;
-  if(req.session.username){
-  db.any( "SELECT bio, email\
+  try {
+    const username = req.session.username;
+    if (req.session.username) {
+      db.any(
+        "SELECT bio, email\
           FROM users\
-          WHERE username = $1;", [username])
-    .then(information => {
-  res.render("pages/profile", { query: req.query.q,
-                                username: username,
-                                bio: information[0].bio,
-                                email: information[0].email });
-    })
-  }
-  else{
-    res.redirect("login");
-  }
-  }
-  catch(error){
+          WHERE username = $1;",
+        [username]
+      ).then((information) => {
+        res.render("pages/profile", {
+          query: req.query.q,
+          username: username,
+          bio: information[0].bio,
+          email: information[0].email,
+        });
+      });
+    } else {
+      res.redirect("login");
+    }
+  } catch (error) {
     res.status(500).render("pages/search", { error: "Internal Server Error" });
   }
 });
@@ -182,11 +183,10 @@ app.post("/login", async (req, res) => {
 
     if (!user) {
       // Pass error message to template
-      return res
-        .status(500)
-        .render("pages/login", {
-          message: "User does not exist. \n Please try again or make a new account.",
-        });
+      return res.status(500).render("pages/login", {
+        message:
+          "User does not exist. \n Please try again or make a new account.",
+      });
     }
 
     const passwordMatch = await bcrypt.compare(
@@ -212,8 +212,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
-
 app.get("/favorite-recipe", (req, res) => {
   // Check if the user is logged in
   if (req.session.user) {
@@ -230,32 +228,31 @@ app.get("/update", (req, res) => {
 });
 
 app.post("/update", async (req, res) => {
-  
   try {
-
     if (!req.body.email && !req.body.bio) {
-      return res
-        .status(400)
-        .json({ message: "Email or bio are required." });
-    }
-    else if (req.body.email && !req.body.bio)
-    {
-      await db.none("UPDATE users \
+      return res.status(400).json({ message: "Email or bio are required." });
+    } else if (req.body.email && !req.body.bio) {
+      await db.none(
+        "UPDATE users \
                     SET email = ($1), \
-                    WHERE username = $2;", [req.body.email, req.session.username]);
-    }
-    else if (!req.body.email && req.body.bio)
-    {
-      await db.none("UPDATE users \
+                    WHERE username = $2;",
+        [req.body.email, req.session.username]
+      );
+    } else if (!req.body.email && req.body.bio) {
+      await db.none(
+        "UPDATE users \
                     SET bio = ($1), \
-                    WHERE username = $2;", [req.body.bio, req.session.username]);
-    }
-    else
-    {
-      await db.none("UPDATE users \
+                    WHERE username = $2;",
+        [req.body.bio, req.session.username]
+      );
+    } else {
+      await db.none(
+        "UPDATE users \
                     SET email = ($1), \
                     bio = ($2) \
-                    WHERE username = $3;", [req.body.email, req.body.bio, req.session.username]);
+                    WHERE username = $3;",
+        [req.body.email, req.body.bio, req.session.username]
+      );
     }
 
     res.status(200).redirect("/profile");
