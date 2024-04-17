@@ -78,7 +78,7 @@ app.use("/css", express.static(path.join(__dirname, "resources", "css")));
 // *****************************************************
 
 app.get("/", (req, res) => {
-  res.redirect("/aboutus");
+  res.redirect("/register");
 });
 
 app.get("/register", (req, res) => {
@@ -278,7 +278,6 @@ app.post("/update", async (req, res) => {
 app.get("/aboutus", (req, res) => {
   res.render("pages/aboutus");
 });
-
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
