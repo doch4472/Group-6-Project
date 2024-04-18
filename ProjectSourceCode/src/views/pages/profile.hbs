@@ -18,20 +18,51 @@
     </header>
     <main class="user-profile-main">
       <div class="user-profile">
-        <h2 class="user-profile-heading">{{user.name}}</h2>
-        <p class="user-profile-text"><strong>Email:  </strong> {{email}}</p>
-        <p class="user-profile-text"><strong>Username:  </strong>{{username}}</p>
+          <h2 class="user-profile-heading">{{user.name}}</h2>
+          <p class="user-profile-text"><strong>Email:  </strong> {{email}}</p>
+          <p class="user-profile-text"><strong>Username:  </strong>{{username}}</p>
         <!-- <p class="user-profile-text">Location: {{user.location}}</p> -->
         <p class="user-profile-text"><strong>Bio:  </strong>{{bio}}</p>
         <!-- <p class="user-profile-text">Joined: {{user.joined}}</p> -->
+
         <div class="form-group" style="margin-bottom: 20px;"></div>
-        <a href="/update" class="btn btn-primary">Update Information</a>
+          <a href="/update" class="btn btn-primary">Update Information</a>
+
         <div class="form-group" style="margin-bottom: 20px;"></div>
         <form action="/logout" method="post">
           <button type="submit" class="btn btn-danger">Logout</button>
         </form>
 
+
       </div>
+        <h2 class="your-recipes-heading">Your Recipes</h1>
+        <div class="recipe-cards-container">
+          <div class="card">
+          <img src="" class="card-img-top" alt="Recipe Image">
+          <div class="card-body">
+            <h5 class="card-title">Recipe Name</h5>
+            <p class="card-text">Recipe Description</p>
+          </div>
+        </div>
+        <div class="recipe-cards-container">
+          <div class="card">
+          <img src="" class="card-img-top" alt="Recipe Image">
+          <div class="card-body">
+            <h5 class="card-title">Recipe #2 Name</h5>
+            <p class="card-text">Recipe Description</p>
+          </div>
+        </div>
+        <div class="recipe-cards-container">
+          <div class="card">
+          <img src="" class="card-img-top" alt="Recipe Image">
+          <div class="card-body">
+            <h5 class="card-title">Recipe #3 Name</h5>
+            <p class="card-text">Recipe Description</p>
+          </div>
+        </div>
+
+        <!-- Plan: Add limit of 3 to amount of recipe cards, use handlebars to call information from db into the respective cards -->
+
     </main>
   </body>
 </html>
