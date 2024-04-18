@@ -154,6 +154,7 @@ app.get("/profile", (req, res) => {
           username: username,
           bio: information[0].bio,
           email: information[0].email,
+          // yourRecipe: []
         });
       });
     } else {
@@ -278,6 +279,75 @@ app.post("/update", async (req, res) => {
 
 app.get("/aboutus", (req, res) => {
   res.render("pages/aboutus");
+});
+
+app.get("/yourRecipe", (req, res) => {
+  res.render("pages/yourRecipe");
+});
+
+app.post("/yourRecipe", async (req, res) => {
+  try{
+    var username = req.body.recipe
+    var recipeName = req.body.recipe
+    var ingredient = req.body.recipe
+    var instructions = req.body.recipe
+
+    // Finding if the username exists within the website
+    const existingUser = await db.one(
+      "SELECT * FROM users WHERE username = $1", [username]
+    );
+
+    console.log()
+
+    // If not, then bring them to the register page
+    if (!existingUser) {
+      return res.render("pages/register", {
+        message: "Username does not exists. Please sign in before importing your recipe.",
+      });
+    }
+
+    console.log()
+
+    // Grab ID of the user
+    const user_id = await db.one(
+      "SELECT id FROM users WHERE username = $1", [existingUser]
+    );
+
+    console.log()
+
+    // Insert the users recipe in "user_recipe" table
+    await db.any("INSERT INTO user_recipe(username, recipe_name, instruction, ingredient) VALUES ($1, $2, $3, $4)",[
+      existingUser,
+      recipeName,
+      ingredient,
+      instructions,
+    ]);
+
+    console.log()
+
+    // Grab ID of user's recipe
+    const recipe_id = await db.one(
+      "SELECT id FROM user_recipe WHERE recipe_name = $1",
+      [recipeName]
+    );
+
+    console.log()
+
+    // insert into table () values () returning id -- pseudocode, don't worry about this
+
+    // Insert the ID's into the "user_to_recipe" table for mapping
+    await db.any("INSERT INTO user_to_recipe(user_id, recipe_id) VALUES ($1, $2)", [
+      user_id,
+      recipe_id
+    ]);
+
+    console.log()
+  }
+  catch{error} {
+    res.status(500).redirect("pages/yourRecipe", { error: "Internal Server Error" });
+  }
+
+
 });
 
 // *****************************************************
