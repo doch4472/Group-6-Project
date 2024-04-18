@@ -1,22 +1,21 @@
-{{! THIS IS THE FORM }}
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/style.css" />
 <title>Recipe Form</title>
 <style>
 
-    body {
+    .recipe-body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 20px;
     }
-    .form-container {
+    .recipe-form-container {
         max-width: 600px;
         margin: 0 auto;
     }
-    input[type="text"], textarea {
+    .recipe-form-container input[type="text"], .recipe-form-container textarea {
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
@@ -24,10 +23,10 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
-    .instruction-inputs {
+    .recipe-form-container .instruction-inputs {
         margin-bottom: 10px;
     }
-    .add-button {
+    .recipe-form-container .add-button {
         background-color: #4CAF50;
         color: white;
         padding: 10px 20px;
@@ -35,10 +34,10 @@
         border-radius: 4px;
         cursor: pointer;
     }
-    .add-button:hover {
+    .recipe-form-container .add-button:hover {
         background-color: #45a049;
     }
-    .remove-button {
+    .recipe-form-container .remove-button {
         background-color: #f44336;
         color: white;
         padding: 8px 16px;
@@ -46,14 +45,14 @@
         border-radius: 4px;
         cursor: pointer;
     }
-    .remove-button:hover {
+    .recipe-form-container .remove-button:hover {
         background-color: #da190b;
     }
 </style>
 </head>
-<body>
+<body class="recipe-body">
 
-<div class="form-container">
+<div class="recipe-form-container">
     <h2>Recipe Form</h2>
     <form id="recipeForm" action="#" method="post">
         <label for="username">Username:</label>

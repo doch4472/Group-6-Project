@@ -343,11 +343,22 @@ app.post("/yourRecipe", async (req, res) => {
 
     console.log()
   }
-  catch{error} {
-    res.status(500).redirect("pages/yourRecipe", { error: "Internal Server Error" });
+  catch (error) {
+    res.status(500).render("pages/yourRecipe", { error: "Internal Server Error" });
   }
 
 
+});
+
+app.get("/your-recipe", (req, res) => {
+  // Check if the user is logged in
+  if (req.session.user) {
+    // If logged in, render the your recipe page
+    res.render("pages/yourRecipe");
+  } else {
+    // If not logged in, redirect to the login page
+    res.redirect("/login");
+  }
 });
 
 // *****************************************************
