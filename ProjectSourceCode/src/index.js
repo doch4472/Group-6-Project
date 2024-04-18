@@ -282,7 +282,14 @@ app.get("/aboutus", (req, res) => {
 });
 
 app.get("/yourRecipe", (req, res) => {
-  res.render("pages/yourRecipe");
+  // Check if the user is logged in
+  if (req.session.user) {
+    // If logged in, render the your recipe page
+    res.render("pages/yourRecipe");
+  } else {
+    // If not logged in, redirect to the login page
+    res.redirect("/login");
+  }
 });
 
 app.post("/yourRecipe", async (req, res) => {
@@ -350,16 +357,6 @@ app.post("/yourRecipe", async (req, res) => {
 
 });
 
-app.get("/your-recipe", (req, res) => {
-  // Check if the user is logged in
-  if (req.session.user) {
-    // If logged in, render the your recipe page
-    res.render("pages/yourRecipe");
-  } else {
-    // If not logged in, redirect to the login page
-    res.redirect("/login");
-  }
-});
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
