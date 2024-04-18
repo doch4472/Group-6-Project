@@ -154,6 +154,7 @@ app.get("/profile", (req, res) => {
           username: username,
           bio: information[0].bio,
           email: information[0].email,
+          // yourRecipe: []
         });
       });
     } else {
@@ -280,14 +281,74 @@ app.get("/aboutus", (req, res) => {
   res.render("pages/aboutus");
 });
 
-app.get("/your-recipe", (req, res) => {
-  // Check if the user is logged in
-  if (req.session.user) {
-    // If logged in, render the your recipe page
+app.get("/yourRecipe", (req, res) => {
+  if (req.session.username) {
     res.render("pages/yourRecipe");
   } else {
-    // If not logged in, redirect to the login page
-    res.redirect("/login");
+    res.redirect("/login"); // Redirect to login page if not logged in
+  }
+});
+
+app.post("/yourRecipe", async (req, res) => {
+  try {
+    var username = req.body.recipe;
+    var recipeName = req.body.recipe;
+    var ingredient = req.body.recipe;
+    var instructions = req.body.recipe;
+
+    // Finding if the username exists within the website
+    const existingUser = await db.one(
+      "SELECT * FROM users WHERE username = $1",
+      [username]
+    );
+
+    console.log();
+
+    // If not, then bring them to the register page
+    if (!existingUser) {
+      return res.render("pages/register", {
+        message:
+          "Username does not exists. Please sign in before importing your recipe.",
+      });
+    }
+
+    console.log();
+
+    // Grab ID of the user
+    const user_id = await db.one("SELECT id FROM users WHERE username = $1", [
+      existingUser,
+    ]);
+
+    console.log();
+
+    // Insert the users recipe in "user_recipe" table
+    await db.any(
+      "INSERT INTO user_recipe(username, recipe_name, instruction, ingredient) VALUES ($1, $2, $3, $4)",
+      [existingUser, recipeName, ingredient, instructions]
+    );
+
+    console.log();
+
+    // Grab ID of user's recipe
+    const recipe_id = await db.one(
+      "SELECT id FROM user_recipe WHERE recipe_name = $1",
+      [recipeName]
+    );
+
+    console.log();
+
+    // insert into table () values () returning id -- pseudocode, don't worry about this
+
+    // Insert the ID's into the "user_to_recipe" table for mapping
+    await db.any(
+      "INSERT INTO user_to_recipe(user_id, recipe_id) VALUES ($1, $2)",
+      [user_id, recipe_id]
+    );
+
+    console.log();
+  } catch (error) {
+    console.error("Error in /yourRecipe route:", error);
+    res.status(500).redirect("/yourRecipe", { error: "Internal Server Error" });
   }
 });
 
