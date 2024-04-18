@@ -280,6 +280,17 @@ app.get("/aboutus", (req, res) => {
   res.render("pages/aboutus");
 });
 
+app.get("/your-recipe", (req, res) => {
+  // Check if the user is logged in
+  if (req.session.user) {
+    // If logged in, render the your recipe page
+    res.render("pages/yourRecipe");
+  } else {
+    // If not logged in, redirect to the login page
+    res.redirect("/login");
+  }
+});
+
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
