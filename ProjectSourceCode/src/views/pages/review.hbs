@@ -8,6 +8,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
     <link rel="stylesheet" href="/css/style.css" />
+    <style>
+      
+      </style>
   </head>
   <body class="review-rating-page-body">
 
@@ -60,24 +63,38 @@
     </div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() { const
-      ratingButtons =
-      document.querySelectorAll('.review-rating-page-rating-btn');
-      ratingButtons.forEach(button => { button.addEventListener('click',
-      function() { // Remove 'selected' class from all buttons
-      ratingButtons.forEach(btn => btn.classList.remove('selected')); // Add
-      'selected' class to the clicked button this.classList.add('selected'); });
-      }); document.getElementById('review-form').addEventListener('submit',
-      function(event) { event.preventDefault(); const selectedRating =
-      document.querySelector('.review-rating-page-rating-btn.selected').value;
-      const reviewText = document.getElementById('review-text').value; const
-      username = document.getElementById('username').value; // Here you can
-      handle the submission of the review data to your backend (e.g., using
-      fetch API) console.log('Rating:', selectedRating); console.log('Review
-      Text:', reviewText); console.log('Username:', username); // Reset the form
-      this.reset(); // Remove 'selected' class from all buttons
-      ratingButtons.forEach(btn => btn.classList.remove('selected')); }); });
-    </script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ratingButtons = document.querySelectorAll('.review-rating-page-rating-btn');
+    
+    ratingButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove 'selected' class from all buttons
+        ratingButtons.forEach(btn => btn.classList.remove('selected'));
+        // Add 'selected' class to the clicked button
+        this.classList.add('selected');
+      });
+    });
+    
+    document.getElementById('review-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const selectedRating = document.querySelector('.review-rating-page-rating-btn.selected').value;
+      const reviewText = document.getElementById('review-text').value;
+      const username = document.getElementById('username').value;
+      
+      // Here you can handle the submission of the review data to your backend (e.g., using fetch API)
+      console.log('Rating:', selectedRating);
+      console.log('Review Text:', reviewText);
+      console.log('Username:', username);
+      
+      // Reset the form
+      this.reset();
+      
+      // Remove 'selected' class from all buttons
+      ratingButtons.forEach(btn => btn.classList.remove('selected'));
+    });
+  });
+</script>
 
   </body>
 </html>
