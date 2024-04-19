@@ -282,7 +282,7 @@ app.get("/aboutus", (req, res) => {
 });
 
 app.get("/yourRecipe", (req, res) => {
-  if (req.session.username) { 
+  if (req.session.username) {
     res.render("pages/yourRecipe");
   } else {
     res.redirect("/login"); // Redirect to login page if not logged in
