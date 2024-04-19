@@ -308,18 +308,21 @@ app.get("/yourRecipe", (req, res) => {
 
 app.post("/yourRecipe", async (req, res) => {
   try {
-    var username = req.body.recipe;
-    var recipeName = req.body.recipe;
-    var ingredient = req.body.recipe;
-    var instructions = req.body.recipe;
-
+    var username = req.body.username;
+    var recipeName = req.body.recipeName;
+    var ingredient = req.body.ingredient;
+    var instructions = req.body.instructions;
+    console.log(username);
+    console.log(recipeName);
+    console.log(ingredient);
+    console.log(instructions);
     // Finding if the username exists within the website
     const existingUser = await db.one(
       "SELECT * FROM users WHERE username = $1",
       [username]
     );
 
-    console.log();
+    console.log("1");
 
     // If not, then bring them to the register page
     if (!existingUser) {
@@ -329,41 +332,41 @@ app.post("/yourRecipe", async (req, res) => {
       });
     }
 
-    console.log();
+    console.log("2");
 
     // Grab ID of the user
-    const user_id = await db.one("SELECT id FROM users WHERE username = $1", [
-      existingUser,
-    ]);
+    const user_id = existingUser.id;
 
-    console.log();
+    console.log("3");
 
-    // Insert the users recipe in "user_recipe" table
-    await db.any(
-      "INSERT INTO user_recipe(username, recipe_name, instruction, ingredient) VALUES ($1, $2, $3, $4)",
-      [existingUser, recipeName, ingredient, instructions]
-    );
+      // Insert the users recipe in "user_recipe" table
+      var dynamic_id = "id" + Math.random().toString(16).slice(2); // Create new ID for user's recipe
+      
+      await db.any(
+        "INSERT INTO user_recipe(username, dynamic_id, recipe_name, instruction, ingredient) VALUES ($1, $2, $3, $4, $5)",
+        [username, dynamic_id, recipeName, ingredient, instructions]
+      );
 
-    console.log();
+      console.log("4");
 
-    // Grab ID of user's recipe
-    const recipe_id = await db.one(
-      "SELECT id FROM user_recipe WHERE recipe_name = $1",
-      [recipeName]
-    );
+      // Grab ID of user's recipe
+      const recipe_id = await db.one(
+        "SELECT id FROM user_recipe WHERE dynamic_id = $1",
+        [dynamic_id]
+      );
 
-    console.log();
+      console.log("5");
 
-    // insert into table () values () returning id -- pseudocode, don't worry about this
+      // Insert the ID's into the "user_to_recipe" table for mapping
+      await db.any(
+        "INSERT INTO user_to_recipe(user_id, recipe_id) VALUES ($1, $2)",
+        [user_id, recipe_id.id]
+      );
 
-    // Insert the ID's into the "user_to_recipe" table for mapping
-    await db.any(
-      "INSERT INTO user_to_recipe(user_id, recipe_id) VALUES ($1, $2)",
-      [user_id, recipe_id]
-    );
+      console.log("successful execution");
 
-    console.log();
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .render("pages/yourRecipe", { error: "Internal Server Error" });
