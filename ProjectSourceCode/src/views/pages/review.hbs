@@ -1,43 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Reviews, Ratings, and Testimonials</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Rating Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .rating-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .rating-container button {
+      font-size: 36px;
+      margin-right: 10px;
+      transition: color 0.3s ease-in-out;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .rating-container button:hover,
+    .rating-container button:focus {
+      outline: none;
+    }
+    .rating-container button.selected {
+      color: goldenrod;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      resize: none;
+      transition: border-color 0.3s ease-in-out;
+    }
+    textarea:focus {
+      border-color: #007bff;
+    }
+    input[type="text"] {
+      width: calc(100% - 21px); /* Adjusted for button width */
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s ease-in-out;
+    }
+    input[type="text"]:focus {
+      border-color: #007bff;
+    }
+    button[type="submit"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+    }
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Reviews, Ratings, and Testimonials</h1>
-    <p>Hear what our customers have to say about our products and services.</p>
-  </header>
 
-  <section id="reviews-and-ratings">
-    <h2>Reviews and Ratings</h2>
-    {{#each reviews}}
-    <div class="review-card">
-      <h3>{{this.title}}</h3>
-      <p>{{this.content}}</p>
-      <div class="rating">
-        {{#each this.stars}}
-        <i class="fa fa-star"></i>
-        {{/each}}
-      </div>
-      <p class="author">- {{this.author}}</p>
+<div class="container">
+  <h2>Leave a Review</h2>
+  <form id="review-form">
+    <div class="rating-container">
+      <button type="button" class="rating-btn" value="5"><i class="fas fa-grin-stars"></i></button>
+      <button type="button" class="rating-btn" value="4"><i class="fas fa-smile"></i></button>
+      <button type="button" class="rating-btn" value="3"><i class="fas fa-meh"></i></button>
+      <button type="button" class="rating-btn" value="2"><i class="fas fa-frown"></i></button>
+      <button type="button" class="rating-btn" value="1"><i class="fas fa-sad-tear"></i></button>
     </div>
-    {{/each}}
-  </section>
+    <div></div>
+    <input type="text" id="username" name="username" placeholder="Your Username">
+    <textarea id="review-text" name="review" placeholder="Write your review here..."></textarea>
+    <button type="submit">Submit Review</button>
+  </form>
+</div>
 
-  <section id="testimonials">
-    <h2>Testimonials</h2>
-    {{#each testimonials}}
-    <div class="testimonial-card">
-      <blockquote>
-        <p>{{this.content}}</p>
-        <cite>- {{this.author}}</cite>
-      </blockquote>
-    </div>
-    {{/each}}
-  </section>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ratingButtons = document.querySelectorAll('.rating-btn');
 
-  <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+    ratingButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove 'selected' class from all buttons
+        ratingButtons.forEach(btn => btn.classList.remove('selected'));
+        // Add 'selected' class to the clicked button
+        this.classList.add('selected');
+      });
+    });
+
+    document.getElementById('review-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const selectedRating = document.querySelector('.rating-btn.selected').value;
+      const reviewText = document.getElementById('review-text').value;
+      const username = document.getElementById('username').value;
+
+      // Here you can handle the submission of the review data to your backend (e.g., using fetch API)
+      console.log('Rating:', selectedRating);
+      console.log('Review Text:', reviewText);
+      console.log('Username:', username);
+
+      // Reset the form
+      this.reset();
+      // Remove 'selected' class from all buttons
+      ratingButtons.forEach(btn => btn.classList.remove('selected'));
+    });
+  });
+</script>
+
 </body>
 </html>

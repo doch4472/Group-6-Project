@@ -68,36 +68,17 @@
 
         <div class="instruction-inputs">
             <h3>Instructions:</h3>
-            <div id="instructionContainer">
-                <div class="instruction">
-                    <textarea name="instructions[]" placeholder="Step 1: Once you have added a step, select the add step button to make a new instruction. When done, hit submit." required></textarea>
-                    <button type="button" class="remove-button" onclick="removeInstructionInput(this)">Remove</button>
-                </div>
-            </div>
-            <button type="button" class="add-button" onclick="addInstructionInput()">Add Step</button>
+            <textarea id="instructions" name="instructions" placeholder="Please enter your instructions as seperate numbered steps (ex. 1.2.3.)" required></textarea>
         </div>
+
+
+        
 
         <input type="submit" value="Submit">
     </form>
 </div>
 
-<script>
-    function addInstructionInput() {
-        var instructionContainer = document.getElementById("instructionContainer");
-        var instructionInputs = instructionContainer.querySelectorAll('.instruction');
-        var newInstructionInput = document.createElement('div');
-        newInstructionInput.classList.add("instruction");
-        var stepNumber = instructionInputs.length + 1;
-        newInstructionInput.innerHTML = `
-            <textarea name="instructions[]" placeholder="Step ${stepNumber}: Once you have added a step, select the add step button to make a new instruction. When done, hit submit." required></textarea>
-            <button type="button" class="remove-button" onclick="removeInstructionInput(this)">Remove</button>`;
-        instructionContainer.appendChild(newInstructionInput);
-    }
 
-    function removeInstructionInput(button) {
-        button.parentNode.parentNode.removeChild(button.parentNode);
-    }
-</script>
 
 </body>
 </html>
