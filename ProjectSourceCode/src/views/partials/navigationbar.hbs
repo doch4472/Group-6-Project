@@ -43,15 +43,11 @@
 
                 <!-- Conditionally render "Home" or "Welcome {user}" -->
                 {{#if username}}
-                  <a
-                    class="nav-link custom-navbar-nav-link"
-                    href="/home"
-                  >Welcome {{username}}</a>
+                  <a class="nav-link custom-navbar-nav-link" href="#">Welcome
+                    {{username}}! </a>
                 {{else}}
-                  <a
-                    class="nav-link custom-navbar-nav-link"
-                    href="/home"
-                  >Home</a>
+                  <a class="nav-link custom-navbar-nav-link" href="/home">Sign In</a>
+
                 {{/if}}
 
               </li>
