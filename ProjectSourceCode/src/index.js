@@ -143,24 +143,44 @@ app.get("/login", (req, res) => {
   res.render("pages/login", { query: req.query.q });
 });
 
-app.get("/profile", (req, res) => {
+app.get("/profile", async (req, res) => {
   try {
     const username = req.session.username;
-    if (req.session.username) {
-      db.any(
+    if (username) {
+      const information = await db.any(
         "SELECT bio, email\
           FROM users\
           WHERE username = $1;",
         [username]
-      ).then((information) => {
-        res.render("pages/profile", {
-          query: req.query.q,
-          username: username,
-          bio: information[0].bio,
-          email: information[0].email,
-          // yourRecipe: []
-        });
+      );
+
+    console.log("Pass 1: ", information);
+
+      const recipe = await db.any(
+         "SELECT recipe_name, instruction, ingredient\
+         FROM user_recipe\
+         INNER JOIN user_to_recipe\
+           ON user_recipe.id = user_to_recipe.recipe_id\
+         INNER JOIN users\
+           ON user_to_recipe.user_id = users.id\
+         WHERE users.username = $1\
+         LIMIT 3;",
+         [username]
+       );
+    
+    console.log("Pass 2: ", recipe);
+
+      res.render("pages/profile", {
+        query: req.query.q,
+        username: username,
+        bio: information[0].bio,
+        email: information[0].email,
+        recipe_name: recipe[0].recipe_name,
+        instruction: recipe[0].instruction,
+        ingredient: recipe[0].ingredient,
       });
+
+    console.log("SUCCESS");
     } else {
       res.redirect("login");
     }
