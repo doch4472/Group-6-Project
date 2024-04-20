@@ -78,7 +78,7 @@ app.use("/css", express.static(path.join(__dirname, "resources", "css")));
 // *****************************************************
 
 app.get("/", (req, res) => {
-  res.redirect("/register");
+  res.redirect("/aboutus");
 });
 
 app.get("/register", (req, res) => {
