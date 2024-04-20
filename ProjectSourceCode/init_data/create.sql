@@ -21,6 +21,7 @@ CREATE TABLE user_to_recipe(
 
 CREATE TABLE user_recipe(
     id SERIAL PRIMARY KEY,
+    dynamic_id VARCHAR(20) UNIQUE,
     username VARCHAR(51) NOT NULL,
     recipe_name VARCHAR NOT NULL,
     instruction VARCHAR NOT NULL,

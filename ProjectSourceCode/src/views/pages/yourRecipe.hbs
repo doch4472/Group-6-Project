@@ -1,20 +1,21 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/style.css" />
 <title>Recipe Form</title>
 <style>
-    body {
+
+    .recipe-body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 20px;
     }
-    .form-container {
+    .recipe-form-container {
         max-width: 600px;
         margin: 0 auto;
     }
-    input[type="text"], textarea {
+    .recipe-form-container input[type="text"], .recipe-form-container textarea {
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
@@ -22,10 +23,10 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
-    .instruction-inputs {
+    .recipe-form-container .instruction-inputs {
         margin-bottom: 10px;
     }
-    .add-button {
+    .recipe-form-container .add-button {
         background-color: #4CAF50;
         color: white;
         padding: 10px 20px;
@@ -33,10 +34,10 @@
         border-radius: 4px;
         cursor: pointer;
     }
-    .add-button:hover {
+    .recipe-form-container .add-button:hover {
         background-color: #45a049;
     }
-    .remove-button {
+    .recipe-form-container .remove-button {
         background-color: #f44336;
         color: white;
         padding: 8px 16px;
@@ -44,59 +45,40 @@
         border-radius: 4px;
         cursor: pointer;
     }
-    .remove-button:hover {
+    .recipe-form-container .remove-button:hover {
         background-color: #da190b;
     }
 </style>
 </head>
-<body>
+<body class="recipe-body">
 
-<div class="form-container">
+<div class="recipe-form-container">
     <h2>Recipe Form</h2>
     <form id="recipeForm" action="#" method="post">
         <label for="username">Username:</label>
         <textarea type="text" id="username" name="username" placeholder="Add your username so we can add this recipe to your account!" required></textarea>
         
-        <label for="recipeName">Recipe Name:</label>
-        <textarea type="text" id="recipeName" name="recipeName" placeholder="Please enter your recipe name." required></textarea>
+        <label for="recipe_name">Recipe Name:</label>
+        <textarea type="text" id="recipe_name" name="recipe_name" placeholder="Please enter your recipe name." required></textarea>
         
         <div class="ingredient-inputs">
             <h3>Ingredients:</h3>
-            <textarea id="ingredients" name="ingredients" placeholder="Enter the ingredients needed for your recipes separated by commas." required></textarea>
+            <textarea id="ingredient" name="ingredient" placeholder="Enter the ingredients needed for your recipes separated by commas." required></textarea>
         </div>
 
         <div class="instruction-inputs">
             <h3>Instructions:</h3>
-            <div id="instructionContainer">
-                <div class="instruction">
-                    <textarea name="instructions[]" placeholder="Step 1: Once you have added a step, select the add step button to make a new instruction. When done, hit submit." required></textarea>
-                    <button type="button" class="remove-button" onclick="removeInstructionInput(this)">Remove</button>
-                </div>
-            </div>
-            <button type="button" class="add-button" onclick="addInstructionInput()">Add Step</button>
+            <textarea id="instructions" name="instructions" placeholder="Please enter your instructions as seperate numbered steps (ex. 1.2.3.)" required></textarea>
         </div>
+
+
+        
 
         <input type="submit" value="Submit">
     </form>
 </div>
 
-<script>
-    function addInstructionInput() {
-        var instructionContainer = document.getElementById("instructionContainer");
-        var instructionInputs = instructionContainer.querySelectorAll('.instruction');
-        var newInstructionInput = document.createElement('div');
-        newInstructionInput.classList.add("instruction");
-        var stepNumber = instructionInputs.length + 1;
-        newInstructionInput.innerHTML = `
-            <textarea name="instructions[]" placeholder="Step ${stepNumber}: Once you have added a step, select the add step button to make a new instruction. When done, hit submit." required></textarea>
-            <button type="button" class="remove-button" onclick="removeInstructionInput(this)">Remove</button>`;
-        instructionContainer.appendChild(newInstructionInput);
-    }
 
-    function removeInstructionInput(button) {
-        button.parentNode.parentNode.removeChild(button.parentNode);
-    }
-</script>
 
 </body>
 </html>

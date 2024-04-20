@@ -121,15 +121,19 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/search", (req, res) => {
-  res.render("pages/search", { query: req.query.q });
-});
-
-app.get("/home", (req, res) => {
   if (req.session.username) {
     res.render("pages/search", {
       query: req.query.q,
       username: req.session.username,
     });
+  } else {
+    res.render("pages/search", { query: req.query.q });
+  }
+});
+
+app.get("/home", (req, res) => {
+  if (req.session.username) {
+    res.render("pages/search", { username: req.session.username });
   } else {
     res.render("pages/login", { query: req.query.q });
   }
@@ -154,6 +158,7 @@ app.get("/profile", (req, res) => {
           username: username,
           bio: information[0].bio,
           email: information[0].email,
+          // yourRecipe: []
         });
       });
     } else {
@@ -231,7 +236,9 @@ app.get("/favorite-recipe", (req, res) => {
   // Check if the user is logged in
   if (req.session.user) {
     // If logged in, render the favorite recipe page
-    res.render("pages/favRecipe");
+    res.render("pages/favRecipe", {
+      username: req.session.username,
+    });
   } else {
     // If not logged in, redirect to the register page
     res.redirect("/login");
@@ -277,7 +284,106 @@ app.post("/update", async (req, res) => {
 });
 
 app.get("/aboutus", (req, res) => {
-  res.render("pages/aboutus");
+  if (req.session.user) {
+    res.render("pages/aboutus", {
+      username: req.session.username,
+    });
+  } else {
+    res.render("pages/aboutus");
+  }
+});
+
+app.get("/yourRecipe", (req, res) => {
+  // Check if the user is logged in
+  if (req.session.user) {
+    // If logged in, render the your recipe page
+    res.render("pages/yourRecipe", {
+      username: req.session.username,
+    });
+  } else {
+    // If not logged in, redirect to the login page
+    res.redirect("/login");
+  }
+});
+
+app.post("/yourRecipe", async (req, res) => {
+  try {
+    var username = req.body.username;
+    var recipeName = req.body.recipeName;
+    var ingredient = req.body.ingredient;
+    var instructions = req.body.instructions;
+    console.log(username);
+    console.log(recipeName);
+    console.log(ingredient);
+    console.log(instructions);
+    // Finding if the username exists within the website
+    const existingUser = await db.one(
+      "SELECT * FROM users WHERE username = $1",
+      [username]
+    );
+
+    console.log("1");
+
+    // If not, then bring them to the register page
+    if (!existingUser) {
+      return res.render("pages/register", {
+        message:
+          "Username does not exists. Please sign in before importing your recipe.",
+      });
+    }
+
+    console.log("2");
+
+    // Grab ID of the user
+    const user_id = existingUser.id;
+
+    console.log("3");
+
+      // Insert the users recipe in "user_recipe" table
+      var dynamic_id = "id" + Math.random().toString(16).slice(2); // Create new ID for user's recipe
+      
+      await db.any(
+        "INSERT INTO user_recipe(username, dynamic_id, recipe_name, instruction, ingredient) VALUES ($1, $2, $3, $4, $5)",
+        [username, dynamic_id, recipeName, ingredient, instructions]
+      );
+
+      console.log("4");
+
+      // Grab ID of user's recipe
+      const recipe_id = await db.one(
+        "SELECT id FROM user_recipe WHERE dynamic_id = $1",
+        [dynamic_id]
+      );
+
+      console.log("5");
+
+      // Insert the ID's into the "user_to_recipe" table for mapping
+      await db.any(
+        "INSERT INTO user_to_recipe(user_id, recipe_id) VALUES ($1, $2)",
+        [user_id, recipe_id.id]
+      );
+
+      console.log("successful execution");
+
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .render("pages/yourRecipe", { error: "Internal Server Error" });
+  }
+});
+
+app.get("/review", (req, res) => {
+  // Check if the user is authenticated (logged in)
+  if (req.session.username) {
+    // If authenticated, render the review page
+    res.render("pages/review",{
+      username: req.session.username,
+    });
+  } else {
+    // If not authenticated, redirect to the login page
+    res.redirect("/login");
+  }
 });
 
 // *****************************************************
