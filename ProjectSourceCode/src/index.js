@@ -143,10 +143,36 @@ app.get("/login", (req, res) => {
   res.render("pages/login", { query: req.query.q });
 });
 
-app.get("/profile", (req, res) => {
+app.get("/profile", async (req, res) => {
   try {
     const username = req.session.username;
-    if (req.session.username) {
+    const is_there_recipe = req.session.recipe_created;
+    if (username && is_there_recipe) {
+
+      const recipe = await db.any(
+         "SELECT bio, email, recipe_name, instruction, ingredient\
+         FROM user_recipe\
+         INNER JOIN user_to_recipe\
+           ON user_recipe.id = user_to_recipe.recipe_id\
+         INNER JOIN users\
+           ON user_to_recipe.user_id = users.id\
+         WHERE users.username = $1\
+         LIMIT 3;",
+         [username]
+       ).then((information) => {
+        res.render("pages/profile", {
+          query: req.query.q,
+          username: username,
+          bio: information[0].bio,
+          email: information[0].email,
+          recipe_name: information[0].recipe_name,
+          instruction: information[0].instruction,
+          ingredient: information[0].ingredient,
+        });
+       });
+  
+    console.log("SUCCESS");
+    }else if(username && !is_there_recipe){
       db.any(
         "SELECT bio, email\
           FROM users\
@@ -161,7 +187,8 @@ app.get("/profile", (req, res) => {
           // yourRecipe: []
         });
       });
-    } else {
+    }
+     else {
       res.redirect("login");
     }
   } catch (error) {
@@ -308,7 +335,7 @@ app.get("/yourRecipe", (req, res) => {
 
 app.post("/yourRecipe", async (req, res) => {
   try {
-    var username = req.body.username;
+    var username = req.session.username;
     var recipeName = req.body.recipeName;
     var ingredient = req.body.ingredient;
     var instructions = req.body.instructions;
@@ -362,7 +389,9 @@ app.post("/yourRecipe", async (req, res) => {
         "INSERT INTO user_to_recipe(user_id, recipe_id) VALUES ($1, $2)",
         [user_id, recipe_id.id]
       );
-
+      req.session.recipe_created = 1;
+      req.session.save();
+      res.redirect("/profile");
       console.log("successful execution");
 
   } catch (error) {
