@@ -121,19 +121,15 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/search", (req, res) => {
+  res.render("pages/search", { query: req.query.q });
+});
+
+app.get("/home", (req, res) => {
   if (req.session.username) {
     res.render("pages/search", {
       query: req.query.q,
       username: req.session.username,
     });
-  } else {
-    res.render("pages/search", { query: req.query.q });
-  }
-});
-
-app.get("/home", (req, res) => {
-  if (req.session.username) {
-    res.render("pages/search", { username: req.session.username });
   } else {
     res.render("pages/login", { query: req.query.q });
   }
@@ -236,9 +232,7 @@ app.get("/favorite-recipe", (req, res) => {
   // Check if the user is logged in
   if (req.session.user) {
     // If logged in, render the favorite recipe page
-    res.render("pages/favRecipe", {
-      username: req.session.username,
-    });
+    res.render("pages/favRecipe");
   } else {
     // If not logged in, redirect to the register page
     res.redirect("/login");
@@ -284,22 +278,14 @@ app.post("/update", async (req, res) => {
 });
 
 app.get("/aboutus", (req, res) => {
-  if (req.session.user) {
-    res.render("pages/aboutus", {
-      username: req.session.username,
-    });
-  } else {
-    res.render("pages/aboutus");
-  }
+  res.render("pages/aboutus");
 });
 
 app.get("/yourRecipe", (req, res) => {
   // Check if the user is logged in
   if (req.session.user) {
     // If logged in, render the your recipe page
-    res.render("pages/yourRecipe", {
-      username: req.session.username,
-    });
+    res.render("pages/yourRecipe");
   } else {
     // If not logged in, redirect to the login page
     res.redirect("/login");
@@ -374,9 +360,7 @@ app.get("/review", (req, res) => {
   // Check if the user is authenticated (logged in)
   if (req.session.username) {
     // If authenticated, render the review page
-    res.render("pages/review",{
-      username: req.session.username,
-    });
+    res.render("pages/review");
   } else {
     // If not authenticated, redirect to the login page
     res.redirect("/login");
