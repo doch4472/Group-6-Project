@@ -2,15 +2,291 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Favorite Recipes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" href="/css/style.css" />
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-  />
-  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <style>
+    .favorite-recipes-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .recipe-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .recipe-card {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .recipe-card img {
+      width: 100%;
+      height: auto;
+    }
+
+    .recipe-card h3 {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .favorite-btn {
+      background-color: white;
+      color: black;
+      margin-top: 10px;
+    }
+
+    .favorite-btn.favorited {
+      background-color: red;
+      color: white;
+    }
+
+    .recipe-details {
+      margin-top: 10px;
+      width: 100%;
+    }
+  </style>
 </head>
+
+<body>
+  <div class="favorite-recipes-container">
+    <h2>Favorite Recipes</h2>
+    <div id="favoriteRecipesList" class="recipe-list"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+  <!-- Handlebars Recipe Card Template -->
+  <script id="recipeTemplate" type="text/x-handlebars-template">
+    <div class="recipe-card">
+      <img src="{{image}}" alt="{{title}}" style="width:100%;">
+      <h3>{{title}}</h3>
+      <button class="favorite-btn favorited" data-recipe-id="{{id}}" onclick="toggleFavorite(event, '{{id}}')">Remove from Favorites</button>
+      <p>{{{summary}}}</p>
+      <div class="recipe-details">
+        <h3>Ingredients</h3>
+        <ul>
+          {{#each ingredients}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
+        <h3>Instructions</h3>
+        {{{instructions}}}
+      </div>
+    </div>
+  </script>
+
+  <script>
+    const favoritesContainer = document.getElementById('favoriteRecipesList');
+    const recipeTemplate = Handlebars.compile(document.getElementById('recipeTemplate').innerHTML);
+
+    const API_KEY = '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544';
+    const API_HOST = 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com';
+
+    let rateLimitRemaining = null;
+    let rateLimitReset = null;
+
+    async function getRecipeDetails(recipeId, retries = 0) {
+      const options = {
+        method: 'GET',
+        url: `https://${API_HOST}/recipes/${recipeId}/information`,
+        headers: {
+          'X-RapidAPI-Key': API_KEY,
+          'X-RapidAPI-Host': API_HOST
+        }
+      };
+
+      try {
+        const response = await axios.request(options);
+        updateRateLimitHeaders(response.headers);
+        return response.data;
+      } catch (error) {
+        if (error.response && error.response.status === 429) {
+          await handleRateLimitExceeded(error.response.headers, recipeId, retries);
+        } else {
+          console.error(`Failed to fetch recipe details for recipe ID ${recipeId}:`, error);
+          throw error;
+        }
+      }
+    }
+
+    async function fetchInstructions(recipeId, retries = 0) {
+      const options = {
+        method: 'GET',
+        url: `https://${API_HOST}/recipes/${recipeId}/analyzedInstructions`,
+        params: { stepBreakdown: 'true' },
+        headers: {
+          'X-RapidAPI-Key': API_KEY,
+          'X-RapidAPI-Host': API_HOST
+        }
+      };
+
+      try {
+        const response = await axios.request(options);
+        updateRateLimitHeaders(response.headers);
+        return formatInstructions(response.data);
+      } catch (error) {
+        if (error.response && error.response.status === 429) {
+          await handleRateLimitExceeded(error.response.headers, recipeId, retries);
+        } else {
+          console.error(`Failed to fetch instructions for recipe ID ${recipeId}:`, error);
+          return '<p>Failed to load instructions. Please try again later.</p>';
+        }
+      }
+    }
+
+    function formatInstructions(data) {
+      let html = '<ol>';
+      data.forEach(part => {
+        part.steps.forEach(step => {
+          html += `<li>${step.step}</li>`;
+        });
+      });
+      html += '</ol>';
+      return html;
+    }
+
+    async function fetchIngredients(recipeId, retries = 0) {
+      const options = {
+        method: 'GET',
+        url: `https://${API_HOST}/recipes/${recipeId}/ingredientWidget.json`,
+        headers: {
+          'X-RapidAPI-Key': API_KEY,
+          'X-RapidAPI-Host': API_HOST
+        }
+      };
+
+      try {
+        const response = await axios.request(options);
+        updateRateLimitHeaders(response.headers);
+        return response.data.ingredients.map(ing => ing.name);
+      } catch (error) {
+        if (error.response && error.response.status === 429) {
+          await handleRateLimitExceeded(error.response.headers, recipeId, retries);
+        } else {
+          console.error(`Failed to fetch ingredients for recipe ID ${recipeId}:`, error);
+          return '<p>Failed to load ingredients. Please try again later.</p>';
+        }
+      }
+    }
+
+    async function fetchFavoriteRecipeDetails(recipeIds) {
+      const favoriteRecipes = [];
+
+      for (const recipeId of recipeIds) {
+        if (recipeId === null || recipeId === undefined) {
+          console.warn(`Skipping recipe details fetch for invalid recipe ID ${recipeId}`);
+          continue;
+        }
+
+        try {
+          const recipeDetails = await getRecipeDetails(recipeId);
+          const instructions = await fetchInstructions(recipeId);
+          const ingredients = await fetchIngredients(recipeId);
+
+          favoriteRecipes.push({
+            id: recipeId,
+            title: recipeDetails.title,
+            image: recipeDetails.image,
+            summary: recipeDetails.summary,
+            instructions: instructions,
+            ingredients: ingredients,
+            isFavorited: true,
+          });
+        } catch (error) {
+          console.error(`Failed to fetch details for recipe ID ${recipeId}:`, error);
+        }
+      }
+
+      return favoriteRecipes;
+    }
+
+    function toggleFavorite(event, recipeId) {
+      event.stopPropagation();
+      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      const recipeIdNum = parseInt(recipeId, 10);
+
+      if (isNaN(recipeIdNum)) {
+        console.warn(`Invalid recipe ID: ${recipeId}`);
+        return;
+      }
+
+      const index = favorites.indexOf(recipeIdNum);
+
+      if (index === -1) {
+        favorites.push(recipeIdNum);
+        event.target.classList.add('favorited');
+        event.target.textContent = 'Remove from Favorites';
+      } else {
+        favorites.splice(index, 1);
+        event.target.classList.remove('favorited');
+        event.target.textContent = 'Add to Favorites';
+      }
+
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    async function populateFavoriteRecipes() {
+      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+      if (favorites.length === 0) {
+        favoritesContainer.innerHTML = '<p>You have no favorite recipes yet.</p>';
+        return;
+      }
+
+      try {
+        const favoriteRecipes = await fetchFavoriteRecipeDetails(favorites);
+        favoritesContainer.innerHTML = '';
+
+        favoriteRecipes.forEach((recipe) => {
+          const recipeCard = recipeTemplate(recipe);
+          favoritesContainer.insertAdjacentHTML('beforeend', recipeCard);
+        });
+      } catch (error) {
+        console.error('Error fetching favorite recipes:', error);
+        favoritesContainer.innerHTML = '<p>Failed to load favorite recipes. Please try again later.</p>';
+      }
+    }
+
+    function updateRateLimitHeaders(headers) {
+      rateLimitRemaining = parseInt(headers['x-ratelimit-remaining'], 10);
+      rateLimitReset = parseInt(headers['x-ratelimit-reset'], 10) * 1000;
+    }
+
+    async function handleRateLimitExceeded(headers, recipeId, retries) {
+      updateRateLimitHeaders(headers);
+      const resetTime = new Date(rateLimitReset);
+      const retryAfter = rateLimitReset - Date.now();
+
+      if (retries < 10 && retryAfter > 0) {
+        const delay = Math.min(retryAfter, Math.pow(2, retries) * 1000);
+        console.log(`Rate limit exceeded. Retrying after ${delay / 1000} seconds...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return getRecipeDetails(recipeId, retries + 1);
+      } else {
+        console.error(`Rate limit exceeded. Retry after ${resetTime.toLocaleString()}`);
+        throw new Error('Rate limit exceeded');
+      }
+    }
+
+
+    window.addEventListener('load', populateFavoriteRecipes);
+  </script>
+</body>
+
+</html>
