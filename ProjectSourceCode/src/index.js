@@ -127,7 +127,7 @@ app.get("/search", (req, res) => {
       username: req.session.username,
     });
   } else {
-    res.render("pages/search", { query: req.query.q });
+    res.render("pages/login", { query: req.query.q });
   }
 });
 
