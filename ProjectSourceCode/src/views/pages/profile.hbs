@@ -125,27 +125,17 @@ body {
             </div>
             <h2 class="your-recipes-heading">Your Recipes</h2>
             <div class="recipe-cards-container">
+              {{#each recipes}}
               <div class="card">
                 
                 <div class="card-body">
-                  <h5 class="card-title">{{recipe_name}}</h5>
-                  <p class="card-text">Instructions: {{instruction}}</p>
-                  <p class="card-text">Ingredients: {{ingredient}}</p>
+                  <h5 class="card-title">{{this.recipe_name}}</h5>
+                  <p class="card-text">Instructions: {{this.instruction}}</p>
+                  <p class="card-text">Ingredients: {{this.ingredient}}</p>
                 </div>
               </div>
-              <div class="card">
-                
-                <div class="card-body">
-                  <h5 class="card-title">Recipe 2 Name</h5>
-                  <p class="card-text">Recipe 2 Description</p>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Recipe 3 Name</h5>
-                  <p class="card-text">Recipe 3 Description</p>
-                </div>
-              </div>
+              {{/each}}
+              
             </div>
           </div>
         </div>
