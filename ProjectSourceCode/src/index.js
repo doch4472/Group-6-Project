@@ -160,14 +160,13 @@ app.get("/profile", async (req, res) => {
          LIMIT 3;",
          [username]
        ).then((information) => {
+
         res.render("pages/profile", {
           query: req.query.q,
           username: username,
           bio: information[0].bio,
           email: information[0].email,
-          recipe_name: information[0].recipe_name,
-          instruction: information[0].instruction,
-          ingredient: information[0].ingredient,
+          recipes: information,
         });
        });
   
