@@ -29,11 +29,25 @@ BudgetBites is a web application designed to assist broke, time-strapped college
 
 ## Prerequisites
 
+n order to run the application, the only software required is Docker.
+
 ## Instructions to run the application locally
+
+1. Download Docker
+2. Navigate to the Project Source Code within the folder
+3. Run the command : docker compose up 
+4. Go back to the Docker dashboard and open the link for the container that is currently running.
+5. The link will take you to the website.
+
 
 ## How to run the tests
 
-## Deployment
+1. Navigate to the Project Source Code within the folder
+2. Run the command : “docker compose up”
+    *Test cases are run automatically upon starting docker.
+
+
+## Link to Deployment
 
 
 
