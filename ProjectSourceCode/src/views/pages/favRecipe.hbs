@@ -33,6 +33,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+      cursor: pointer;
     }
 
     .recipe-card img {
@@ -41,6 +42,35 @@
       object-fit: cover;
       border-radius: 5px;
       margin-bottom: 10px;
+    }
+
+    .recipe-details-container {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .recipe-details-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      border-radius: 10px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -51,95 +81,139 @@
     <div id="favoriteRecipesList" class="recipe-list"></div>
   </div>
 
+  <div id="recipeDetailsContainer" class="recipe-details-container">
+    <div class="recipe-details-content">
+      <span class="close" onclick="closeRecipeDetails()">&times;</span>
+      <div id="recipeDetailsContent"></div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.min.js"></script>
-
-
-
-
-  <script defer>
-    const recipeTemplate = Handlebars.compile(document.getElementById('recipeTemplate').innerHTML);
-  </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const favoritesContainer = document.getElementById('favoriteRecipesList');
-      const API_KEY = '6ca5bc8018f84f2c83a8089a81b96af2';
+    const favoritesContainer = document.getElementById('favoriteRecipesList');
+    const recipeDetailsContainer = document.getElementById('recipeDetailsContainer');
+    const recipeDetailsContent = document.getElementById('recipeDetailsContent');
+    const API_KEY = '3122cef951msh40e0e89b8ce8165p1c980bjsnd1b136ffa544';
 
-      async function getRecipeDetails(recipeId) {
-        const cachedRecipe = localStorage.getItem(`recipe-${recipeId}`);
-        if (cachedRecipe) {
-          return JSON.parse(cachedRecipe);
+    async function getRecipeDetails(recipeId) {
+      const cachedRecipe = localStorage.getItem(`recipe-${recipeId}`);
+      if (cachedRecipe) {
+        return JSON.parse(cachedRecipe);
+      }
+      const options = {
+        method: 'GET',
+        url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
+        headers: {
+          'X-RapidAPI-Key': API_KEY,
+          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
         }
-        const url = `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=false&apiKey=${API_KEY}`;
-        try {
-          const response = await axios.get(url);
-          localStorage.setItem(`recipe-${recipeId}`, JSON.stringify(response.data));
-          return response.data;
-        } catch (error) {
-          console.error(`Failed to fetch recipe details for recipe ID ${recipeId}:`, error);
-          throw error;
+      };
+      try {
+        const response = await axios.request(options);
+        localStorage.setItem(`recipe-${recipeId}`, JSON.stringify(response.data));
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to fetch recipe details for recipe ID ${recipeId}:`, error);
+        throw error;
+      }
+    }
+
+    async function fetchFavoriteRecipeDetails(recipeIds) {
+      const favoriteRecipes = [];
+      for (const recipeId of recipeIds) {
+        if (recipeId) {
+          const recipeDetails = await getRecipeDetails(recipeId);
+          favoriteRecipes.push(recipeDetails);
         }
       }
+      return favoriteRecipes;
+    }
 
-      async function fetchFavoriteRecipeDetails(recipeIds) {
-        const favoriteRecipes = [];
-        for (const recipeId of recipeIds) {
-          if (recipeId) {
-            const recipeDetails = await getRecipeDetails(recipeId);
-            favoriteRecipes.push(recipeDetails);
-          }
-        }
-        return favoriteRecipes;
+    async function populateFavoriteRecipes() {
+      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      if (favorites.length === 0) {
+        favoritesContainer.innerHTML = '<p>You have no favorite recipes yet.</p>';
+        return;
       }
-
-      async function populateFavoriteRecipes() {
-        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        console.log('Favorites:', favorites);
-
-        if (favorites.length === 0) {
-          favoritesContainer.innerHTML = '<p>You have no favorite recipes yet.</p>';
-          return;
+      try {
+        const favoriteRecipes = await fetchFavoriteRecipeDetails(favorites);
+        favoritesContainer.innerHTML = '';
+        for (let i = 0; i < favoriteRecipes.length; i++) {
+          const recipe = favoriteRecipes[i];
+          const recipeCard = document.createElement('div');
+          recipeCard.classList.add('recipe-card');
+          recipeCard.innerHTML = `
+            <img src="${recipe.image}" alt="${recipe.title}">
+            <p>${recipe.title}</p>
+          `;
+          recipeCard.addEventListener('click', () => {
+            displayRecipeDetails(recipe);
+          });
+          favoritesContainer.appendChild(recipeCard);
         }
-
-        try {
-          const favoriteRecipes = await fetchFavoriteRecipeDetails(favorites);
-          const formattedRecipes = favoriteRecipes.map(recipe => ({
-            image: recipe.image,
-            title: recipe.title
-          }));
-          console.log('Formatted Recipes:', formattedRecipes);
-
-          favoritesContainer.innerHTML = ''; // Clear previous content
-
-          for (let i = 0; i < formattedRecipes.length; i++) {
-            const recipe = formattedRecipes[i];
-
-            const recipeCard = document.createElement('div');
-            recipeCard.classList.add('recipe-card');
-
-            const recipeImage = document.createElement('img');
-            recipeImage.src = recipe.image;
-            recipeImage.alt = recipe.title;
-
-            const recipeTitle = document.createElement('p');
-            recipeTitle.textContent = recipe.title;
-
-            recipeCard.appendChild(recipeImage);
-            recipeCard.appendChild(recipeTitle);
-
-            favoritesContainer.appendChild(recipeCard);
-          }
-
-          console.log('After rendering:', favoritesContainer.innerHTML);
-        } catch (error) {
-          console.error('Error fetching favorite recipes:', error);
-          favoritesContainer.innerHTML = '<p>Failed to load favorite recipes. Please try again later.</p>';
-        }
+      } catch (error) {
+        console.error('Error fetching favorite recipes:', error);
+        favoritesContainer.innerHTML = '<p>Failed to load favorite recipes. Please try again later.</p>';
       }
+    }
 
-      populateFavoriteRecipes();
-    });
+    async function fetchInstructions(recipeId) {
+      const options = {
+        method: 'GET',
+        url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/analyzedInstructions`,
+        params: { stepBreakdown: 'true' },
+        headers: {
+          'X-RapidAPI-Key': API_KEY,
+          'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+        }
+      };
+      try {
+        const response = await axios.request(options);
+        return formatInstructions(response.data);
+      } catch (error) {
+        console.error(error);
+        return '<p>Failed to load instructions. Please try again later.</p>';
+      }
+    }
+
+    function formatInstructions(data) {
+      let html = '<h3>Instructions</h3><ol>';
+      data.forEach(part => {
+        part.steps.forEach(step => {
+          html += `<li>${step.step}</li>`;
+        });
+      });
+      html += '</ol>';
+      return html;
+    }
+
+    function formatIngredients(data) {
+      let html = '<h3>Ingredients</h3><ul>';
+      data.extendedIngredients.forEach(ing => {
+        html += `<li>${ing.original}</li>`;
+      });
+      html += '</ul>';
+      return html;
+    }
+
+    async function displayRecipeDetails(recipe) {
+      const ingredientsHtml = formatIngredients(recipe);
+      const instructionsHtml = await fetchInstructions(recipe.id);
+      recipeDetailsContent.innerHTML = `
+        <h2>${recipe.title}</h2>
+        <img src="${recipe.image}" alt="${recipe.title}">
+        ${ingredientsHtml}
+        ${instructionsHtml}
+      `;
+      recipeDetailsContainer.style.display = 'block';
+    }
+
+    function closeRecipeDetails() {
+      recipeDetailsContainer.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', populateFavoriteRecipes);
   </script>
 
 </body>
