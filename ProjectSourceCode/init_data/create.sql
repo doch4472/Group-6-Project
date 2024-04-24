@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS user_recipe;
+DROP TABLE IF EXISTS favorite_recipe;
 -- DROP TABLE IF EXISTS recipe_to_author;
 -- DROP TABLE IF EXISTS author;
 -- DROP TABLE IF EXISTS recipe_to_ingredient;
@@ -26,6 +27,14 @@ CREATE TABLE user_recipe(
     recipe_name VARCHAR NOT NULL,
     instruction VARCHAR NOT NULL,
     ingredient VARCHAR NOT NULL
+);
+
+CREATE TABLE favorite_recipe(
+    id SERIAL PRIMARY KEY,
+    recipe_id INT NOT NULL,
+    username VARCHAR(51) NOT NULL,
+    recipe_image VARCHAR(255),
+    title VARCHAR(50)
 );
 
 ALTER TABLE user_to_recipe ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES users(id);

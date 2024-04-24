@@ -250,7 +250,7 @@
   <script id="recipeTemplate" type="text/x-handlebars-template">
   <div class="recipe-card">
     <h2>{{title}}</h2>
-    <button class="favorite-btn" data-recipe-id="{{id}}" onclick="toggleFavorite(event, '{{id}}')">
+    <button class="favorite-btn" data-recipe-id="{{id}}" onclick="toggleFavorite(event, '{{id}}', '{{title}}', '{{image}}')">
       {{#if isFavorited}}Remove from Favorites{{else}}Add to Favorites{{/if}}
     </button>
     <img src="{{image}}" alt="{{title}}" style="width:100%;">
@@ -639,7 +639,7 @@
         favoriteButton.setAttribute('data-recipe-id', recipe.id);
         favoriteButton.textContent = 'Add to Favorites';
         favoriteButton.addEventListener('click', (event) => {
-          toggleFavorite(event, recipe.id);
+          toggleFavorite(event, recipe.id, recipe.title, recipe.image);
         });
 
         recipeDetails.appendChild(recipeTitle);
@@ -654,7 +654,7 @@
       });
     }
 
-    function toggleFavorite(event, recipeId) {
+    function toggleFavorite(event, recipeId, title, recipe_image) {
       event.stopPropagation();
       const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
       const recipeIdNum = parseInt(recipeId, 10);
@@ -674,7 +674,14 @@
         favorites.splice(index, 1); // Remove from favorites
         event.target.classList.remove('favorited'); // Revert button color
         event.target.textContent = 'Add to Favorites';
+        const response = await axios.post('/favoriteRecipe', {
+        recipeId: recipeId,
+        title: title,
+        recipe_image: recipe_image
+        });
       }
+
+     
 
       localStorage.setItem('favorites', JSON.stringify(favorites));
     }

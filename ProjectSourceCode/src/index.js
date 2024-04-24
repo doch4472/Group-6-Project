@@ -332,6 +332,28 @@ app.get("/yourRecipe", (req, res) => {
   }
 });
 
+app.post("/favoriteRecipe", async (req, res) => {
+  try{
+    var username = req.session.username;
+    var recipe_id = req.body.recipeId;
+    var recipe_title = req.body.title;
+    var recipe_image = req.body.recipe_image;
+    console.log(req.body);
+    if(!recipe_id){
+      res.redirect("/login");
+    }
+
+    await db.any(
+      "INSERT INTO favorite_recipe(username, recipe_id, title, recipe_image) VALUES ($1, $2, $3, $4)",
+      [username, recipe_id, recipe_title, recipe_image]
+    );
+    res.redirect("/profile");
+  }catch(error){
+
+    res.redirect("/home");
+  }
+});
+
 app.post("/yourRecipe", async (req, res) => {
   try {
     var username = req.session.username;
