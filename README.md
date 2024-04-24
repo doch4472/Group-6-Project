@@ -13,3 +13,27 @@ BudgetBites is a web application designed to assist broke, time-strapped college
 - Owen Wright (owwnwrrght)
 - Ima Mervin (ima-mervin)
 
+## Technology Stack
+
+- Project Tracker (GitHub Projects)
+- VCS repository (GitHub)
+- Database (MySQL, PostgreSQL)
+- IDE (VSCode)
+- UI Tools (Wireframing tools, HTML, HandleBars, CSS, JS)
+- Application Server (NodeJS)
+- Deployment environment (LocalHost, Microsoft Azure)
+- External APIs (Spoonacular)
+- Testing tools (Chai, Mocha, UAT)
+- Framework (Node.js)
+
+
+## Prerequisites
+
+## Instructions to run the application locally
+
+## How to run the tests
+
+## Deployment
+
+
+
