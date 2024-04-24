@@ -50,7 +50,7 @@ n order to run the application, the only software required is Docker.
 
 ## Link to Deployment
 
-http://recitation-011-team-06.eastus.cloudapp.azure.com/aboutus
+http://recitation-011-team-06.eastus.cloudapp.azure.com:3000/aboutus
 
 
 
