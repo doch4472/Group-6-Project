@@ -666,7 +666,10 @@
 
       const index = favorites.indexOf(recipeIdNum);
 
+
+
       if (index === -1) {
+        console.log(recipeIdNum)
         favorites.push(recipeIdNum); // Add to favorites
         event.target.classList.add('favorited'); // Change button color
         event.target.textContent = 'Remove from Favorites';
@@ -677,6 +680,7 @@
       }
 
       localStorage.setItem('favorites', JSON.stringify(favorites));
+
     }
 
 
